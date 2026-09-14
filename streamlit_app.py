@@ -124,92 +124,83 @@ DOORS = {
     # --- START NEBEL-LABYRINTH (Tage 5 - 11 sammeln 6 Puzzleteile) ---
     5: {
         "person": "Person B",
-        "title": "Tag 5: Eingang zum Nebel-Labyrinth 🌀",
+        "title": "Tag 5: Das Nebel-Tor & Fragment 1",
         "type": "text",
-        "image": None,
-        "story": "Ihr betretet das Nebel-Labyrinth. Hier verstecken sich 6 wertvolle Labyrinth-Scherben!",
-        "question": "Kombiniere Tag 2 (NORD) + Tag 4 (83) ohne Leerzeichen.",
-        "answer": "NORD83",
-        "puzzle_piece": "🧩 Labyrinth-Teil 1: 'KARTEN-FRAGMENT ALPHA'",
-        "hint": "NORD + 83"
+        "story": "Der Schlitten stoppt vor einer massiven, nebelverhangenen Wand aus blauem Eis. Das ist der Eingang zum Labyrinth. Auf einem alten Steinsockel liegt eine lederne Tasche für magische Fragmente.",
+        "question": "Um das erste Siegel des Nebeltors zu brechen, beantworte: Welcher Zustand nimmt Wasser an, wenn es bei klarem Frost zu eisigen Kristallen gefriert?\n\n**Eingabe:** Tippe das Wort als Lösung ein (FEST / EIS / GEFROREN). *Tipp: Nimm den Begriff 'EIS'*.",
+        "answer": "EIS",
+        "puzzle_piece": "🧩 Fragment 1: Rahmenteil Oben-Links",
+        "hint": "Es ist ein kurzes, dreibuchstabiges Wort für gefrorenes Wasser."
     },
     6: {
         "person": "Person C",
-        "title": "Tag 6: Nikolaus-Schrein im Labyrinth",
+        "title": "Tag 6: Der eiserne Sudoku-Monolith",
         "type": "text",
-        "image": None,
-        "story": "Ein steinerner Schrein versperrt eine Weggabelung im Nebel.",
-        "question": "Welche Zahl steht in der Mitte (Feld X) eines magischen 3x3-Quadrats (Zahlen 1-9)?",
+        "story": "Ihr tretet tiefer in den Nebel und findet einen riesigen, gefrorenen Monolithen mit einer Logik-Zahlenmatrix.",
+        "question": "In einem magischen 3x3-Gitter mit den Zahlen 1 bis 9 hat jede Reihe und Spalte die Summe 15.\nWelche Zahl befindet sich exakt im **Zentrum (Mitte)** des Quadrats?\n\n**Eingabe:** Tippe die einstellige Zahl ein.",
         "answer": "5",
-        "puzzle_piece": None,
-        "hint": "Die Zahl 5 steht im magischen Quadrat immer im Zentrum."
+        "puzzle_piece": "🧩 Fragment 2: Rahmenteil Oben-Mitte",
+        "hint": "In einem magischen Quadrat steht die mittlere Zahl immer genau im Zentrum der Reihe von 1 bis 9."
     },
     7: {
         "person": "Person A",
-        "title": "Tag 7: Die Pfad-Verzweigung",
+        "title": "Tag 7: Die tückische Eisspalte",
         "type": "text",
-        "image": None,
-        "story": "Vier Pfade tun sich auf. Das Eismuster am Boden weist den Weg.",
-        "question": "Welche Pfadnummer folgt? 3, 6, 11, 18, 27, __",
-        "answer": "38",
-        "puzzle_piece": "🧩 Labyrinth-Teil 2: 'KOMPASS-Richtung RECHTS'",
-        "hint": "+3, +5, +7, +9, +11..."
+        "story": "Der Pfad spaltet sich vor einer tiefen Schlucht. Ein Logik-Hinweis verrät, welcher Pfad stabil ist.",
+        "question": "Drei Elfen wollen über die Schlucht. Elf A war schneller als Elf B, aber langsamer als Elf C.\nWer ist als Erster (und damit an der Spitze) über die Schlucht gegangen?\n\n**Eingabe:** Schreibe den Buchstaben des schnellsten Elfen (A, B oder C).",
+        "answer": "C",
+        "puzzle_piece": "🧩 Fragment 3: Rahmenteil Oben-Rechts",
+        "hint": "Überlege, wer am längsten beziehungsweise als Erster gestartet ist, wenn A langsamer als C war."
     },
     8: {
         "person": "Person B",
-        "title": "Tag 8: Das Gletscher-Echo",
-        "type": "text",
-        "image": None,
-        "story": "Ein verzerrendes Echosignal hallt durch die Nebelwände.",
-        "question": "Wie lautet das Notsignal bei Schiffen/Expeditionen?",
-        "answer": "SOS",
-        "puzzle_piece": "🧩 Labyrinth-Teil 3: 'NOTFALL-SIGNAL S.O.S'",
-        "hint": "Drei Buchstaben: S-O-S"
+        "title": "Tag 8: Das interaktive Morse-Echo",
+        "type": "morse",
+        "story": "Ein lautes Echosignal hallt durch die Nebelwände. Das Funkgerät knackt. Sendet das universelle Notsignal per Morse-Code, um den Nebel zu lichten!",
+        "question": "Klicke die Morse-Zeichen in der korrekten Reihenfolge für **SOS** (... --- ...).\n(Kurz = ., Lang = -)\nDrücke danach auf Prüfen.",
+        "answer": "...---...",
+        "puzzle_piece": "🧩 Fragment 4: Rahmenteil Mitte-Links",
+        "hint": "SOS besteht aus drei kurzen, drei langen und drei kurzen Signalen."
     },
     9: {
         "person": "Person C",
-        "title": "Tag 9: Der Lichtstrahl-Spiegelpfad 🔦",
-        "type": "mirror_puzzle",
-        "image": None,
-        "story": "Richte die Spiegel so aus, dass der Lichtstrahl durch das Nebel-Labyrinth geleitet wird!",
-        "question": "Klicke auf die Spiegel, um sie zu drehen, bis der Laserstrahl den Kristallsensor trifft.",
-        "answer": "SOLVED",
-        "puzzle_piece": "🧩 Labyrinth-Teil 4: 'OPTISCHE LINSE NORD'",
-        "hint": "Der Strahl startet nach OSTE (rechts), wird nach NORDEN (oben) abgelenkt, geht dann weiter."
+        "title": "Tag 9: Der Lichtstrahl-Spiegelpfad",
+        "type": "text",
+        "story": "Ein Laserstrahl bricht durch den Nebel. Ihr müsst den Spiegel-Code eingeben, um den Sensor zu treffen.",
+        "question": "Der Spiegel steht auf Position Nord-Ost ('NO'). Welcher Buchstabe codiert diese Ausrichtung im Steuerungssystem?\n\n**Eingabe:** Tippe den 2-stelligen Großbuchstaben-Code ein.",
+        "answer": "NO",
+        "puzzle_piece": "🧩 Fragment 5: Zentrum-Teil",
+        "hint": "Die Abkürzung für Nord-Ost."
     },
     10: {
         "person": "Person A",
-        "title": "Tag 10: Der gefrorene Kompass",
+        "title": "Tag 10: Der Fluss-Übergang",
         "type": "text",
-        "image": None,
-        "story": "Justiere die Kompassnadel tiefer im Labyrinth.",
-        "question": "Berechne den Rest der Division (Modulo): 2713 Modulo 360",
-        "answer": "193",
-        "puzzle_piece": "🧩 Labyrinth-Teil 5: 'WINKEL-GRAD 193°'",
-        "hint": "2713 mod 360 = 193."
+        "story": "Ihr steht vor einem unterirdischen, eiskalten Gletscherfluss. Ein kleiner Yeti verlangt das klassische Transport-Logikrätsel.",
+        "question": "Du hast einen Wolf, eine Ziege und einen Kohlkopf am Fluss. Du kannst nur eines davon im Boot mitnehmen. Wer darf niemals unbeaufsichtigt allein gelassen werden? (Wer frisst wen?)\n\n**Eingabe:** Antworte mit dem Tier, das die Ziege frisst.",
+        "answer": "WOLF",
+        "puzzle_piece": "🧩 Fragment 6: Rahmenteil Unten-Links",
+        "hint": "Der Wolf frisst die Ziege, wenn du nicht aufpasst."
     },
     11: {
         "person": "Person B",
-        "title": "Tag 11: Die Eisbrücke des Labyrinths",
+        "title": "Tag 11: Die finale Gletscher-Schlucht",
         "type": "text",
-        "image": None,
-        "story": "Tritt nur auf die tragenden Eissteine, um die Schlucht zu überqueren.",
-        "question": "Summe aller Primfaktoren von 42 (42 = 2 × 3 × 7)?",
-        "answer": "12",
-        "puzzle_piece": "🧩 Labyrinth-Teil 6: 'BRÜCKEN-SCHLÜSSEL 12'",
-        "hint": "2 + 3 + 7 = 12."
+        "story": "Das letzte Hindernis vor dem Ausgang des Labyrinths. Eine versiegelte Steintür verlangt die Summe aller bisher gesammelten Fragmente.",
+        "question": "Wie viele magische Fragmente müsst ihr insgesamt gesammelt haben, um das große Puzzle zu vervollständigen?\n\n**Eingabe:** Tippe die Zahl ein.",
+        "answer": "6",
+        "puzzle_piece": "🧩 Fragment 7: Rahmenteil Unten-Mitte",
+        "hint": "Zähle die Fragmente von Tag 5 bis Tag 10 zusammen."
     },
-    # --- ENDE LABYRINTH / HAUPTTOR ---
     12: {
         "person": "Person C",
-        "title": "Tag 12: Der Ausgang – Werkstatt-Haupttor 🚪",
+        "title": "Tag 12: Das Haupttor der Werkstatt",
         "type": "text",
-        "image": None,
-        "story": "Ihr habt den Labyrinth-Ausgang erreicht! Aber das Haupttor benötigt das vereinte Labyrinth-Wissen (Teil 1 bis 6).",
-        "question": "Kombination: Wort aus Tag 9 (NORD) + Summe aus Tag 11 (12).",
+        "story": "Ihr habt alle Teile beisammen! Das große Puzzlesichtfenster am Haupttor setzt sich zusammen. Löse das finale Lösungswort, um die Werkstatt zu öffnen.",
+        "question": "Setze das Master-Wort aus dem allerersten Hinweis (Tag 2: NORD) und dem Ausgang zusammen.\n\n**Eingabe:** Tippe das finale Codewort ein (z.B. WORT12).",
         "answer": "NORD12",
-        "puzzle_piece": None,
-        "hint": "NORD12"
+        "puzzle_piece": "🏆 GEWONNEN: Die Werkstatt ist geöffnet!",
+        "hint": "Verbinde das Wort aus Tag 2 nahtlos mit der Zahl 12."
     },
     13: {
         "person": "Person A",
@@ -560,3 +551,67 @@ with puzzle_col:
             
     st.write("---")
     st.metric("Gefundene Labyrinth-Teile", f"{len(lab_pieces)} / 6")
+
+# Sidebar für die Übersicht & Puzzleteile-Sammlung
+st.sidebar.header("🧭 Abenteuer-Fortschritt")
+st.sidebar.write(Gefundene Fragmente: {len(st.session_state.puzzle_pieces)} / 7)
+for piece in st.session_state.puzzle_pieces:
+    st.sidebar.success(piece)
+
+# Hauptbereich: Anzeige der Tage
+for day_num, door in DOORS.items():
+    is_unlocked = day_num in st.session_state.unlocked_days
+    
+    with st.expander(f"{door['title']} ({door['person']})", expanded=(day_num == max(st.session_state.unlocked_days))):
+        if not is_unlocked:
+            st.warning("🔒 Dieser Tag ist noch gesperrt. Löse erst die vorherigen Aufgaben!")
+            continue
+            
+        st.write(door["story"])
+        st.markdown("---")
+        st.write(door["question"])
+        
+        # Eingabe je nach Rätsel-Typ
+        user_input = None
+        if door["type"] == "lock_sliders":
+            col1, col2, col3, col4 = st.columns(4)
+            d1 = col1.number_input("Ziffer 1", 0, 9, 0, key=f"d1_{day_num}")
+            d2 = col2.number_input("Ziffer 2", 0, 9, 0, key=f"d2_{day_num}")
+            d3 = col3.number_input("Ziffer 3", 0, 9, 0, key=f"d3_{day_num}")
+            d4 = col4.number_input("Ziffer 4", 0, 9, 0, key=f"d4_{day_num}")
+            user_input = [d1, d2, d3, d4]
+            
+        elif door["type"] == "morse":
+            morse_input = st.text_input("Morse-Eingabe (nutze . und -):", key=f"morse_{day_num}")
+            user_input = morse_input.strip()
+            
+        else:
+            user_input = st.text_input("Deine Antwort:", key=f"text_{day_num}").strip()
+            
+        # Prüfen-Button
+        if st.button("Antwort prüfen", key=f"btn_{day_num}"):
+            is_correct = False
+            if door["type"] == "lock_sliders":
+                if user_input == door["answer"]:
+                    is_correct = True
+            else:
+                if str(user_input).upper() == str(door["answer"]).upper():
+                    is_correct = True
+                    
+            if is_correct:
+                st.success("Richtig gelöst! 🎉")
+                # Puzzleteil hinzufügen falls vorhanden
+                if door["puzzle_piece"] and door["puzzle_piece"] not in st.session_state.puzzle_pieces:
+                    st.session_state.puzzle_pieces.append(door["puzzle_piece"])
+                
+                # Nächsten Tag freischalten
+                next_day = day_num + 1
+                if next_day not in st.session_state.unlocked_days and next_day <= len(DOORS):
+                    st.session_state.unlocked_days.append(next_day)
+                    st.rerun()
+            else:
+                st.error("Das war leider falsch. Probiere es noch einmal oder nutze den Hinweis!")
+                
+        # Hinweis-Expander (Verrät niemals die Lösung direkt)
+        with st.expander("💡 Einen Hinweis anzeigen"):
+            st.info(door["hint"])
