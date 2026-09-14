@@ -220,9 +220,9 @@ DOORS = {
         "type": "gear_puzzle",
         "story": "Ihr tretet durch das schwere Eistor. Hinter euch schließt es sich mit einem dumpfen Knall. Überall in der riesigen Fabrikhalle zischen Dampfwolken, Elfen rennen im Zickzack umher, und Ober-Elf Barnaby stürzt mit rußgeschwärztem Gesicht auf euch zu: *'Endlich Verstärkung! Die Haupt-Dampfleitung pfeift aus dem letzten Loch, weil das primäre Getriebe blockiert ist. Wir müssen den optimalen Betriebsdruck einstellen, sonst fliegt uns hier alles um die Ohren!'*",
         "question": "Kalibriere die Hauptventile. Finde den exakten Druckpunkt, bei dem der Systemdruck (Ventil A mal Ventil B) genau 72 Bar erreicht.",
-        "answer": 6,  # 12er Rad Logik oder 8x9 etc., hier als Ventil-Balance gelöst
+        "answer": 6,
         "puzzle_piece": None,
-        "hint": "Barnaby murmelt etwas von einer Zielzahl von 72 und einem Hauptventil, das auf 12 voreingestellt ist. Wie oft muss es greifen?"
+        "hint": "Barnaby murmelt etwas von einer Zielzahl von 72 und einem Hauptventil, das auf 12 voreingestellt ist."
     },
     14: {
         "person": "Paket-Roboter R-04",
@@ -232,44 +232,44 @@ DOORS = {
         "question": "Sortiere die ankommenden Pakete korrekt nach ihren Vorgaben, um das Band zu entlasten.",
         "answer": "COMPLETED",
         "puzzle_piece": None,
-        "hint": "Beachte die Prioritäts-Anzeigen der drei Test-Pakete auf dem Bildschirm."
+        "hint": "Beachte die Prioritäts-Anzeigen der Test-Pakete auf dem Bildschirm."
     },
     15: {
-        "person": "Person C",
-        "title": "Tag 15: Wunschzettel-Priorisierung 📜",
+        "person": "Die Wolfmatze",
+        "title": "Tag 15: Das Rätsel der eisigen Wolfmatze 🐺",
         "type": "text",
-        "story": "Die Wunschzettel-Maschine spuckt Millionen Briefe ungeordnet aus. Berechne den Median für die Sortierreihenfolge.",
-        "question": "Bestimme den Median der Zahlenreihe: 12, 45, 7, 23, 89, 34, 19",
-        "answer": "23",
+        "story": "Ihr dringt tiefer in die Werkstatt vor, direkt in die alte Maschinen-Halle der 'Wolfmatze' – einem riesigen, unheimlichen Kontrollturm, dessen Wände von frostigen Metall-Reliefs geformt sind. Plötzlich schnappt eine schwere Gittertür hinter euch zu! Eine mechanische, heulende Stimme dröhnt aus den Lautsprechern: *'Wer die Geheimnisse der Werkstatt ergründen will, muss den Code der Wölfe brechen.'* Vor euch blinken drei kryptische Inschriften.",
+        "question": "Löse das Symbol-Rätsel der Wolfmatze:\n1. Ein Wolf hat 4 Pfoten und 2 Ohren ($4+2=6$).\n2. Das Alter des Alpha-Wolfs entspricht dem doppelten Produkt aus der Anzahl der Reißzähne im Oberkiefer (6) und der Rudelführer-Stufe (3). \nBerechne die Endzahl: ($6 \\times 3 \\times 2$).",
+        "answer": "36",
         "puzzle_piece": None,
-        "hint": "Sortiere die Zahlen aufsteigend: 7, 12, 19, [23], 34, 45, 89."
+        "hint": "Multipliziere die Reißzähne (6) mit der Stufe (3) und verdopple das Ergebnis."
     },
     16: {
-        "person": "Person A",
-        "title": "Tag 16: Der Notstrom-Ausfall ⚡",
+        "person": "Chef-Elf Barnaby",
+        "title": "Tag 16: Der Starkstrom-Notfallkeller ⚡",
         "type": "binary_switches",
-        "story": "Plötzlich – *Zappenduster!* Der Hauptstrom ist ausgefallen. Ihr müsst im Notfall-Keller die Schalter für die Dezimalzahl 25 einrasten.",
-        "question": "Aktiviere die passenden Starkstrom-Relais (16 + 8 + 1).",
-        "answer": [True, True, False, False, True],
+        "story": "Mit dem Code der Wolfmatze öffnet sich eine versteckte Bodenklappe. Ihr klettert in den feuchten, eisigen Notfallkeller der Werkstatt. Die Hauptsicherungen sind durchgebrannt, und die Kontroll-Displays flackern bedrohlich. Barnaby funkt über das Kommandogerät: *'Hört ihr mich?! Ihr müsst die Starkstrom-Relais manuell in die richtige Lasten-Konfiguration bringen. Wenn ihr falsch schaltet, explodiert der Trafo!'*",
+        "question": "Bringe die 5 Starkstrom-Relais in die exakte Konfiguration, um die Ziel-Last von exakt 21 zu erzeugen (Schalterwerte: 16, 8, 4, 2, 1).",
+        "answer": [True, False, True, False, True],
         "puzzle_piece": None,
-        "hint": "Schalter 1 (16), 2 (8) und 5 (1) auf AN stellen."
+        "hint": "Welche Kombination aus den Werten 16, 8, 4, 2 und 1 addiert sich genau zu 21? (16 + 4 + 1)"
     },
     17: {
-        "person": "Person B",
-        "title": "Tag 17: Polarlichter-Frequenz 📻",
+        "person": "Kontrollturm Alpha",
+        "title": "Tag 17: Die doppelten Polarlichter-Frequenzen 📻",
         "type": "frequency_tuner",
-        "story": "Kaum läuft der Strom wieder, bricht der Funkkontakt ab, weil Polarlichter das Funksignal stören.",
-        "question": "Richte das Frequenz-Widget auf exakt 87.5 MHz aus.",
-        "answer": 87.5,
+        "story": "Der Strom ist zurück, aber das Hauptfunkgerät blockiert. Die Polarlichter verursachen eine komplexe Interferenz. Um das Signal zu befreien, müsst ihr an zwei verschiedenen Reaktoren-Konsolen (Reaktor A und Reaktor B) fehlerfreie Frequenzen einstellen, die mathematisch miteinander harmonieren, bevor der Hauptkanal freigeschaltet wird.",
+        "question": "Löse das Frequenz-Rätsel:\n- Konsole A benötigt die Quadratwurzel aus 6400 minus 12.\n- Konsole B benötigt das Ergebnis aus (Tag 15 Ergebnis: 36) geteilt durch 4, plus 70.\nStelle beide Frequenz-Regler exakt auf diese Werte ein.",
+        "answer": {"reaktor_a": 68.0, "reaktor_b": 79.0},
         "puzzle_piece": None,
-        "hint": "Schieberegler auf 87.5 MHz einstellen."
+        "hint": "Reaktor A: sqrt(6400) = 80 - 12 = 68. Reaktor B: (36 / 4) + 70 = 79."
     },
     18: {
         "person": "Person C",
         "title": "Tag 18: Die Sicherheitstür zum Hangar 🔐",
         "type": "text",
-        "story": "Um zum Hangar vorzudringen, verlangt das Sicherheitsschloss eine Verknüpfung vorheriger Daten.",
-        "question": "Rechne: (Zahnrad-Umdrehungen aus Tag 13: 6) × (Frequenz-Basis: 10) + (Median aus Tag 15: 23)",
+        "story": "Um zum Hangar vorzudringen, verlangt das Sicherheitsschloss eine Verknüpfung vorheriger Werkstatt-Daten.",
+        "question": "Rechne: (Ventil-Wert aus Tag 13: 6) × (Frequenz-Basis: 10) + (Median aus Tag 15: 23)",
         "answer": "83",
         "puzzle_piece": None,
         "hint": "6 * 10 + 23 = 83."
@@ -360,13 +360,15 @@ if "river" not in st.session_state:
         "goat": "left",
         "cabbage": "left"
     }
+
 if "package_sort_step" not in st.session_state:
     st.session_state.package_sort_step = 0
+
 # ==============================================================================
 # 4. KOPFZEILE & FORTSCHRITT
 # ==============================================================================
 st.title("🎄 Nordpol-Expedition 2026")
-st.caption("Das mathematisch-logische Advents-Abenteuer (Komplett-Version)")
+st.caption("Das mathematisch-logische Advents-Abenteuer (Anspruchsvolle Werkstatt-Edition)")
 
 col_prog, col_stats = st.columns([3, 1])
 with col_prog:
@@ -400,7 +402,7 @@ for i in range(1, 25):
 st.divider()
 
 # ==============================================================================
-# 6. RÄTSEL-FLÄCHE & DYNAMISCHES LAYOUT (Sidebar nur für Tag 5 bis 12)
+# 6. RÄTSEL-FLÄCHE & DYNAMISCHES LAYOUT
 # ==============================================================================
 show_sidebar = 5 <= st.session_state.active_day <= 12
 
@@ -431,7 +433,7 @@ with main_col:
                     st.session_state.solved_doors.append(day)
                     st.rerun()
             else:
-                st.error("❌ Falsch. Überprüfe die Zeilensumme 8 + ? + 6 = 15.")
+                st.error("❌ Falsch. Überprüfe die Zeilensumme.")
 
     # TAG 7: LOGIKGITTER
     elif door["type"] == "logic_grid":
@@ -469,7 +471,7 @@ with main_col:
             else:
                 st.error(f"❌ Falsches Signal ('{st.session_state.morse_buffer}'). Benötigt: ...---...")
 
-    # TAG 10: TRANSPORT-RÄTSEL (Mit Wolf, Ziege, Kohl auf Deutsch)
+    # TAG 10: TRANSPORT-RÄTSEL
     elif door["type"] == "river_crossing":
         st.write("🐺🐐🥬 **Fluss-Transport-Steuerung:**")
         r = st.session_state.river
@@ -488,7 +490,6 @@ with main_col:
                 if item_to_move != "Niemand (leer fahren)":
                     r[item_to_move] = target
                 
-                # Fress-Regeln
                 if r["wolf"] == r["goat"] and r["boat"] != r["wolf"]:
                     st.error("💀 Der Wolf hat die Ziege gefressen! Zurückgesetzt.")
                     st.session_state.river = {"boat": "left", "wolf": "left", "goat": "left", "cabbage": "left"}
@@ -530,7 +531,7 @@ with main_col:
         else:
             st.warning("🔴 Strahl wird noch falsch reflektiert.")
 
-    # TAG 13: GETRIEBE- / VENTIL-KALIBRIERUNG (Neu gestaltet)
+    # TAG 13: GETRIEBE- / VENTIL-KALIBRIERUNG
     elif door["type"] == "gear_puzzle":
         st.write("⚙️ **Ventil-Steuerung:** Justiere Ventil A und Ventil B so, dass der Zieldruck von 72 Bar erreicht wird.")
         v_a = st.slider("Ventil A (Hauptfaktor)", 1, 12, 4, key="v_a_slider")
@@ -547,7 +548,7 @@ with main_col:
             else:
                 st.error(f"❌ Druck inkorrekt ({current_pressure} Bar). Benötigt werden exakt 72 Bar!")
 
-    # TAG 14: INTERAKTIVES PAKET-SORTIER-MINISPIEL (Neu gestaltet)
+    # TAG 14: PAKET-SORTIER-MINISPIEL
     elif door["type"] == "package_sort":
         st.write("📦 **Paket-Sortier-Station:** Lenke die ankommenden Pakete in die richtige Rutsche!")
         
@@ -578,7 +579,7 @@ with main_col:
                         st.rerun()
                     else:
                         st.error("Falsche Rutsche! Das Paket verkeilt sich.")
-            st.caption(gelöste_schritte := f"Fortschritt: {current_s} / {len(steps)} Pakete fehlerfrei sortiert")
+            st.caption(f"Fortschritt: {current_s} / {len(steps)} Pakete fehlerfrei sortiert")
         else:
             st.success("🎉 Alle Pakete erfolgreich sortiert! Das System ist wieder frei.")
             if day not in st.session_state.solved_doors:
@@ -588,66 +589,51 @@ with main_col:
                 st.session_state.package_sort_step = 0
                 st.rerun()
 
-    # TAG 16: BINÄR-SCHALTER
+    # TAG 16: STARKSTROM-SCHALTER (Anspruchsvollere Relais-Schaltung)
     elif door["type"] == "binary_switches":
+        st.write("⚡ **Starkstrom-Relais-Konsole:** Aktiviere die passenden Relais, um die exakte Ziel-Last von 21 zu erzeugen.")
         b1, b2, b3, b4, b5 = st.columns(5)
-        s1 = b1.checkbox("Schalter 1 (16)", key="cb1")
-        s2 = b2.checkbox("Schalter 2 (8)", key="cb2")
-        s3 = b3.checkbox("Schalter 3 (4)", key="cb3")
-        s4 = b4.checkbox("Schalter 4 (2)", key="cb4")
-        s5 = b5.checkbox("Schalter 5 (1)", key="cb5")
+        s1 = b1.checkbox("Relais 1 (16)", key="cb1")
+        s2 = b2.checkbox("Relais 2 (8)", key="cb2")
+        s3 = b3.checkbox("Relais 3 (4)", key="cb3")
+        s4 = b4.checkbox("Relais 4 (2)", key="cb4")
+        s5 = b5.checkbox("Relais 5 (1)", key="cb5")
+        
+        current_sum = (16 if s1 else 0) + (8 if s2 else 0) + (4 if s3 else 0) + (2 if s4 else 0) + (1 if s5 else 0)
+        st.metric("Aktuelle Gesamtlast", f"{current_sum}", delta=f"Ziel: 21 (Abweichung: {current_sum - 21})")
+        
         if st.button("Schaltkreis aktivieren ⚡", key=f"chk_{day}"):
             if [s1, s2, s3, s4, s5] == door["answer"]:
-                st.success("🎉 Stromkreis aktiv! Das Licht flackert und brennt hell.")
+                st.success("🎉 Hauptsicherung aktiviert! Der Keller leuchtet wieder auf.")
                 if day not in st.session_state.solved_doors:
                     st.session_state.solved_doors.append(day)
                     st.rerun()
             else:
-                st.error("❌ Falsche Schaltung für Dezimalzahl 25.")
+                st.error(f"❌ Falsche Gesamtlast ({current_sum}). Benötigt wird eine Last von exakt 21!")
 
-    # TAG 17 & 20: FREQUENZ / WAGE
+    # TAG 17: DOPPELTER FREQUENZ-REGLER (Anspruchsvolleres Frequenz-Rätsel)
     elif door["type"] == "frequency_tuner":
-        freq = st.slider("📻 Empfänger (MHz):", 80.0, 100.0, 92.0, step=0.5, key="freq_slider")
-        if st.button("Signal-Frequenz feststellen 📡", key=f"chk_{day}"):
-            if abs(freq - door["answer"]) < 0.1:
-                st.success("🎉 Glasklarer Empfang mit dem Kontrollturm!")
+        st.write("📻 **Dual-Reaktor Frequenz-Kompensation:** Stelle beide Reaktoren auf ihre jeweiligen Ziel-MHz-Werte ein.")
+        col_f1, col_f2 = st.columns(2)
+        with col_f1:
+            freq_a = st.slider("Reaktor A (MHz)", 50.0, 100.0, 60.0, step=0.5, key="freq_slider_a")
+        with col_f2:
+            freq_b = st.slider("Reaktor B (MHz)", 50.0, 100.0, 60.0, step=0.5, key="freq_slider_b")
+            
+        st.markdown(f"**Eingestellt:** Reaktor A: `{freq_a} MHz` | Reaktor B: `{freq_b} MHz`")
+        
+        if st.button("Frequenzen synchronisieren 📡", key=f"chk_{day}"):
+            if abs(freq_a - 68.0) < 0.1 and abs(freq_b - 79.0) < 0.1:
+                st.success("🎉 Harmonie erreicht! Das Funksignal bricht glasklar durch die Polarlichter.")
                 if day not in st.session_state.solved_doors:
                     st.session_state.solved_doors.append(day)
                     st.rerun()
             else:
-                st.error("❌ Nur Rauschen im Äther.")
+                st.error("❌ Die Resonanz stimmt nicht überein. Überprüfe die mathematischen Hinweise im Text!")
 
-    elif door["type"] == "scale_puzzle":
-        w_hafer = st.slider("🌾 Hafer (kg)", 0, 50, 20, key="w_h")
-        w_staub = st.slider("✨ Sternenstaub (kg)", 0, 50, 5, key="w_s")
-        w_aepfel = st.slider("🍎 Äpfel (kg)", 0, 50, 10, key="w_a")
-        if st.button("Futter-Mischung wiegen ⚖️", key=f"chk_{day}"):
-            if w_hafer == 25 and w_staub == 10 and w_aepfel == 15:
-                st.success("🎉 Perfektes Futter-Verhältnis!")
-                if day not in st.session_state.solved_doors:
-                    st.session_state.solved_doors.append(day)
-                    st.rerun()
-            else:
-                st.error("❌ Falsches Mischungsverhältnis.")
-
-    elif door["type"] == "lock_sliders":
-        c1, c2, c3, c4 = st.columns(4)
-        v1 = c1.number_input("Stelle 1", 0, 9, 0, key=f"n1_{day}")
-        v2 = c2.number_input("Stelle 2", 0, 9, 0, key=f"n2_{day}")
-        v3 = c3.number_input("Stelle 3", 0, 9, 0, key=f"n3_{day}")
-        v4 = c4.number_input("Stelle 4", 0, 9, 0, key=f"n4_{day}")
-        if st.button("Schloss prüfen 🗝️", key=f"chk_{day}"):
-            if [int(v1), int(v2), int(v3), int(v4)] == door["answer"]:
-                st.success("🎉 Schloss geöffnet!")
-                if day not in st.session_state.solved_doors:
-                    st.session_state.solved_doors.append(day)
-                    st.rerun()
-            else:
-                st.error("❌ Falscher Code.")
-
-    # STANDARD-TEXT ODER SPEZIAL-TEXT FÜR AKT 3 & 4
+    # STANDARD-TEXT ODER ANDERE TAGE
     else:
-        if door["type"] not in ["sudoku_puzzle", "logic_grid", "morse_terminal", "river_crossing", "mirror_puzzle", "gear_puzzle", "binary_switches", "frequency_tuner", "scale_puzzle", "lock_sliders"]:
+        if door["type"] not in ["sudoku_puzzle", "logic_grid", "morse_terminal", "river_crossing", "mirror_puzzle", "gear_puzzle", "package_sort", "binary_switches", "frequency_tuner"]:
             ans = st.text_input("Deine Lösung:", key=f"input_{day}")
             if st.button("Prüfen 🔍", key=f"chk_{day}"):
                 user_clean = ans.strip().replace(" ", "").upper()
