@@ -385,10 +385,14 @@ for i in range(1, 25):
 st.divider()
 
 # ==============================================================================
-# 6. RÄTSEL-FLÄCHE & FRAGMENT-SAMMLUNG (Nur Tag 5-12 in Sidebar)
+# 6. RÄTSEL-FLÄCHE & DYNAMISCHES LAYOUT (Sidebar nur für Tag 5 bis 12)
 # ==============================================================================
 show_sidebar = 5 <= st.session_state.active_day <= 12
-main_col, puzzle_col = st.columns([2, 1] if show_sidebar else [1, 0])
+
+if show_sidebar:
+    main_col, puzzle_col = st.columns([2, 1])
+else:
+    main_col = st.container()
 
 with main_col:
     day = st.session_state.active_day
