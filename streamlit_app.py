@@ -233,7 +233,7 @@ DOORS = {
         "answer": "COMPLETED",
         "puzzle_piece": None,
         "hint": "Beachte die Prioritäts-Anzeigen der drei Test-Pakete auf dem Bildschirm."
-    },,
+    },
     15: {
         "person": "Person C",
         "title": "Tag 15: Wunschzettel-Priorisierung 📜",
