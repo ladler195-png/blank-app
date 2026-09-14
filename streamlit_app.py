@@ -14,6 +14,10 @@ if "solved_doors" not in st.session_state:
 if "quiz_step" not in st.session_state:
     st.session_state.quiz_step = 1
 
+# Navigation State: Entweder "overview" oder eine Türchen-Nummer (1-21)
+if "current_view" not in st.session_state:
+    st.session_state.current_view = "overview"
+
 # --- DATENBANK: ALLE TÜRICHEN VON 1 BIS 21 ---
 DOORS = {
     # --- AKT 1: ZUHAUSE & AUFTAKT (1-4) ---
@@ -193,7 +197,7 @@ DOORS = {
         "hint": "Es war im Dezember des Jahres 191... (1)."
     },
     20: {
-        "title": "Tag 20: Der magische Polar-Kristall",
+        "title": "Tag 20: Das magische Polar-Kristall",
         "type": "text",
         "story": "Im Tresor findet ihr den rohen Polar-Kristall. Um ihn aufzuladen, muss ein Laserstrahl durch ein geometrisches System gelenkt werden.",
         "question": "Wie viel Grad beträgt die Winkelsumme in einem klassischen Dreieck?",
@@ -212,123 +216,158 @@ DOORS = {
     }
 }
 
-# --- HAUPTUI & DESIGN ---
-st.title("🎄 Weihnachtlicher Rätsel-Adventskalender")
-st.markdown("### Mission: Weihnachten retten 🎅✨")
-st.markdown("---")
+# --- ANSICHT 1: DIE HAUPTSEITE / TÜRCHEN-ÜBERSICHT ---
+if st.session_state.current_view == "overview":
+    st.title("🎄 Weihnachtlicher Rätsel-Adventskalender")
+    st.markdown("### Mission: Weihnachten retten 🎅✨")
+    st.write("Wähle ein Türchen aus, um die Aufgabe zu starten. Türchen, die nacheinander freigeschaltet werden oder bereits gelöst sind, siehst du hier auf einen Blick.")
+    
+    # Fortschrittsleiste oben
+    solved_count = len(st.session_state.solved_doors)
+    total_count = len(DOORS)
+    st.markdown(f"**Gesamtfortschritt:** {solved_count} von {total_count} Türchen gelöst")
+    st.progress(solved_count / total_count)
+    st.markdown("---")
 
-# Sidebar für die Navigation & visuelle Darstellung der gelösten Türchen
-st.sidebar.markdown("### 🚪 Türchen-Übersicht")
-day = st.sidebar.selectbox("Wähle ein Türchen:", list(DOORS.keys()))
+    # Raster-Layout für die Türchen (jeweils 4 Spalten pro Zeile)
+    door_keys = list(DOORS.keys())
+    for i in range(0, len(door_keys), 4):
+        cols = st.columns(4)
+        for j in range(4):
+            if i + j < len(door_keys):
+                d_num = door_keys[i + j]
+                d_info = DOORS[d_num]
+                
+                # Prüfen, ob das Türchen gelöst ist
+                is_solved = d_num in st.session_state.solved_doors
+                
+                # Logik: Tag 1 ist immer offen. Tag X ist offen, wenn Tag X-1 gelöst wurde. (Oder alle frei zum Testen – hier sequenziell gesperrt, außer man hat den Vorgänger gelöst)
+                is_unlocked = (d_num == 1) or ((d_num - 1) in st.session_state.solved_doors) or is_solved
 
-# Visuelle Statusanzeige in der Sidebar
-st.sidebar.markdown("---")
-st.sidebar.markdown(f"**Fortschritt:** {len(st.session_state.solved_doors)} von {len(DOORS)} gelöst")
-st.sidebar.progress(len(st.session_state.solved_doors) / len(DOORS))
+                with cols[j]:
+                    if is_solved:
+                        button_label = f"✅ Tag {d_num}"
+                    elif is_unlocked:
+                        button_label = f"🔓 Tag {d_num}"
+                    else:
+                        button_label = f"🔒 Tag {d_num}"
 
-door = DOORS[day]
+                    # Klick auf das Türchen
+                    if st.button(button_label, use_container_width=True, disabled=not is_unlocked):
+                        st.session_state.current_view = d_num
+                        st.rerun()
 
-# Hauptbereich
-st.header(door["title"])
-st.info(door["story"])
-st.markdown("---")
-
-# Überprüfen, ob das Türchen bereits gelöst wurde
-if day in st.session_state.solved_doors:
-    st.success("✅ Dieses Türchen wurde bereits erfolgreich gelöst!")
-    if door["puzzle_piece"]:
-        st.markdown(f"**Gesammeltes Element:** {door['puzzle_piece']}")
+# --- ANSICHT 2: DETAIL-ANSICHT EINES TÜRICHENS ---
 else:
-    st.subheader("❓ Aufgabe:")
-    st.write(door["question"])
+    day = st.session_state.current_view
+    door = DOORS[day]
 
-    # 1. SPEZIAL-QUIZ FÜR TAG 3 (RENTIER-EXPERTE)
-    if door["type"] == "reindeer_quiz":
-        st.write(f"**Experten-Frage {st.session_state.quiz_step} von 5**")
-        
-        step = st.session_state.quiz_step
-        if step == 1:
-            q1 = st.text_input("F1: Welche Farbe nimmt das Tapetum lucidum im Rentierauge im Winter an (Gold zu...)?", key="rq1")
-            if st.button("Antwort 1 senden"):
-                if "BLAU" in q1.upper():
-                    st.session_state.quiz_step = 2
-                    st.rerun()
-                else:
-                    st.error("❌ Falsch. Denk an das Spektrum der Polarlichter.")
-        elif step == 2:
-            q2 = st.text_input("F2: Welches Geschlecht behält im Winter sein Geweih?", key="rq2")
-            if st.button("Antwort 2 senden"):
-                if any(w in q2.upper() for w in ["KUH", "WEIBLICH", "MÜTTER", "WEIBCHEN"]):
-                    st.session_state.quiz_step = 3
-                    st.rerun()
-                else:
-                    st.error("❌ Falsch.")
-        elif step == 3:
-            q3 = st.text_input("F3: Wie lautet der wissenschaftliche Artname auf Latein?", key="rq3")
-            if st.button("Antwort 3 senden"):
-                if "TARANDUS" in q3.upper():
-                    st.session_state.quiz_step = 4
-                    st.rerun()
-                else:
-                    st.error("❌ Falsch.")
-        elif step == 4:
-            q4 = st.text_input("F4: In welchem Jahr erschien das klassische Rentier-Gedicht erstmals?", key="rq4")
-            if st.button("Antwort 4 senden"):
-                if "1823" in q4:
-                    st.session_state.quiz_step = 5
-                    st.rerun()
-                else:
-                    st.error("❌ Falsch.")
-        elif step == 5:
-            q5 = st.text_input("F5: Wie viele Rentiere zogen den Schlitten im Original ohne Rudolph?", key="rq5")
-            if st.button("Finale Antwort senden"):
-                if "8" in q5 or "ACHT" in q5.upper():
-                    st.success("🎉 Rentiere überzeugt! Das Rätsel ist geschafft.")
-                    st.session_state.solved_doors.append(day)
-                    st.session_state.quiz_step = 1
-                    st.rerun()
-                else:
-                    st.error("❌ Falsch.")
+    # Zurück-Button zur Hauptseite
+    if st.button("⬅️ Zurück zur Türchen-Übersicht"):
+        st.session_state.current_view = "overview"
+        st.rerun()
 
-    # 2. SPEZIAL-SUDOKU FÜR TAG 6
-    elif door["type"] == "sudoku_puzzle":
-        st.markdown("""
-        | Raster | Spalte 1 | Spalte 2 | Spalte 3 | Spalte 4 |
-        | :---: | :---: | :---: | :---: | :---: |
-        | **Z1** | **1**    | *[ ? ]*  | 3        | 4        |
-        | **Z2** | 3        | 4        | *[ ? ]*  | 2        |
-        | **Z3** | *[ ? ]*  | 2        | 1        | 3        |
-        | **Z4** | 4        | 1        | 2        | *[ ? ]*  |
-        """)
-        c1, c2, c3, c4 = st.columns(4)
-        v1 = c1.text_input("Feld 1 (Z1S2)", max_chars=1)
-        v2 = c2.text_input("Feld 2 (Z2S3)", max_chars=1)
-        v3 = c3.text_input("Feld 3 (Z3S1)", max_chars=1)
-        v4 = c4.text_input("Feld 4 (Z4S4)", max_chars=1)
+    st.markdown("---")
+    st.header(door["title"])
+    st.info(door["story"])
+    st.markdown("---")
 
-        if st.button("Sudoku überprüfen"):
-            if v1.strip() == "2" and v2.strip() == "1" and v3.strip() == "4" and v4.strip() == "3":
-                st.success("✨ Sudoku korrekt gelöst! Fragment erhalten.")
-                if door["puzzle_piece"]:
-                    st.info(f"**Erhaltenes Element:** {door['puzzle_piece']}")
-                st.session_state.solved_doors.append(day)
-                st.rerun()
-            else:
-                st.error("❌ Fehler im Raster. Prüfe Zeilen und Spalten!")
-
-    # 3. STANDARD-TEXT-EINGABE FÜR ALLE ANDEREN TAGE
+    # Überprüfen, ob das Türchen bereits gelöst wurde
+    if day in st.session_state.solved_doors:
+        st.success("✅ Dieses Türchen wurde bereits erfolgreich gelöst!")
+        if door["puzzle_piece"]:
+            st.markdown(f"**Gesammeltes Element:** {door['puzzle_piece']}")
     else:
-        user_input = st.text_input("Deine Lösung:", key=f"input_{day}")
-        if st.button("Antwort einreichen 🚀", key=f"btn_{day}"):
-            if user_input.strip().upper() == door["answer"].upper():
-                st.success("🎉 Richtig! Das Rätsel ist gelöst.")
-                if door["puzzle_piece"]:
-                    st.info(f"**Erhaltenes Element:** {door['puzzle_piece']}")
-                st.session_state.solved_doors.append(day)
-                st.rerun()
-            else:
-                st.error("❌ Das ist leider nicht korrekt. Probiere es noch einmal!")
+        st.subheader("❓ Aufgabe:")
+        st.write(door["question"])
 
-    # Hinweis-Expander
-    with st.expander("💡 Einen Hinweis anzeigen"):
-        st.write(door["hint"])
+        # 1. SPEZIAL-QUIZ FÜR TAG 3 (RENTIER-EXPERTE)
+        if door["type"] == "reindeer_quiz":
+            st.write(f"**Experten-Frage {st.session_state.quiz_step} von 5**")
+            
+            step = st.session_state.quiz_step
+            if step == 1:
+                q1 = st.text_input("F1: Welche Farbe nimmt das Tapetum lucidum im Rentierauge im Winter an (Gold zu...)?", key="rq1")
+                if st.button("Antwort 1 senden"):
+                    if "BLAU" in q1.upper():
+                        st.session_state.quiz_step = 2
+                        st.rerun()
+                    else:
+                        st.error("❌ Falsch. Denk an das Spektrum der Polarlichter.")
+            elif step == 2:
+                q2 = st.text_input("F2: Welches Geschlecht behält im Winter sein Geweih?", key="rq2")
+                if st.button("Antwort 2 senden"):
+                    if any(w in q2.upper() for w in ["KUH", "WEIBLICH", "MÜTTER", "WEIBCHEN"]):
+                        st.session_state.quiz_step = 3
+                        st.rerun()
+                    else:
+                        st.error("❌ Falsch.")
+            elif step == 3:
+                q3 = st.text_input("F3: Wie lautet der wissenschaftliche Artname auf Latein?", key="rq3")
+                if st.button("Antwort 3 senden"):
+                    if "TARANDUS" in q3.upper():
+                        st.session_state.quiz_step = 4
+                        st.rerun()
+                    else:
+                        st.error("❌ Falsch.")
+            elif step == 4:
+                q4 = st.text_input("F4: In welchem Jahr erschien das klassische Rentier-Gedicht erstmals?", key="rq4")
+                if st.button("Antwort 4 senden"):
+                    if "1823" in q4:
+                        st.session_state.quiz_step = 5
+                        st.rerun()
+                    else:
+                        st.error("❌ Falsch.")
+            elif step == 5:
+                q5 = st.text_input("F5: Wie viele Rentiere zogen den Schlitten im Original ohne Rudolph?", key="rq5")
+                if st.button("Finale Antwort senden"):
+                    if "8" in q5 or "ACHT" in q5.upper():
+                        st.success("🎉 Rentiere überzeugt! Das Rätsel ist geschafft.")
+                        st.session_state.solved_doors.append(day)
+                        st.session_state.quiz_step = 1
+                        st.rerun()
+                    else:
+                        st.error("❌ Falsch.")
+
+        # 2. SPEZIAL-SUDOKU FÜR TAG 6
+        elif door["type"] == "sudoku_puzzle":
+            st.markdown("""
+            | Raster | Spalte 1 | Spalte 2 | Spalte 3 | Spalte 4 |
+            | :---: | :---: | :---: | :---: | :---: |
+            | **Z1** | **1**    | *[ ? ]*  | 3        | 4        |
+            | **Z2** | 3        | 4        | *[ ? ]*  | 2        |
+            | **Z3** | *[ ? ]*  | 2        | 1        | 3        |
+            | **Z4** | 4        | 1        | 2        | *[ ? ]*  |
+            """)
+            c1, c2, c3, c4 = st.columns(4)
+            v1 = c1.text_input("Feld 1 (Z1S2)", max_chars=1)
+            v2 = c2.text_input("Feld 2 (Z2S3)", max_chars=1)
+            v3 = c3.text_input("Feld 3 (Z3S1)", max_chars=1)
+            v4 = c4.text_input("Feld 4 (Z4S4)", max_chars=1)
+
+            if st.button("Sudoku überprüfen"):
+                if v1.strip() == "2" and v2.strip() == "1" and v3.strip() == "4" and v4.strip() == "3":
+                    st.success("✨ Sudoku korrekt gelöst! Fragment erhalten.")
+                    if door["puzzle_piece"]:
+                        st.info(f"**Erhaltenes Element:** {door['puzzle_piece']}")
+                    st.session_state.solved_doors.append(day)
+                    st.rerun()
+                else:
+                    st.error("❌ Fehler im Raster. Prüfe Zeilen und Spalten!")
+
+        # 3. STANDARD-TEXT-EINGABE FÜR ALLE ANDEREN TAGE
+        else:
+            user_input = st.text_input("Deine Lösung:", key=f"input_{day}")
+            if st.button("Antwort einreichen 🚀", key=f"btn_{day}"):
+                if user_input.strip().upper() == door["answer"].upper():
+                    st.success("🎉 Richtig! Das Rätsel ist gelöst.")
+                    if door["puzzle_piece"]:
+                        st.info(f"**Erhaltenes Element:** {door['puzzle_piece']}")
+                    st.session_state.solved_doors.append(day)
+                    st.rerun()
+                else:
+                    st.error("❌ Das ist leider nicht korrekt. Probiere es noch einmal!")
+
+        # Hinweis-Expander
+        with st.expander("💡 Einen Hinweis anzeigen"):
+            st.write(door["hint"])
