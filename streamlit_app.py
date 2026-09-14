@@ -101,25 +101,25 @@ DOORS = {
     },
     3: {
         "person": "Person C",
-        "title": "Tag 3: Konsole des Schlittens",
+        "title": "Tag 3: Das Rentier-Experten-Quiz",
         "type": "text",
         "image": None,
-        "story": "Die Armaturen des Elfen-Schlittens müssen synchronisiert werden.",
-        "question": "Berechne die Frequenz: (8 Rentiere) × (Code Tag 1: 63) - 4",
-        "answer": "500",
+        "story": "Ihr sprecht das magische Wort „NORD“ laut aus. Plötzlich erfüllt ein feines Glockenklingeln den Raum. Ihr tretet ans Fenster – draußen steht ein prachtvoller Elfen-Schlitten! Ihr klettert hinein, aber das Armaturenbrett verlangt einen Beweis, dass ihr echte Rentier-Kenner seid.",
+        "question": "Finde den 3-stelligen Zündcode über drei Rentier-Fakten:\n1. Wie viele Mägen haben Rentiere (als Wiederkäuer)?\n2. Wie viele Buchstaben hat die Farbe von Rudolphs Nase ('Rot')?\n3. Wie viele Geschlechter tragen bei Rentieren im Winter ein Geweih (Männlich & Weiblich = ?)?\n(Schreibe die Ziffern direkt hintereinander als 3-stelligen Code, z.B. X-Y-Z).",
+        "answer": "432",
         "puzzle_piece": None,
-        "hint": "8 * 63 - 4 = 500"
+        "hint": "1. Rentiere haben 4 Mägen. 2. 'ROT' hat 3 Buchstaben. 3. Beide Geschlechter (2) tragen im Winter ein Geweih. Code: 432."
     },
     4: {
         "person": "Person A",
-        "title": "Tag 4: Sternenkarte",
+        "title": "Tag 4: Das Navigationssystem & die Koordinaten",
         "type": "text",
         "image": None,
-        "story": "Das Navigationssystem fordert die Eingabe des Kurses.",
-        "question": "Addiere alle Primzahlen zwischen 10 und 25 (11, 13, 17, 19, 23).",
-        "answer": "83",
+        "story": "Der Schlitten brummt startklar! Ihr nehmt Platz, aber das Navigationssystem zeigt eine Fehlermeldung: „Kurs unbekannt. Bitte Koordinaten eingeben.“",
+        "question": "Berechne den 5-stelligen Code aus Breit- und Längengrad:\n- Breitengrad: Nimm die 90 Grad des Nordpols minus die Anzahl der Rentiere (9).\n- Längengrad: Nimm die Quersumme des Jahres 2026 (2+0+2+6 = 10) mal 10.\n(Schreibe beide Zahlen ohne Leerzeichen zusammen, z.B. 81100).",
+        "answer": "81100",
         "puzzle_piece": None,
-        "hint": "11 + 13 + 17 + 19 + 23 = 83"
+        "hint": "Breitengrad: 90 - 9 = 81. Längengrad: (2+0+2+6) * 10 = 100. Zusammengefügt: 81100."
     },
     # --- START NEBEL-LABYRINTH (Tage 5 - 11 sammeln 6 Puzzleteile) ---
     5: {
