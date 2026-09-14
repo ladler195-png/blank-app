@@ -87,7 +87,7 @@ DOORS = {
         \n\n> *„Vier kleine Ziffern im winterlichen Schnee,
         \n> hör gut zu, was ich dir steh:\n> Nimm die Ecken eines weisen Weihnachtssterns,
         \n> plus die treuen Rentiere des Nordpols fern.
-        \n> Multipliziere das Ganze mit zwei,\n> dann ist die erste Hürde vorbei.“*",
+        \n> Multipliziere das Ganze mit zwei,\n> dann ist die erste Hürde vorbei.“*"",
         "answer": [0, 0, 2, 6],
         "puzzle_piece": None,
         "hint": "Ein Weihnachtsstern hat 5 Ecken. Es gibt 8 Rentiere. Rechne (5 + 8) * 2 "
