@@ -68,7 +68,7 @@ DOORS = {
         "question": "Setze das Losungswort zusammen: Das Lösungswort von Tag 2 + das Ergebnis von Tag 4 (z. B. HALO10).",
         "answer": "NORD60",
         "hint": "Kombiniere den Begriff von Tag 2 (NORD) direkt mit der Zahl von Tag 4 (60)."
-    }
+    },
     # ------------------ AKT II: DAS NEBEL-LABYRINTH ------------------
     6: {
         "person": "Person C",
