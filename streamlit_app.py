@@ -408,7 +408,7 @@ with main_col:
     st.caption(f"Verantwortlich: **{door['person']}**")
     
     if door["image"]:
-        st.image(door["image"], use_column_width=True)
+        st.image(door["image"], use_container_width=True)
         
     st.info(f"📖 {door['story']}")
     st.markdown(f"**Aufgabe:** {door['question']}")
