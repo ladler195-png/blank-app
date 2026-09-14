@@ -2,7 +2,7 @@ import streamlit as st
 import streamlit.components.v1 as components
 
 # ==============================================================================
-# 1. SEITEN-KONFIGURATION & DUNKELGRÜNES DESIGN (CSS)
+# 1. SEITEN-KONFIGURATION & SIDEBAR-NAVIGATION (DUNKELGRÜNES DESIGN)
 # ==============================================================================
 st.set_page_config(
     page_title="Nordpol-Expedition",
@@ -85,10 +85,9 @@ components.html("""
 """, height=0)
 
 # ==============================================================================
-# 2. RÄTSEL-DATENBANK (AKT 1 BIS 4 - UPDATED HARDCORE EDITION)
+# 2. RÄTSEL-DATENBANK
 # ==============================================================================
 DOORS = {
-    # AKT 1: ZUHAUSE & AUFTAKT (1-4)
     1: {
         "person": "Person A",
         "title": "Tag 1: Die mysteriöse Holzbox",
@@ -129,8 +128,6 @@ DOORS = {
         "puzzle_piece": None,
         "hint": "90-10 = 80. Quersumme von 2026 (2+0+2+6 = 10) * 10 = 100. Zusammen: 80100."
     },
-    
-    # AKT 2: DAS LABYRINTH (5-12)
     5: {
         "person": "Person B",
         "title": "Tag 5: Das Nebel-Tor & Fragment 1",
@@ -211,8 +208,6 @@ DOORS = {
         "puzzle_piece": "🏆 GEWONNEN: Das Tor zur Werkstatt ist geöffnet!",
         "hint": "Die Buchstaben aus den Fragmenten (Tag 5 bis 11) ergeben hintereinander gelesen ein Wort rund um unsere Reise."
     },
-    
-    # AKT 3: DIE WERKSTATT-RETTUNG (13-21)
     13: {
         "person": "Chef-Elf Barnaby",
         "title": "Tag 13: Das synchrone Tri-Ventil-Netzwerk ⚙️",
@@ -303,8 +298,6 @@ DOORS = {
         "puzzle_piece": None,
         "hint": "A->B->C = 120 + 150 = 270. Express A->C = 240. Differenz: 270 - 240 = 30."
     },
-    
-    # AKT 4: DAS HARDCORE-FINALE (22-24)
     22: {
         "person": "System-Administrator R-01",
         "title": "Tag 22: Das verdeckte Easter-Egg (System-Override) 🕵️‍♂️",
@@ -343,9 +336,6 @@ DOORS = {
 if "solved_doors" not in st.session_state:
     st.session_state.solved_doors = []
 
-if "active_day" not in st.session_state:
-    st.session_state.active_day = 1
-
 if "mirror_state" not in st.session_state:
     st.session_state.mirror_state = ["\\", "/", "\\"]
 
@@ -361,54 +351,38 @@ if "river" not in st.session_state:
     }
 
 # ==============================================================================
-# 4. KOPFZEILE & FORTSCHRITT
+# 4. SIDEBAR NAVIGATION (VARIANTE 2)
 # ==============================================================================
-st.title("🎄 Nordpol-Expedition 2026 (Hardcore Edition)")
-st.caption("Das mathematisch-logische Advents-Abenteuer mit System-Override")
+st.sidebar.title("🎄 Nordpol-Expedition")
+st.sidebar.caption("Variante 2: Sidebar-Navigation")
 
-col_prog, col_stats = st.columns([3, 1])
-with col_prog:
-    progress = len(st.session_state.solved_doors) / 24
-    st.progress(progress)
-with col_stats:
-    st.write(f"**Gelöste Türchen:** {len(st.session_state.solved_doors)} / 24")
+# Fortschrittsanzeige in der Sidebar
+progress = len(st.session_state.solved_doors) / 24
+st.sidebar.progress(progress)
+st.sidebar.write(f"**Gelöste Türchen:** {len(st.session_state.solved_doors)} / 24")
+st.sidebar.divider()
 
-st.divider()
+# Selectbox oder Radio für die Türchenauswahl in der Sidebar
+day_options = [f"Tag {i} {'✅' if i in st.session_state.solved_doors else '🔒'}" for i in range(1, 25)]
+selected_option = st.sidebar.selectbox("Wähle ein Türchen:", day_options)
+day = int(selected_option.split(" ")[1])
 
-# ==============================================================================
-# 5. TÜRCHEN-GRID
-# ==============================================================================
-cols = st.columns(6)
-for i in range(1, 25):
-    col = cols[(i - 1) % 6]
-    
-    prefix = ""
-    if 5 <= i <= 12:
-        prefix = "🌀 "
-    elif 13 <= i <= 21:
-        prefix = "⚙️ "
-    elif 22 <= i <= 24:
-        prefix = "🔥 "
-        
-    label = f"🎁 {prefix}Tag {i}" if i in st.session_state.solved_doors else f"{prefix}Tag {i}"
-        
-    if col.button(label, key=f"btn_{i}"):
-        st.session_state.active_day = i
-
-st.divider()
+st.sidebar.divider()
+if st.sidebar.button("Fortschritt zurücksetzen 🔄"):
+    st.session_state.solved_doors = []
+    st.rerun()
 
 # ==============================================================================
-# 6. RÄTSEL-FLÄCHE & DYNAMISCHES LAYOUT
+# 5. HAUPTSEITE & RÄTSEL-AUSFÜHRUNG
 # ==============================================================================
-show_sidebar = 5 <= st.session_state.active_day <= 12
+show_sidebar_content = 5 <= day <= 12
 
-if show_sidebar:
+if show_sidebar_content:
     main_col, puzzle_col = st.columns([2, 1])
 else:
     main_col = st.container()
 
 with main_col:
-    day = st.session_state.active_day
     door = DOORS[day]
 
     st.subheader(f"{door['title']}")
@@ -418,8 +392,6 @@ with main_col:
     st.markdown(f"**Aufgabe:** {door['question']}")
 
     # --- SONDER-WIDGETS ---
-    
-    # TAG 6: SUDOKU
     if door["type"] == "sudoku_puzzle":
         s_input = st.text_input("Fehlende Zahl oben in der Mitte eintragen:", key="s_in")
         if st.button("Sudoku bestätigen 🔢", key=f"chk_{day}"):
@@ -431,7 +403,6 @@ with main_col:
             else:
                 st.error("❌ Falsch.")
 
-    # TAG 7: LOGIKGITTER
     elif door["type"] == "logic_grid":
         ans_lg = st.text_input("Deine Lösung (Weg):", key="lg_input")
         if st.button("Logikgitter auswerten 🗺️", key=f"chk_{day}"):
@@ -443,7 +414,6 @@ with main_col:
             else:
                 st.error("❌ Falsch.")
 
-    # TAG 8: MORSE-TERMINAL
     elif door["type"] == "morse_terminal":
         st.write("📻 **Interaktives Morse-Terminal:**")
         st.markdown(f"<div class='morse-screen'>{st.session_state.morse_buffer if st.session_state.morse_buffer else '--- SIGNAL BEREIT ---'}</div>", unsafe_allow_html=True)
@@ -466,7 +436,6 @@ with main_col:
             else:
                 st.error("❌ Falsches Signal.")
 
-    # TAG 10: TRANSPORT-RÄTSEL
     elif door["type"] == "river_crossing":
         st.write("🐺🐐🥬 **Fluss-Transport-Steuerung:**")
         r = st.session_state.river
@@ -498,7 +467,6 @@ with main_col:
                 st.session_state.solved_doors.append(day)
                 st.rerun()
 
-    # TAG 9: SPIEGEL-RÄTSEL
     elif door["type"] == "mirror_puzzle":
         st.write("🔦 **Laser-Spiegel-Ausrichtung:**")
         m_col1, m_col2, m_col3 = st.columns(3)
@@ -518,7 +486,6 @@ with main_col:
                     st.session_state.solved_doors.append(day)
                     st.rerun()
 
-    # TAG 13: TRI-VENTIL-GLEICHUNGSSYSTEM
     elif door["type"] == "gear_puzzle":
         st.write("⚙️ **Tri-Ventil-Konsolen:** Stelle die drei Ventile A, B und C exakt ein.")
         va = st.slider("Ventil A", 1, 30, 10, key="va_s")
@@ -539,7 +506,6 @@ with main_col:
             else:
                 st.error("❌ Die Bedingungen des Gleichungssystems sind noch nicht erfüllt.")
 
-    # TAG 14: LOGISTIK-CONSTRAINT-RÄTSEL
     elif door["type"] == "package_sort":
         st.write("📦 **Intelligentes Paket-Leitsystem:**")
         st.markdown("Basierend auf den Logik-Axiomen: Welche Rutsche (1 bis 4) gehört zu Paket **Delta**?")
@@ -553,7 +519,6 @@ with main_col:
             else:
                 st.error("❌ Falsche Zuordnung.")
 
-    # TAG 16: STARKSTROM-RELAY NETZWERK
     elif door["type"] == "binary_switches":
         st.write("⚡ **Notfall-Keller SPS-Schaltpult (Zielzahl: 48):**")
         b1, b2, b3, b4, b5, b6 = st.columns(6)
@@ -576,7 +541,6 @@ with main_col:
             else:
                 st.error(f"❌ Wert inkorrekt ({curr_val}). Benötigt: 48.")
 
-    # TAG 17: FREQUENZ-REGLER
     elif door["type"] == "frequency_tuner":
         st.write("📻 **Radio-Notkanal Resonanz-Tuner:**")
         fa = st.slider("Frequenz-Regler (MHz)", 50.0, 150.0, 70.0, step=0.5, key="fa_slide")
@@ -591,45 +555,6 @@ with main_col:
             else:
                 st.error("❌ Das Signal ist noch verrauscht. Überprüfe die Rechnungsformel im Text.")
 
-    # TAG 19: RENTIER-AUFSTELLUNGS-RASTER
-    elif door["type"] == "reindeer_puzzle":
-        st.write("🦌 **Rentier-Aufstellungs-Raster (3 Reihen à 2 Plätze):**")
-        st.markdown("Platziere die Rentiere in den 3 Reihen. Beachte die strengen Regeln (Prancer vor Dancer, Blitz und Donner dürfen nicht in derselben Reihe stehen).")
-        
-        r_list = ["Cupid (🏹)", "Dancer (💃)", "Prancer (⭐)", "Blitz (⚡)", "Donner (🌩️)"]
-        
-        st.markdown("---")
-        c_r1_l, c_r1_r = st.columns(2)
-        with c_r1_l:
-            st.info("🎯 Platz 1 (Reihe 1, links): **Comet (☄️)**")
-        with c_r1_r:
-            r1_right = st.selectbox("Platz 2 (Reihe 1, rechts)", r_list, key="r1_r")
-            
-        c_r2_l, c_r2_r = st.columns(2)
-        with c_r2_l:
-            r2_left = st.selectbox("Platz 3 (Reihe 2, links)", r_list, key="r2_l")
-        with c_r2_r:
-            r2_right = st.selectbox("Platz 4 (Reihe 2, rechts)", r_list, key="r2_r")
-            
-        c_r3_l, c_r3_r = st.columns(2)
-        with c_r3_l:
-            r3_left = st.selectbox("Platz 5 (Reihe 3, links)", r_list, key="r3_l")
-        with c_r3_r:
-            r3_right = st.selectbox("Platz 6 (Reihe 3, rechts)", r_list, key="r3_r")
-            
-        st.markdown("---")
-        ans_count = st.text_input("Wie viele valide Kombinationsmöglichkeiten gibt es insgesamt?", key="reindeer_count_ans")
-        
-        if st.button("Aufstellung verifizieren 🦌", key=f"chk_{day}"):
-            if ans_count.strip() == "12":
-                st.success("🎉 Perfekt! 12 valide Permutationen exakt errechnet. Barnaby gibt das Startsignal!")
-                if day not in st.session_state.solved_doors:
-                    st.session_state.solved_doors.append(day)
-                    st.rerun()
-            else:
-                st.error("❌ Die Anzahl der Kombinationen stimmt nicht ganz. Prüfe die Nachbarschafts- und Reihenregeln.")
-
-    # TAG 20: ALCHEMISTISCHE STERNENSTAUB-WAAGE
     elif door["type"] == "scale_puzzle":
         st.write("⚖️ **Alchemistische Präzisionswaage (Ziel: 75 kg):**")
         w_hafer = st.slider("Hafer (kg)", 0, 50, 10, key="wh")
@@ -648,7 +573,6 @@ with main_col:
             else:
                 st.error("❌ Die Mischungsbedingungen sind nicht erfüllt.")
 
-    # TAG 23: ZAHNRAD-GLEICHGEWICHT
     elif door["type"] == "gear_ratio_puzzle":
         st.write("⚙️ **Zahnrad-Übersetzungs-Konsole:**")
         factor = st.slider("Wähle den Übersetzungsfaktor", 1, 10, 1, key="gear_factor")
@@ -678,7 +602,6 @@ with main_col:
             else:
                 st.error("❌ Falsch.")
 
-    # STANDARD-TEXT ODER ANDERE TAGE
     else:
         if door["type"] not in ["sudoku_puzzle", "logic_grid", "morse_terminal", "river_crossing", "mirror_puzzle", "gear_puzzle", "package_sort", "binary_switches", "frequency_tuner", "scale_puzzle", "lock_sliders", "reindeer_puzzle", "gear_ratio_puzzle"]:
             ans = st.text_input("Deine Lösung:", key=f"input_{day}")
@@ -699,9 +622,9 @@ with main_col:
         st.write(door["hint"])
 
 # ==============================================================================
-# SEITENLEISTE (FRAGMENT-SAMMLUNG NUR FÜR TAG 5 BIS 12)
+# FRAGMENT-ANZEIGE IN DER SEITENLEISTE (FÜR TAG 5 BIS 12)
 # ==============================================================================
-if show_sidebar:
+if show_sidebar_content:
     with puzzle_col:
         st.subheader("🌀 Puzzleteil-Fragmente")
         st.caption("Sammle hier die Buchstaben (Tag 5 bis 12):")
