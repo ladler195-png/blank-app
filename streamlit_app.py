@@ -120,31 +120,32 @@ DOORS = {
     4: {
         "title": "Tag 4: Das Navigationssystem & die Koordinaten",
         "type": "text",
-        "story": "Das Navigationssystem benötigt die exakten Kurs-Koordinaten.",
-        "question": "Breitengrad: 90 Grad Nordpol minus 10. Längengrad: Quersumme des Jahres 2026 mal 10.",
-        "answer": "80100",
+        "story": "Nachdem ihr euch mit den Rentieren bekannt gemacht habt, steigt ihr nun in den Schlitten ein und wollt gerade den Motor starten. Da fällt euch auf, dass das Navigationssystem exakte Kurskoordinaten braucht und ihr diese erst berechnen müsst. Zum Glück gibt es auch dafür ein Rätsel im Handbuch.",
+        "question": "Berechne die Kurskoordinaten für das Navigationssystem:\nDer Breitengrad startet bei exakt 90 Grad Nord. Für den zweiten Schritt ziehen wir die Anzahl der Rentiere ab. Für den Längengrad nehmen wir die magische Quersumme von 2026 mal 10. Gib am Ende den kombinierten fünfstelligen Code aus den beiden Werten ein.",
+        "answer": "81100",  # 90 - 9 = 81 (Breitengrad), Quersumme(2026) = 10 * 10 = 100 (Längengrad) -> 81100
         "puzzle_piece": None,
-        "hint": "90-10 = 80. Quersumme von 2026 (2+0+2+6 = 10) * 10 = 100. Zusammen: 80100."
+        "hint": "Rechne Schritt für Schritt: 90 - 9 für den Breitengrad und (2 + 0 + 2 + 6) * 10 für den Längengrad."
     },
     
+    # AKT 2: DAS LABYRINTH (5-12)
     # AKT 2: DAS LABYRINTH (5-12)
     5: {
         "title": "Tag 5: Das Nebel-Tor & Fragment 1",
         "type": "text",
-        "story": "Der Schlitten stoppt vor einer massiven Nebelwand aus blauem Eis.",
-        "question": "Welchen Aggregatzustand nimmt Wasser bei klarem Frost an?",
-        "answer": "EIS",
+        "story": "Ihr fliegt los und der Schlitten schneidet durch die eiskalte Nacht. Plötzlich stoppt der Schlitten vor einer massiven, undurchdringlichen Nebelwand aus blauem Eis. Das magische Barrieren-Schloss verlangt meteorologisches Fachwissen über dieses Phänomen, um sich zu lichten.",
+        "question": "Löse das Rätsel des Nebel-Tors:\n\n> *'Ich bin unsichtbar, wenn du mich atmest, doch zeige mich in klaren Frostnächten als dicker Dunst, wenn die Lufttemperatur den entscheidenden Punkt erreicht.'*\n\nWie nennt man diesen kritischen Punkt in der Meteorologie, bei dem die Luft vollständig mit Wasserdampf gesättigt ist und der Nebel entsteht? (Ein Wort, 8 Buchstaben)",
+        "answer": "TAUPUNKT",
         "puzzle_piece": "🧩 Fragment 1: **E**",
-        "hint": "Ein kurzes, dreibuchstabiges Wort."
+        "hint": "Es beschreibt die Temperatur, bei der die relative Luftfeuchtigkeit 100 % erreicht."
     },
     6: {
-        "title": "Tag 6: Das magische Sudoku-Gitter 🔢",
+        "title": "Tag 6: Das magische Sudoku (Fragment 2)",
         "type": "sudoku_puzzle",
-        "story": "Ihr findet ein magisches 3x3-Sudoku-Inkassofeld, bei dem jede Zeile, Spalte und Diagonale exakt dieselle Summe ergeben muss. Nutze das interaktive Gitter unten.",
-        "question": "Fülle die Felder so aus, dass das Sudoku mathematisch aufgeht.",
-        "answer": "VALID",
-        "puzzle_piece": "🧩 Fragment 2: **X**",
-        "hint": "Magische Summe ist 15. Die Mitte ist festgesetzt auf 5."
+        "story": "Nachdem sich die Nebelwand dank eures Wissens aufgelöst hat, tretet ihr durch das Tor in eine geheimnisvolle, schimmernde Eishöhle. Vor euch schwebt eine monolithische Steintafel, in die ein unvollendetes, magisches Zahlenraster aus purem Frost eingraviert ist. Die Runen flüstern: Nur wenn das magische Sudoku im perfekten Einklang gelöst wird, gibt die Tafel das nächste Fragment frei.",
+        "question": "Löst das magische 4x4-Sudoku (oder ein klassisches 9x9-Sudoku, je nach Ausführung) auf der Steintafel. Tragt die fehlenden Zahlen in die markierten Felder ein.",
+        "answer": "SOLVED", # Wird über die Logik unten geprüft
+        "puzzle_piece": "🧩 Fragment 2: **R**",
+        "hint": "In jeder Zeile, jeder Spalte und in jedem 2x2-Unterquadrat (bei 4x4) dürfen die Zahlen von 1 bis 4 nur einmal vorkommen."
     },
     7: {
         "title": "Tag 7: Das Logikgitter der Schlucht 🗺️",
@@ -475,31 +476,44 @@ with main_col:
                 else:
                     st.error("❌ Falsch. Zähle die ursprünglichen Rentiere ohne den rotnasigen Nachzügler.")
     # TAG 6: SUDOKU (INTERAKTIV)
+    # TAG 6: DAS MAGISCHE SUDOKU
     elif door["type"] == "sudoku_puzzle":
-        st.write("🔢 **Interaktives 3x3 Magisches Quadrat (Sudoku):**")
-        sc1, sc2, sc3 = st.columns(3)
-        with sc1:
-            f1 = st.text_input("Zeile 1, Spalte 1 (Wert: 8)", value="8", disabled=True)
-            f4 = st.text_input("Zeile 2, Spalte 1 (Wert: 3)", value="3", disabled=True)
-            f7 = st.text_input("Zeile 3, Spalte 1 (Wert: 4)", value="4", disabled=True)
-        with sc2:
-            f2 = st.text_input("Z1, S2 (Fehlt)", key="sud_f2")
-            f5 = st.text_input("Z2, S2 (Mitte: 5)", value="5", disabled=True)
-            f8 = st.text_input("Z3, S2 (Fehlt)", key="sud_f8")
-        with sc3:
-            f3 = st.text_input("Zeile 1, Spalte 3 (Wert: 6)", value="6", disabled=True)
-            f6 = st.text_input("Zeile 2, Spalte 3 (Wert: 7)", value="7", disabled=True)
-            f9 = st.text_input("Zeile 3, Spalte 3 (Wert: 2)", value="2", disabled=True)
+        st.markdown("🧊 **Die Eistafel der Zahlenmagie:**")
+        st.write("Hier ist das magische 4x4-Sudoku. Füllt die leer gelassenen Felder (?) so aus, dass die Regeln erfüllt sind:")
+        
+        # Visuelle Darstellung als hübsche Markdown-Tabelle / Raster
+        st.markdown("""
+        | Zeile | Spalte 1 | Spalte 2 | Spalte 3 | Spalte 4 |
+        | :---: | :---: | :---: | :---: | :---: |
+        | **1** | **1**    | *[ ? ]*  | 3        | 4        |
+        | **2** | 3        | 4        | *[ ? ]*  | 2        |
+        | **3** | *[ ? ]*  | 2        | 1        | 3        |
+        | **4** | 4        | 1        | 2        | *[ ? ]*  |
+        """)
+        
+        st.info("💡 **Vorgabe:** Gegeben ist dieses 4x4-Sudoku. Ihr müsst die 4 fehlenden Werte (von oben nach unten / von links nach rechts) eingeben.")
+        
+        # Eingabefelder für die 4 fehlenden Zahlen der Reihe nach
+        col1, col2, col3, col4 = st.columns(4)
+        with col1:
+            val1 = st.text_input("Feld 1 (Z1, S2)", max_chars=1, key="sudoku_1")
+        with col2:
+            val2 = st.text_input("Feld 2 (Z2, S3)", max_chars=1, key="sudoku_2")
+        with col3:
+            val3 = st.text_input("Feld 3 (Z3, S1)", max_chars=1, key="sudoku_3")
+        with col4:
+            val4 = st.text_input("Feld 4 (Z4, S4)", max_chars=1, key="sudoku_4")
             
-        if st.button("Sudoku prüfen 🔢", key=f"chk_{day}"):
-            if f2.strip() == "1" and f8.strip() == "9":
-                st.success("🎉 Hervorragend! Jede Zeile, Spalte und Diagonale ergibt exakt 15.")
-                st.markdown(f"<div class='puzzle-card'>{door['puzzle_piece']}</div>", unsafe_allow_html=True)
+        if st.button("Sudoku-Lösung überprüfen ❄️", key="btn_sudoku"):
+            # Korrekte Lösung für dieses Beispiel-Sudoku: 
+            # Z1S2=2, Z2S3=1, Z3S1=4, Z4S4=3
+            if val1.strip() == "2" and val2.strip() == "1" and val3.strip() == "4" and val4.strip() == "3":
+                st.success("✨ Richtig! Die Eistafel knackt auf und enthüllt das **2. magische Fragment (R)**!")
                 if day not in st.session_state.solved_doors:
                     st.session_state.solved_doors.append(day)
                     st.rerun()
             else:
-                st.error("❌ Die Zahlenwerte sind noch nicht korrekt platziert.")
+                st.error("❌ Das magische Raster glimmt kurz rot auf. Die Zahlenkombination ist noch nicht stimmig. Prüfe noch einmal Zeilen, Spalten und Blöcke!")
 
     # TAG 7: LOGIKGITTER
     elif door["type"] == "logic_grid":
