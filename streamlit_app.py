@@ -89,32 +89,33 @@ components.html("""
 # ==============================================================================
 DOORS = {
     # AKT 1: ZUHAUSE & AUFTAKT (1-4)
+    # AKT 1: ZUHAUSE & AUFTAKT (1-4)
     1: {
         "title": "Tag 1: Die mysteriöse Holzbox",
         "type": "text",
-        "story": "Es klingelt an der Haustür. Ihr öffnet, aber niemand ist da – stattdessen liegt auf der Fußmatte eine schwere, eisige Holzbox. Auf dem Absender steht Nordpol.",
-        "question": "Ihr untersucht die Box und findet an der Seite einen Code, ein Gedicht und dann die Aufgabe:\n> *„Vier kleine Ziffern im winterlichen Schnee... Zacken eines Weihnachtssterns plus Rentiere mal zwei.“*\n\nWie lautet der 4-stellige Zahlencode?",
-        "answer": "0026",
+        "story": "Es klingelt an der Haustür. Ihr öffnet, aber niemand steht davor. Stattdessen seht ihr vor eurer Tür ein Päckchen liegen und auf dem Absender steht Nordpol. Ihr nehmt das Päckchen mit nach rein und öffnet es im Wohnzimmer. Und zum Vorschein kommt eine schwere eisige Holzbox. Ihr guckt euch die Holzbox von jeder Seite an und findet an der einen Seite ein Gedicht und da drunter ein Zahlenschloss.",
+        "question": "Löse das Rätsel des Gedichts und finde den vierstelligen Zahlencode heraus:\n\n> *Vier kleine Ziffern im winterlichen Schnee.*\n> *Zähle die Buchstaben, die ich dir steh.*\n> *Wie viele Ecken hat ein Stern plus die Anzahl der Rentiere fern*\n> *minus die Ziffer, die an Weihnachten lacht, hat das Schloss für euch aufgemacht.*\n\nGib den vierstelligen Zahlencode ein:",
+        "answer": "0026",  # Hier kannst du den Code anpassen, falls er durch das neue Gedicht ein anderer ist!
         "puzzle_piece": None,
-        "hint": "Zähle die Zacken eines klassischen Weihnachtssterns und addiere die Rentiere (inkl. Rudolf), dann multipliziere mit zwei."
+        "hint": "Achte auf die Hinweise im Gedicht (Sterne, Rentiere und das Datum von Weihnachten)."
     },
     2: {
         "title": "Tag 2: Das vergilbte Pergament",
         "type": "text",
-        "story": "Das Schloss springt auf! Im Inneren liegt ein steif gefrorenes Pergament mit der verschlüsselten Nachricht: *„SIVX“*.",
-        "question": "Entschlüssele das Codewort (jeder Buchstabe exakt 4 Schritte im Alphabet nach links).",
+        "story": "Das Schloss springt auf und im Inneren liegt ein Pergament. Auf diesem Pergament steht die Nachricht 'S I V X'. Unten ist ein Lorbeerkranz eingraviert.",
+        "question": "Entschlüssele das Codewort. Der Lorbeerkranz bringt euch in die richtige Richtung.\n\nDeine Lösung:",
         "answer": "NORD",
         "puzzle_piece": None,
-        "hint": "Gehe im Alphabet jeden Buchstaben 4 Schritte zurück."
+        "hint": "Benutzt den Caesar-Code."
     },
     3: {
-        "title": "Tag 3: Das Rentier-Experten-Rätsel",
-        "type": "text",
-        "story": "Der Elfen-Schlitten erwacht zum Leben! Doch das Armaturenbrett verlangt einen Zündcode.",
-        "question": "Wie viele Buchstaben hat das englische Wort für die winterliche Rentier-Augenfarbe (blau = 4) multipliziert mit der Anzahl der Geweih-Geschlechter im Winter (2)?",
-        "answer": "8",
+        "title": "Tag 3: Das Rentier-Expertenrätsel",
+        "type": "reindeer_quiz",
+        "story": "Nachdem ihr das Zauberwort laut gesagt habt, hört ihr vom Weiten ein immer lauter werdendes Glockenklingeln. Ihr schaut aus dem Fenster und ihr könnt euren Augen kaum glauben, denn vor eurem Fenster steht ein Rentierschlitten mit acht Rentieren. Ihr geht nach draußen zu den Rentieren und die sagen, dass ihr das Codewort, das geheime Wort, gesagt habt, um jetzt mitzukommen. Aber damit ihr wirklich, damit wir euch dahin bringen, müsst ihr folgende Fragen über uns beantworten können. Das sagen die Rentiere.",
+        "question": "Beantwortet die fünf anspruchsvollen Fragen über Rentiere nacheinander, um die Rentiere zu überzeugen.",
+        "answer": "QUIZ_SOLVED",
         "puzzle_piece": None,
-        "hint": "Blue = 4 Buchstaben. Beide Geschlechter tragen im Winter Geweih = 2. 4 * 2 = 8."
+        "hint": "Hier ist biologisches und mythologisches Fachwissen über Rentiere gefragt (Augenfarbe im Winter, Geweihbiologie bei Kühen, wissenschaftlicher Name etc.)."
     },
     4: {
         "title": "Tag 4: Das Navigationssystem & die Koordinaten",
@@ -405,7 +406,74 @@ with main_col:
                     st.rerun()
             else:
                 st.error("❌ Das ist leider nicht korrekt.")
+    # TAG 3: RENTIER-EXPERTEN-QUIZ (5 ANSPRUCHSVOLLE FRAGEN)
+    elif door["type"] == "reindeer_quiz":
+        st.write("🦌 **Das Rentier-Experten-Quiz (Frage für Frage):**")
+        
+        # Initialisiere den Quiz-Fortschritt im Session State, falls nicht vorhanden
+        if "quiz_step" not in st.session_state:
+            st.session_state.quiz_step = 1
 
+        step = st.session_state.quiz_step
+        st.write(f"**Fortschritt: Frage {step} von 5**")
+        
+        if step == 1:
+            st.markdown("**Frage 1:** Welchen ungewöhnlichen biologischen Farbwechsel vollziehen die Augen von Rentieren im Polarsommer zu Polarninter (Umstellung von Gold zu Blau), um im Dunkeln besser zu sehen?")
+            q1_ans = st.text_input("Deine Antwort (Frage 1):", key="q1_input")
+            if st.button("Antwort 1 absenden 🚀", key="btn_q1"):
+                if "BLAU" in q1_ans.strip().upper():
+                    st.success("Richtig! Im Winter wechselt das Tapetum lucidum zu Blau.")
+                    st.session_state.quiz_step = 2
+                    st.rerun()
+                else:
+                    st.error("❌ Falsch. Denk an das Spektrum, das bei Nordlicht dominiert.")
+                    
+        elif step == 2:
+            st.markdown("**Frage 2:** Im Gegensatz zu fast allen anderen Hirscharten tragen bei Rentieren *beide* Geschlechter ein Geweih. Welche biologische Besonderheit weisen schwangere Rentierkühe im Winter bezüglich ihres Geweihs auf (im Vergleich zu den Männchen)?")
+            q2_ans = st.text_input("Deine Antwort (Frage 2):", key="q2_input")
+            if st.button("Antwort 2 absenden 🚀", key="btn_q2"):
+                # Mütter behalten ihr Geweih im Winter (Bullen werfen es früher ab)
+                if any(w in q2_ans.strip().upper() for w in ["BEHALTEN", "TRAGEN", "SPÄTER", "WEIHNACHTEN"]):
+                    st.success("Richtig! Kühe behalten ihr Geweih über den Winter, um Ressourcen zu verteidigen.")
+                    st.session_state.quiz_step = 3
+                    st.rerun()
+                else:
+                    st.error("❌ Falsch. Überlege, wer im Winter die Führung der Herde übernimmt.")
+                    
+        elif step == 3:
+            st.markdown("**Frage 3:** Wie lautet der wissenschaftliche (biologische) Artname des Rentiers auf Latein?")
+            q3_ans = st.text_input("Deine Antwort (Frage 3):", key="q3_input")
+            if st.button("Antwort 3 absenden 🚀", key="btn_q3"):
+                if "RANGIFER TARANDUS" in q3_ans.strip().upper() or "TARANDUS" in q3_ans.strip().upper():
+                    st.success("Hervorragend! *Rangifer tarandus* ist korrekt.")
+                    st.session_state.quiz_step = 4
+                    st.rerun()
+                else:
+                    st.error("❌ Falsch. Gesucht ist der zoologische Doppelname.")
+                    
+        elif step == 4:
+            st.markdown("**Frage 4:** In welchem Jahr wurden die berühmten fliegenden Rentiere des Weihnachtsmanns (angeführt von Rudolph) erstmals namentlich in dem klassischen Gedicht *'A Visit from St. Nicholas'* (Clement Clarke Moore) erwähnt?")
+            q4_ans = st.text_input("Deine Antwort (Frage 4):", key="q4_input")
+            if st.button("Antwort 4 absenden 🚀", key="btn_q4"):
+                if "1823" in q4_ans.strip():
+                    st.success("Punktlandung! Das Jahr 1823 ist absolut korrekt.")
+                    st.session_state.quiz_step = 5
+                    st.rerun()
+                else:
+                    st.error("❌ Falsch. Es stammt aus dem frühen 19. Jahrhundert (ca. 182x).")
+                    
+        elif step == 5:
+            st.markdown("**Frage 5:** Wie viele Rentiere zogen laut dem ursprünglichen Originalgedicht von 1823 den Schlitten (ohne Rudolph, der erst später dazukam)?")
+            q5_ans = st.text_input("Deine Antwort (Frage 5):", key="q5_input")
+            if st.button("Finale Antwort absenden 🚀", key="btn_q5"):
+                if "8" in q5_ans.strip() or "ACHT" in q5_ans.strip().upper():
+                    st.success("🎉 Unglaublich! Ihr habt alle 5 Expertenfragen bravourös gemeistert. Die Rentiere neigen anerkennend ihre Köpfe und der Schlitten ist bereit!")
+                    st.session_state.quiz_step = 1  # Reset für eventuelles Neustarten
+                    if day not in st.session_state.solved_doors:
+                        st.session_state.solved_doors.append(day)
+                        st.rerun()
+                else:
+                    st.error("❌ Falsch. Zähle die ursprünglichen Rentiere ohne den rotnasigen Nachzügler.")
     # TAG 6: SUDOKU (INTERAKTIV)
     elif door["type"] == "sudoku_puzzle":
         st.write("🔢 **Interaktives 3x3 Magisches Quadrat (Sudoku):**")
