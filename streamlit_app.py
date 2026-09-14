@@ -14,13 +14,11 @@ if "solved_doors" not in st.session_state:
 if "quiz_step" not in st.session_state:
     st.session_state.quiz_step = 1
 
-# Navigation State: Entweder "overview" oder eine Türchen-Nummer (1-21)
 if "current_view" not in st.session_state:
     st.session_state.current_view = "overview"
 
 # --- DATENBANK: ALLE TÜRICHEN VON 1 BIS 21 ---
 DOORS = {
-    # --- AKT 1: ZUHAUSE & AUFTAKT (1-4) ---
     1: {
         "title": "Tag 1: Die mysteriöse Holzbox",
         "type": "text",
@@ -34,7 +32,7 @@ DOORS = {
         "title": "Tag 2: Das vergilbte Pergament",
         "type": "text",
         "story": "Das Schloss springt auf und im Inneren liegt ein altes Pergament. Darauf steht die kryptische Nachricht 'S I V X'. Unten ist ein Lorbeerkranz eingraviert.",
-        "question": "Entschlüssele das Codewort mithilfe des antiken Hinweises:\n\nDeine Lösung:",
+        "question": "Entschlüssele das Codewort mithilfe des antiken Hinweises (Cäsar-Verschiebung):\n\nDeine Lösung:",
         "answer": "NORD",
         "puzzle_piece": None,
         "hint": "Der Lorbeerkranz verweist auf Julius Cäsar und eine klassische Verschiebung im Alphabet."
@@ -43,7 +41,7 @@ DOORS = {
         "title": "Tag 3: Das Rentier-Expertenrätsel",
         "type": "reindeer_quiz",
         "story": "Nachdem das Codewort ausgesprochen ist, hört man Glockenklingeln. Vor dem Fenster steht ein Schlitten mit 8 Rentieren. Sie nehmen euch nur mit, wenn ihr ihr strenges Expertenwissen beweist.",
-        "question": "Beantwortet die 5 anspruchsvollen Fragen über Rentiere nacheinander.",
+        "question": "Beantwortet die anspruchsvollen Fragen über Rentiere nacheinander.",
         "answer": "QUIZ_SOLVED",
         "puzzle_piece": None,
         "hint": "Biologisches Fachwissen über Augen, Geweih, Artnamen und Historie ist gefragt."
@@ -57,13 +55,11 @@ DOORS = {
         "puzzle_piece": "Koordinaten-Init",
         "hint": "90 - 9 = Breitengrad; (2+0+2+6) * 10 = Längengrad."
     },
-
-    # --- AKT 2: DER FLUG DURCH DIE POLARNACHT (5-12) ---
     5: {
         "title": "Tag 5: Das Nebel-Tor",
         "type": "text",
-        "story": "Der Schlitten durchbricht die Wolkendecke, steuert aber direkt auf eine massive, undurchdringliche Nebelwand aus blauem Eis zu. Das Barrieren-Schloss verlangt meteorologisches Fachwissen.",
-        "question": "Wie nennt man den kritischen physikalischen Punkt in der Meteorologie, bei dem die Luft vollständig mit Wasserdampf gesättigt ist und Nebel entsteht? (Ein Wort, 8 Buchstaben)",
+        "story": "Der Schlitten durchbricht die Wolkendecke, steuert aber direkt auf eine massive, undurchdringliche Nebelwand aus blauem Eis zu.",
+        "question": "Wie nennt man den kritischen physikalischen Punkt in der Meteorologie, bei dem die Luft vollständig mit Wasserdampf gesättigt ist und Nebel entsteht?",
         "answer": "TAUPUNKT",
         "puzzle_piece": "🧩 Fragment 1: **E**",
         "hint": "Die Temperatur, bei der die relative Luftfeuchtigkeit 100% erreicht."
@@ -80,20 +76,20 @@ DOORS = {
     7: {
         "title": "Tag 7: Der Jetstream-Kurs",
         "type": "text",
-        "story": "Plötzliche Sturmböen drängen den Schlitten ab. Ihr müsst den optimalen, schnellsten Höhenkorridor (Jetstream) anhand von Expeditions-Protokollen berechnen.",
+        "story": "Plötzliche Sturmböen drängen den Schlitten ab. Ihr müsst den optimalen, schnellsten Höhenkorridor (Jetstream) berechnen.",
         "question": "Welcher Weg ist der schnellste (Gesamtzeit in Minuten als Wort eingeben)?\n- Weg Alpha: 7 Min Grundzeit * 3 - 4 Minuten\n- Weg Beta: 21 km bei 14 km/h + 2 Minuten Kletterzeit\n- Weg Gamma: Die Hälfte einer 30-km-Strecke bei 10 km/h + 1 Min Check",
         "answer": "ALPHA",
         "puzzle_piece": "🧩 Fragment 3: **N**",
         "hint": "Alpha = 17 Min, Beta = 92 Min, Gamma = 91 Min."
     },
     8: {
-        "title": "Tag 8: Das verzerrte Funksignal",
-        "type": "text",
-        "story": "Mitten im Sturm empfängt das Funkgerät eine stark verrauschte Notfall-Nachricht aus der Weihnachtswerkstatt am Nordpol.",
-        "question": "Entschlüssele den verrauschten Code (Rückwärts gelesen): 'RETTER'",
+        "title": "Tag 8: Das verzerrte Funksignal (Morse-Decoder)",
+        "type": "morse_puzzle",
+        "story": "Mitten im Sturm empfängt das Funkgerät eine stark verrauschte Notfall-Nachricht aus der Weihnachtswerkstatt. Nutze die Morse-Tabelle, um das Signal zu entschlüsseln!",
+        "question": "Entschlüssele den Morse-Code: `.-. . - - . .-.`",
         "answer": "RETTER",
         "puzzle_piece": "🧩 Fragment 4: **T**",
-        "hint": "Lies das Wort von rechts nach links."
+        "hint": "A=.-, E=., R=.-., T=-. Lies den Code Spalte für Spalte."
     },
     9: {
         "title": "Tag 9: Die Aurora-Spektralanalyse",
@@ -125,28 +121,26 @@ DOORS = {
     12: {
         "title": "Tag 12: Das Tor zum Polarkreis",
         "type": "text",
-        "story": "Der Nordpol kommt in Sicht! Eine finale magische Eistür versperrt den Landeplatz und verlangt das aus den Fragmenten gebildete Lösungswort.",
+        "story": "Der Nordpol kommt in Sicht! Eine finale magische Eistür verlangt das aus den Fragmenten gebildete Lösungswort.",
         "question": "Setze die gesammelten Fragmente zu dem 7-stelligen Ziel-Codewort zusammen:",
         "answer": "STERNEN",
         "puzzle_piece": "🏆 ZUGANG ZUR WERKSTATT FREIGESCHALTET",
         "hint": "Anordnung der gesammelten Hinweise am Himmel."
     },
-
-    # --- AKT 3: DIE WIRTSCHAFT & WERKSTATT AM NORDPOL (13-21) ---
     13: {
         "title": "Tag 13: Das Notstrom-Aggregat",
-        "type": "text",
-        "story": "Ihr betretet die dunkle Haupthalle der Werkstatt. Um Licht zu machen, müsst ihr das alte Notstromaggregat über eine binäre Schaltung hochfahren.",
-        "question": "Wandle die Binärzahl '1101' in das dezimale Zahlensystem um:",
+        "type": "binary_slider",
+        "story": "Ihr betretet die Haupthalle der Werkstatt. Schalte die Binär-Schalter passend ein, um das Aggregat auf den Wert **13** zu bringen.",
+        "question": "Bringe die Schalter in die richtige Position für die Dezimalzahl 13.",
         "answer": "13",
         "puzzle_piece": None,
-        "hint": "8 + 4 + 0 + 1"
+        "hint": "Binär: 8 + 4 + 0 + 1 (Schalter 8, 4 und 1 auf ON)."
     },
     14: {
         "title": "Tag 14: Das Terminal der Chef-Elfe",
         "type": "text",
-        "story": "Das Licht flackert an, aber der Hauptcomputer verlangt das Benutzerpasswort der Chef-Elfe, verschlüsselt als Kernbegriff.",
-        "question": "Welches entscheidende Fest bildet das Herzstück des gesamten Nordpols? (Gesucht: 9 Buchstaben)",
+        "story": "Das Licht flackert an, aber der Hauptcomputer verlangt das Benutzerpasswort der Chef-Elfe.",
+        "question": "Welches entscheidende Fest bildet das Herzstück des gesamten Nordpols? (9 Buchstaben)",
         "answer": "WEIHNACHT",
         "puzzle_piece": None,
         "hint": "Der Name des Feiertags."
@@ -154,17 +148,17 @@ DOORS = {
     15: {
         "title": "Tag 15: Die Wunschlisten-Matrix",
         "type": "text",
-        "story": "In der Sortierhalle läuft ein Fließband Amok, weil die Wunschlisten nach dem Prinzip einer mathematischen Reihe verrutscht sind.",
-        "question": "Führe die Fibonacci-Reihe logisch fort: 1, 1, 2, 3, 5, 8, 13, ? (Gib die nächste Zahl ein)",
+        "story": "In der Sortierhalle läuft ein Fließband Amok, weil die Wunschlisten nach einer mathematischen Reihe verrutscht sind.",
+        "question": "Führe die Fibonacci-Reihe logisch fort: 1, 1, 2, 3, 5, 8, 13, ?",
         "answer": "21",
         "puzzle_piece": None,
-        "hint": "Addiere immer die beiden vorherigen Zahlen zusammen (8 + 13)."
+        "hint": "Addiere immer die beiden vorherigen Zahlen (8 + 13)."
     },
     16: {
         "title": "Tag 16: Der Fließband-Takt",
         "type": "text",
         "story": "Das Band stoppt vor einer Barriere. Die Steuerung verlangt das Lösen einer linearen Gleichung.",
-        "question": "Löse das System: 2x + 4 = 12. Welchen Wert hat x?",
+        "question": "Löse die Gleichung: 2x + 4 = 12. Welchen Wert hat x?",
         "answer": "4",
         "puzzle_piece": None,
         "hint": "Subtrahiere 4 von 12 und teile durch 2."
@@ -172,34 +166,34 @@ DOORS = {
     17: {
         "title": "Tag 17: Die Geschenk-Waage",
         "type": "text",
-        "story": "In der Verpackungsstation blockiert eine Sicherheitswaage den Weg. Es müssen Gewichte exakt verglichen werden.",
+        "story": "In der Verpackungsstation blockiert eine Sicherheitswaage den Weg. Es müssen Gewichte verglichen werden.",
         "question": "Du hast 9 Päckchen, von denen eines schwerer ist. Wie viele Wägungen auf einer Balkenwaage brauchst du im Worst-Case mindestens?",
         "answer": "2",
         "puzzle_piece": None,
         "hint": "Teile in Dreiergruppen auf (3-3-3)."
     },
     18: {
-        "title": "Tag 18: Der Elfen-Schichtplan",
-        "type": "text",
-        "story": "Vor der Spielzeug-Manufaktur hängt ein Logikgitter. Wer arbeitet in welcher Abteilung?",
-        "question": "Elfe A arbeitet schneller als Elfe B. Elfe C arbeitet langsamer als Elfe B. Wer ist am schnellsten? (Gib den Buchstaben ein: A, B oder C):",
+        "title": "Tag 18: Der Elfen-Schichtplan (Logik-Rätsel)",
+        "type": "elf_puzzle",
+        "story": "Vor der Spielzeug-Manufaktur hängt ein interaktives Logikgitter für den Schichtplan.",
+        "question": "Ordne die Elfen nach Geschwindigkeit zu: Wer arbeitet am schnellsten?",
         "answer": "A",
         "puzzle_piece": None,
-        "hint": "Der erste im Vergleich."
+        "hint": "Elfe A arbeitet schneller als B, C arbeitet langsamer als B."
     },
     19: {
         "title": "Tag 19: Der Tresor des Weihnachtsmanns",
         "type": "text",
-        "story": "Ihr erreicht das Büro des Weihnachtsmanns. An der Wand hängt ein schwerer Stahltresor für die Master-Schablone.",
+        "story": "Ihr erreicht das Büro des Weihnachtsmanns. An der Wand hängt ein schwerer Stahltresor.",
         "question": "In welchem Jahr erreichte die historische Amundsen-Expedition als erste den Südpol? (Vierstellige Jahreszahl)",
         "answer": "1911",
         "puzzle_piece": None,
         "hint": "Es war im Dezember des Jahres 191... (1)."
     },
     20: {
-        "title": "Tag 20: Das magische Polar-Kristall",
+        "title": "Tag 20: Der magische Polar-Kristall",
         "type": "text",
-        "story": "Im Tresor findet ihr den rohen Polar-Kristall. Um ihn aufzuladen, muss ein Laserstrahl durch ein geometrisches System gelenkt werden.",
+        "story": "Im Tresor findet ihr den rohen Polar-Kristall. Um ihn aufzuladen, muss ein Laserstrahl gelenkt werden.",
         "question": "Wie viel Grad beträgt die Winkelsumme in einem klassischen Dreieck?",
         "answer": "180",
         "puzzle_piece": None,
@@ -208,7 +202,7 @@ DOORS = {
     21: {
         "title": "Tag 21: Das Erwachen der Werkstatt",
         "type": "text",
-        "story": "Der Kristall glüht in hellem Licht und wird in den Hauptkern eingesetzt. Die Maschinen erwachen ratternd zum Leben!",
+        "story": "Der Kristall glüht in hellem Licht und wird in den Hauptkern eingesetzt. Die Maschinen erwachen zum Leben!",
         "question": "Gib das finale Lösungswort ein, das den Wendepunkt der Mission markiert:",
         "answer": "WENDEPUNKT",
         "puzzle_piece": "🌟 WERKSTATT VOLL EINSATZBEREIT",
@@ -216,50 +210,37 @@ DOORS = {
     }
 }
 
-# --- ANSICHT 1: DIE HAUPTSEITE / TÜRCHEN-ÜBERSICHT ---
+# --- HAUPTSEITE / TÜRCHEN-ÜBERSICHT ---
 if st.session_state.current_view == "overview":
     st.title("🎄 Weihnachtlicher Rätsel-Adventskalender")
     st.markdown("### Mission: Weihnachten retten 🎅✨")
-    st.write("Wähle ein Türchen aus, um die Aufgabe direkt zu testen und zu überprüfen.")
+    st.write("Wähle ein Türchen aus, um die interaktiven Aufgaben zu testen.")
     
-    # Fortschrittsleiste oben
     solved_count = len(st.session_state.solved_doors)
     total_count = len(DOORS)
     st.markdown(f"**Gesamtfortschritt:** {solved_count} von {total_count} Türchen gelöst")
     st.progress(solved_count / total_count)
     st.markdown("---")
 
-    # Raster-Layout für die Türchen (jeweils 4 Spalten pro Zeile)
     door_keys = list(DOORS.keys())
     for i in range(0, len(door_keys), 4):
         cols = st.columns(4)
         for j in range(4):
             if i + j < len(door_keys):
                 d_num = door_keys[i + j]
-                
-                # Prüfen, ob das Türchen gelöst ist
                 is_solved = d_num in st.session_state.solved_doors
                 
-                # JETZT FREIGESCHALTET: Alle Türchen sind dauerhaft offen zum Testen!
-                is_unlocked = True
-
                 with cols[j]:
-                    if is_solved:
-                        button_label = f"✅ Tag {d_num}"
-                    else:
-                        button_label = f"🔓 Tag {d_num}"
-
-                    # Klick auf das Türchen
-                    if st.button(button_label, use_container_width=True, disabled=not is_unlocked):
+                    button_label = f"✅ Tag {d_num}" if is_solved else f"🔓 Tag {d_num}"
+                    if st.button(button_label, use_container_width=True):
                         st.session_state.current_view = d_num
                         st.rerun()
 
-# --- ANSICHT 2: DETAIL-ANSICHT EINES TÜRICHENS ---
+# --- DETAIL-ANSICHT EINES TÜRICHENS ---
 else:
     day = st.session_state.current_view
     door = DOORS[day]
 
-    # Zurück-Button zur Hauptseite
     if st.button("⬅️ Zurück zur Türchen-Übersicht"):
         st.session_state.current_view = "overview"
         st.rerun()
@@ -269,13 +250,10 @@ else:
     st.info(door["story"])
     st.markdown("---")
 
-    # Überprüfen, ob das Türchen bereits gelöst wurde
     if day in st.session_state.solved_doors:
         st.success("✅ Dieses Türchen wurde bereits erfolgreich gelöst!")
         if door["puzzle_piece"]:
             st.markdown(f"**Gesammeltes Element:** {door['puzzle_piece']}")
-        
-        # Test-Reset-Button, damit man es im Testmodus neu versuchen kann
         if st.button("🔄 Dieses Türchen zum Testen zurücksetzen"):
             st.session_state.solved_doors.remove(day)
             st.rerun()
@@ -283,10 +261,9 @@ else:
         st.subheader("❓ Aufgabe:")
         st.write(door["question"])
 
-        # 1. SPEZIAL-QUIZ FÜR TAG 3 (RENTIER-EXPERTE)
+        # 1. RENTIER-QUIZ (Tag 3)
         if door["type"] == "reindeer_quiz":
             st.write(f"**Experten-Frage {st.session_state.quiz_step} von 5**")
-            
             step = st.session_state.quiz_step
             if step == 1:
                 q1 = st.text_input("F1: Welche Farbe nimmt das Tapetum lucidum im Rentierauge im Winter an (Gold zu...)?", key="rq1")
@@ -295,11 +272,11 @@ else:
                         st.session_state.quiz_step = 2
                         st.rerun()
                     else:
-                        st.error("❌ Falsch. Denk an das Spektrum der Polarlichter.")
+                        st.error("❌ Falsch. Denk an Polarlichter.")
             elif step == 2:
-                q2 = st.text_input("F2: Welches Geschlecht behält im Winter sein Geweih?", key="rq2")
+                q2 = st.selectbox("F2: Welches Geschlecht behält im Winter sein Geweih?", ["Bitte wählen...", "Männchen", "Weibchen / Kühe", "Beide"], key="rq2")
                 if st.button("Antwort 2 senden"):
-                    if any(w in q2.upper() for w in ["KUH", "WEIBLICH", "MÜTTER", "WEIBCHEN"]):
+                    if "Weibchen" in q2:
                         st.session_state.quiz_step = 3
                         st.rerun()
                     else:
@@ -313,25 +290,25 @@ else:
                     else:
                         st.error("❌ Falsch.")
             elif step == 4:
-                q4 = st.text_input("F4: In welchem Jahr erschien das klassische Rentier-Gedicht erstmals?", key="rq4")
+                q4 = st.number_input("F4: In welchem Jahr erschien das klassische Rentier-Gedicht erstmals?", min_value=1800, max_value=1900, value=1800, key="rq4")
                 if st.button("Antwort 4 senden"):
-                    if "1823" in q4:
+                    if q4 == 1823:
                         st.session_state.quiz_step = 5
                         st.rerun()
                     else:
                         st.error("❌ Falsch.")
             elif step == 5:
-                q5 = st.text_input("F5: Wie viele Rentiere zogen den Schlitten im Original ohne Rudolph?", key="rq5")
+                q5 = st.slider("F5: Wie viele Rentiere zogen den Schlitten im Original ohne Rudolph?", 1, 12, 4, key="rq5")
                 if st.button("Finale Antwort senden"):
-                    if "8" in q5 or "ACHT" in q5.upper():
+                    if q5 == 8:
                         st.success("🎉 Rentiere überzeugt! Das Rätsel ist geschafft.")
                         st.session_state.solved_doors.append(day)
                         st.session_state.quiz_step = 1
                         st.rerun()
                     else:
-                        st.error("❌ Falsch.")
+                        st.error("❌ Falsch. Versuche es mit dem Slider.")
 
-        # 2. SPEZIAL-SUDOKU FÜR TAG 6
+        # 2. SUDOKU (Tag 6)
         elif door["type"] == "sudoku_puzzle":
             st.markdown("""
             | Raster | Spalte 1 | Spalte 2 | Spalte 3 | Spalte 4 |
@@ -349,27 +326,73 @@ else:
 
             if st.button("Sudoku überprüfen"):
                 if v1.strip() == "2" and v2.strip() == "1" and v3.strip() == "4" and v4.strip() == "3":
-                    st.success("✨ Sudoku korrekt gelöst! Fragment erhalten.")
+                    st.success("✨ Sudoku korrekt gelöst!")
                     if door["puzzle_piece"]:
                         st.info(f"**Erhaltenes Element:** {door['puzzle_piece']}")
                     st.session_state.solved_doors.append(day)
                     st.rerun()
                 else:
-                    st.error("❌ Fehler im Raster. Prüfe Zeilen und Spalten!")
+                    st.error("❌ Fehler im Raster.")
 
-        # 3. STANDARD-TEXT-EINGABE FÜR ALLE ANDEREN TAGE
+        # 3. MORSE-DECODER WIDGET (Tag 8)
+        elif door["type"] == "morse_puzzle":
+            st.markdown("""
+            > **Morse-Alphabet Referenz:**
+            > A = `.-` | E = `.` | R = `.-.` | T = `-`
+            """)
+            morse_input = st.text_input("Tippe das entschlüsselte Wort (Großbuchstaben):", key=f"morse_{day}")
+            if st.button("Morsecode abschicken 📡"):
+                if morse_input.strip().upper() == "RETTER":
+                    st.success("🎉 Signal erfolgreich decodiert!")
+                    if door["puzzle_piece"]:
+                        st.info(f"**Erhaltenes Element:** {door['puzzle_piece']}")
+                    st.session_state.solved_doors.append(day)
+                    st.rerun()
+                else:
+                    st.error("❌ Das Signal stimmt noch nicht ganz.")
+
+        # 4. BINÄR-SCHALTER WIDGET (Tag 13)
+        elif door["type"] == "binary_slider":
+            st.markdown("Stelle die Bits ein (Wert = $8 \\cdot b_3 + 4 \\cdot b_2 + 2 \\cdot b_1 + 1 \\cdot b_0$):")
+            b3 = st.checkbox("Bit 8er-Stelle (Wert 8)")
+            b2 = st.checkbox("Bit 4er-Stelle (Wert 4)")
+            b1 = st.checkbox("Bit 2er-Stelle (Wert 2)")
+            b0 = st.checkbox("Bit 1er-Stelle (Wert 1)")
+            
+            calculated_val = (8 if b3 else 0) + (4 if b2 else 0) + (2 if b1 else 0) + (1 if b0 else 0)
+            st.write(Aktueller Wert: **{calculated_val}** (Gesucht: 13))
+
+            if st.button("Aggregat starten ⚡"):
+                if calculated_val == 13:
+                    st.success("🎉 Perfekt! Aggregat läuft.")
+                    st.session_state.solved_doors.append(day)
+                    st.rerun()
+                else:
+                    st.error(f"❌ Der Wert ist derzeit {calculated_val}, benötigt werden 13.")
+
+        # 5. ELFEN-LOGIK WIDGET (Tag 18)
+        elif door["type"] == "elf_puzzle":
+            elf_choice = st.radio("Wähle die schnellste Elfe:", ["Elfe A", "Elfe B", "Elfe C"])
+            if st.button("Schichtplan bestätigen"):
+                if elf_choice == "Elfe A":
+                    st.success("🎉 Logikgitter gelöst!")
+                    st.session_state.solved_doors.append(day)
+                    st.rerun()
+                else:
+                    st.error("❌ Falsch. Überprüfe die Bedingungen.")
+
+        # STANDARD-TEXT-EINGABE FÜR REST
         else:
             user_input = st.text_input("Deine Lösung:", key=f"input_{day}")
             if st.button("Antwort einreichen 🚀", key=f"btn_{day}"):
                 if user_input.strip().upper() == door["answer"].upper():
-                    st.success("🎉 Richtig! Das Rätsel ist gelöst.")
+                    st.success("🎉 Richtig!")
                     if door["puzzle_piece"]:
                         st.info(f"**Erhaltenes Element:** {door['puzzle_piece']}")
                     st.session_state.solved_doors.append(day)
                     st.rerun()
                 else:
-                    st.error("❌ Das ist leider nicht korrekt. Probiere es noch einmal!")
+                    st.error("❌ Leider falsch.")
 
-        # Hinweis-Expander
         with st.expander("💡 Einen Hinweis anzeigen"):
             st.write(door["hint"])
