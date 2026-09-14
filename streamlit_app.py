@@ -148,13 +148,13 @@ DOORS = {
         "hint": "In jeder Zeile, jeder Spalte und in jedem 2x2-Unterquadrat (bei 4x4) dürfen die Zahlen von 1 bis 4 nur einmal vorkommen."
     },
     7: {
-        "title": "Tag 7: Das Logikgitter der Schlucht 🗺️",
-        "type": "logic_grid",
-        "story": "Vor der Eisspalte müsst ihr anhand von Hinweisen herausfinden, welcher Elf welchen Weg gewählt hat. Die Hinweise sind komplexer als gedacht: Drei Elfen (A, B, C) und drei Werkzeuge (Eispickel, Seil, Laterne) auf drei Wegen (Gletscher-Pfad, Schlucht-Pfad, Eishöhlen-Weg).",
-        "question": "Hinweise:\n1. Der Elf mit dem Eispickel nahm weder den Gletscher- noch den Schlucht-Pfad.\n2. Elf A nahm den Gletscher-Pfad.\n3. Elf B hatte kein Seil.\nWelchen Weg nahm folglich Elf C, der den Eispickel trug?",
-        "answer": "EISHÖHLEN-WEG",
-        "puzzle_piece": "🧩 Fragment 3: **P**",
-        "hint": "Schließe über Ausschlussverfahren aus, welche Wege belegt sind."
+        "title": "Tag 7: Die tückische Eisspalte",
+        "type": "canyon_puzzle",
+        "story": "Nach dem Verlassen der Eishöhle steht ihr plötzlich vor einer gewaltigen, tiefen Eisspalte, die euren Weg versperrt. Eine wackelige Hängebrücke führt hinüber, aber an der Felswand seht ihr einen alten Orientierungsplan und daneben blutige bzw. verkohlte Notizen von gescheiterten Vorgängern, die den falschen Pfad gewählt haben. Ihr müsst anhand der Hinweise den wahren 'Schnitzelweg' (den sicheren Pfad) identifizieren.",
+        "question": "Analysiert die drei Wege an Hand der Wand-Notizen und findet den richtigen Schnitzelweg heraus.\n\n* **Weg A (Der Kristallpfad):** In den Notizen steht: *'Das Glitzern täuscht, hier brach das Eis unter unseren Stiefeln ein.'*\n* **Weg B (Der Windschatten-Pfad):** In den Notizen steht: *'Die Brise weht stetig von Osten, die Holzplanken halten, aber eine Markierung fehlt gänzlich.'*\n* **Weg C (Der Moos-Markierten-Pfad):** In den Notizen steht: *'Alte grüne Pfeile und Brotkrumen-Spuren weisen sicher über den Abgrund. Hier kam vor uns schon jemand durch.'*\n\nWelcher Weg ist der sichere Schnitzelweg? (Wähle A, B oder C):",
+        "answer": "C",
+        "puzzle_piece": "🧩 Fragment 3: **N**",
+        "hint": "Lies dir die Notizen der Vorgänger genau durch: Wer war erfolgreich und wer ist eingebrochen oder hat sich verirrt?"
     },
     8: {
         "title": "Tag 8: Das interaktive Morse-Terminal 📻",
@@ -515,18 +515,29 @@ with main_col:
             else:
                 st.error("❌ Das magische Raster glimmt kurz rot auf. Die Zahlenkombination ist noch nicht stimmig. Prüfe noch einmal Zeilen, Spalten und Blöcke!")
 
-    # TAG 7: LOGIKGITTER
-    elif door["type"] == "logic_grid":
-        ans_lg = st.text_input("Deine Lösung (Name des Weges):", key="lg_input")
-        if st.button("Logikgitter auswerten 🗺️", key=f"chk_{day}"):
-            if ans_lg.strip().upper() in ["EISHÖHLEN-WEG", "EISHOHLEN-WEG", "EISHÖHLE"]:
-                st.success("🎉 Richtig gelöst!")
-                st.markdown(f"<div class='puzzle-card'>{door['puzzle_piece']}</div>", unsafe_allow_html=True)
+    # TAG 7: DIE EISIGE SCHLUCHT (SCHNITZELWEG)
+    elif door["type"] == "canyon_puzzle":
+        st.markdown("🌉 **Die Auswahl des Schnitzelwegs vor der Schlucht:**")
+        st.write("Schaut euch die Hinweise an der Felswand an und entscheidet, welchen Weg ihr wählt:")
+        
+        st.markdown("""
+        - ❄️ **Weg A:** Der eisige Kristallpfad (Gefahr von Einbrüchen laut Notizen)
+        - 💨 **Weg B:** Der Windschatten-Pfad (Stabiles Holz, aber keinerlei Markierungen)
+        - 🌲 **Weg C:** Der Moos-Markierte-Pfad (Sichere alte Markierungen und Spuren der Vorgänger)
+        """)
+        
+        canyon_choice = st.radio("Welchen Weg wählt ihr?", ["Bitte wählen...", "Weg A", "Weg B", "Weg C"], key="canyon_radio")
+        
+        if st.button("Weg wählen & Brücke überqueren 🌁", key="btn_canyon"):
+            if canyon_choice == "Weg C":
+                st.success("🎉 Genial! Ihr folgt den alten Markierungen des Schnitzelwegs und überquert die Schlucht sicher. Als Belohnung findet ihr am anderen Ende das **3. Fragment (N)**!")
                 if day not in st.session_state.solved_doors:
                     st.session_state.solved_doors.append(day)
                     st.rerun()
+            elif canyon_choice == "Bitte wählen...":
+                st.warning("⚠️ Bitte trefft eine Auswahl.")
             else:
-                st.error("❌ Falsch.")
+                st.error("❌ Das war der falsche Weg! Das Eis knirscht bedrohlich oder ihr verliert die Spur. Versucht es noch einmal.")
 
     # TAG 8: MORSE-TERMINAL
     elif door["type"] == "morse_terminal":
