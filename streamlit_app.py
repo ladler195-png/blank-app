@@ -85,7 +85,7 @@ components.html("""
 """, height=0)
 
 # ==============================================================================
-# 2. RÄTSEL-DATENBANK (AKT 1 BIS 4 - UPDATED HARDCORE EDITION)
+# 2. RÄTSEL-DATENBANK (AKT 1 BIS 4)
 # ==============================================================================
 DOORS = {
     # AKT 1: ZUHAUSE & AUFTAKT (1-4)
@@ -277,7 +277,7 @@ DOORS = {
         "person": "Rentier-Planungsstation",
         "title": "Tag 19: Das Rentier-Aufstellungs-Raster (3 Reihen à 2 Plätze) 🦌",
         "type": "reindeer_puzzle",
-        "story": "Barnaby steht vor der großen Rentier-Wandtafel. Das Raster ist nun in **3 Reihen mit jeweils 2 Plätzen** unterteilt. **Comet (☄️)** sitzt unumstößlich fest auf **Platz 1 (ganz oben links)**. Um den perfekten Flug zu garantieren, müssen die 5 übrigen Rentiere (Cupid, Dancer, Prancer, Blitz, Donner) nach strikten Regeln eingetragen werden:\n1. Prancer (⭐) muss direkt vor Dancer (💃) fliegen.\n2. Blitz (⚡) und Donner (🌩️) dürfen wegen statischer Entladung niemals in derselben Reihe (nebeneinander) stehen.",
+        "story": "Barnaby steht vor der großen Rentier-Wandtafel. Das Raster ist in 3 Reihen mit jeweils 2 Plätzen unterteilt, und Comet sitzt fest auf Platz 1.",
         "question": "Wie viele mathematisch valide Aufstellungen der Rentiere auf den Plätzen 2 bis 6 erfüllen exakt diese Bedingungen?",
         "answer": "12",
         "puzzle_piece": None,
@@ -363,7 +363,7 @@ if "river" not in st.session_state:
 # ==============================================================================
 # 4. KOPFZEILE & FORTSCHRITT
 # ==============================================================================
-st.title("🎄 Nordpol-Expedition 2026 (Hardcore Edition)")
+st.title("🎄 Weihnachtlicher Rätsel-Adventskalender")
 st.caption("Das mathematisch-logische Advents-Abenteuer mit System-Override")
 
 col_prog, col_stats = st.columns([3, 1])
@@ -382,15 +382,18 @@ cols = st.columns(6)
 for i in range(1, 25):
     col = cols[(i - 1) % 6]
     
-    prefix = ""
-    if 5 <= i <= 12:
+    # Emojis/Präfixe angepasst für alle Tage (auch 1-4)
+    if i <= 4:
+        prefix = "📦 "
+    elif 5 <= i <= 12:
         prefix = "🌀 "
     elif 13 <= i <= 21:
         prefix = "⚙️ "
-    elif 22 <= i <= 24:
+    else:
         prefix = "🔥 "
         
-    label = f"🎁 {prefix}Tag {i}" if i in st.session_state.solved_doors else f"{prefix}Tag {i}"
+    # Korrektes Häkchen (✅) statt Geschenkbox
+    label = f"✅ {prefix}Tag {i}" if i in st.session_state.solved_doors else f"{prefix}Tag {i}"
         
     if col.button(label, key=f"btn_{i}"):
         st.session_state.active_day = i
