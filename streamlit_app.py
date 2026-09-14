@@ -44,7 +44,7 @@ st.markdown("""
         padding: 10px;
         border-radius: 6px;
         margin-bottom: 8px;
-        color: #ffffff;
+        color: #ffd700;
     }
     
     /* Zeitstrahl-Container */
@@ -69,11 +69,14 @@ st.markdown("""
         margin-bottom: 15px;
     }
 
-    /* Story-Boxen (jetzt im dunkelroten Look mit Gold) */
+    /* Story-Boxen (Dunkelrot mit perfekt angepasster, gold-weißer Schrift) */
     div.stAlert {
         background-color: #4a0e17 !important; /* Dunkelrot */
-        color: #ffffff !important;           /* Weißer Text */
         border: 1px solid #ffd700 !important; /* Goldener Rand */
+    }
+    /* Text und Überschriften in der Box perfekt lesbar machen */
+    div.stAlert p, div.stAlert span, div.stAlert div {
+        color: #fff8dc !important; /* Sanftes Warmweiß / Elfenbein */
     }
     div.stAlert svg {
         fill: #ffd700 !important; /* Info-Symbol in Gold */
@@ -85,7 +88,42 @@ st.markdown("""
         color: #ffffff !important;
         border: 1px solid #ffd700 !important;
     }
+
+    /* --- GESCHENKE-REGEN ANIMATION FÜRS FINALE --- */
+    @keyframes fall {
+        0% { transform: translateY(-50px) rotate(0deg); opacity: 1; }
+        100% { transform: translateY(100vh) rotate(360deg); opacity: 0.3; }
+    }
+    .gift-flake {
+        position: fixed;
+        top: -50px;
+        font-size: 24px;
+        animation: fall linear infinite;
+        z-index: 9999;
+        user-select: none;
+        pointer-events: none;
+    }
 </style>
+
+<!-- JavaScript für den echten Geschenke-Regen -->
+<script>
+    const gifts = ['🎁', '📦', '🎀', '🧸', '🌟', '🎄'];
+    function createGiftRain() {
+        const gift = document.createElement('div');
+        gift.className = 'gift-flake';
+        gift.innerHTML = gifts[Math.floor(Math.random() * gifts.length)];
+        gift.style.left = Math.random() * window.innerWidth + 'px';
+        gift.style.animationDuration = (Math.random() * 3 + 2) + 's';
+        gift.style.fontSize = (Math.random() * 20 + 20) + 'px';
+        document.body.appendChild(gift);
+        
+        setTimeout(() => {
+            gift.remove();
+        }, 5000);
+    }
+    // Alle 300ms ein neues Geschenk fallen lassen
+    setInterval(createGiftRain, 300);
+</script>
 """, unsafe_allow_html=True)
 
 # --- SESSION STATE INITIALISIERUNG ---
@@ -106,6 +144,7 @@ if "mirror_state" not in st.session_state:
 
 if "package_sort_step" not in st.session_state:
     st.session_state.package_sort_step = 0
+
 # --- DATENBANK: ALLE TÜRCHEN (1 bis 24) ---
 DOORS = {
     1: {
@@ -342,7 +381,7 @@ DOORS = {
         "title": "Tag 24: HEILIGABEND – Das große Weihnachts-Finale! 🎄",
         "person": "Alle Elfen & Rentiere",
         "type": "special_finale",
-        "story": "Alle Türchen sind geöffnet! Die Geschenke sind verpackt, die Rentiere gesattelt und der Sternenhimmel brennt in den schönsten Farben. Die Mission ist geschafft: Weihnachten ist gerettet!",
+        "story": "Alle Türchen sind geöffnet! Die Geschenke sind verpackt, die Rentiere gesattelt und der Sternenhimmel brennt in den schönsten Farben. Die Mission is geschafft: Weihnachten ist gerettet!",
         "question": "Klicke unten auf den Start-Button, um den Startschuss für die Bescherung zu geben!",
         "answer": "GESCHAFFT",
         "puzzle_piece": "🌟 FROHE WEIHNACHTEN!",
@@ -609,13 +648,11 @@ with main_col:
             else:
                 st.error("❌ Falscher Code.")
 
-    # TAG 24: SPEZIAL-FINALE
+    # TAG 24: SPEZIAL-FINALE (Mit dem neuen Geschenke-Regen)
     elif door["type"] == "special_finale":
         st.markdown("## 🎁✨ DER HEILIGABEND IST DA! ✨🎁")
-        # Hier regnen Geschenke / Schnee vom Himmel
-        st.snow()
         
-        # Zusätzlich ein kleiner optischer Geschenke-Regen per HTML/Text
+        # Festliche große Geschenke-Icons statisch
         st.markdown("""
         <div style="text-align: center; font-size: 2.5rem; letter-spacing: 10px; margin: 15px 0;">
             🎁 🎄 📦 🌟 🎁 🧸 🎀
