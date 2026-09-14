@@ -220,7 +220,7 @@ DOORS = {
 if st.session_state.current_view == "overview":
     st.title("🎄 Weihnachtlicher Rätsel-Adventskalender")
     st.markdown("### Mission: Weihnachten retten 🎅✨")
-    st.write("Wähle ein Türchen aus, um die Aufgabe zu starten. Türchen, die nacheinander freigeschaltet werden oder bereits gelöst sind, siehst du hier auf einen Blick.")
+    st.write("Wähle ein Türchen aus, um die Aufgabe direkt zu testen und zu überprüfen.")
     
     # Fortschrittsleiste oben
     solved_count = len(st.session_state.solved_doors)
@@ -236,21 +236,18 @@ if st.session_state.current_view == "overview":
         for j in range(4):
             if i + j < len(door_keys):
                 d_num = door_keys[i + j]
-                d_info = DOORS[d_num]
                 
                 # Prüfen, ob das Türchen gelöst ist
                 is_solved = d_num in st.session_state.solved_doors
                 
-                # Logik: Tag 1 ist immer offen. Tag X ist offen, wenn Tag X-1 gelöst wurde. (Oder alle frei zum Testen – hier sequenziell gesperrt, außer man hat den Vorgänger gelöst)
-                is_unlocked = (d_num == 1) or ((d_num - 1) in st.session_state.solved_doors) or is_solved
+                # JETZT FREIGESCHALTET: Alle Türchen sind dauerhaft offen zum Testen!
+                is_unlocked = True
 
                 with cols[j]:
                     if is_solved:
                         button_label = f"✅ Tag {d_num}"
-                    elif is_unlocked:
-                        button_label = f"🔓 Tag {d_num}"
                     else:
-                        button_label = f"🔒 Tag {d_num}"
+                        button_label = f"🔓 Tag {d_num}"
 
                     # Klick auf das Türchen
                     if st.button(button_label, use_container_width=True, disabled=not is_unlocked):
@@ -277,6 +274,11 @@ else:
         st.success("✅ Dieses Türchen wurde bereits erfolgreich gelöst!")
         if door["puzzle_piece"]:
             st.markdown(f"**Gesammeltes Element:** {door['puzzle_piece']}")
+        
+        # Test-Reset-Button, damit man es im Testmodus neu versuchen kann
+        if st.button("🔄 Dieses Türchen zum Testen zurücksetzen"):
+            st.session_state.solved_doors.remove(day)
+            st.rerun()
     else:
         st.subheader("❓ Aufgabe:")
         st.write(door["question"])
