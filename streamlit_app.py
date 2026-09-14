@@ -716,5 +716,3 @@ if show_sidebar:
                 
         st.write("---")
         st.metric("Gefundene Fragmente", f"{len(lab_pieces)} / 8")
-
-```
