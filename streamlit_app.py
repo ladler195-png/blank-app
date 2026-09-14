@@ -86,9 +86,10 @@ components.html("""
 """, height=0)
 
 # ==============================================================================
-# 2. RÄTSEL-DATENBANK
+# 2. RÄTSEL-DATENBANK (AKT 1 BIS 4)
 # ==============================================================================
 DOORS = {
+    # AKT 1: ZUHAUSE & AUFTAKT (1-4)
     1: {
         "person": "Person A",
         "title": "Tag 1: Die mysteriöse Holzbox",
@@ -129,6 +130,8 @@ DOORS = {
         "puzzle_piece": None,
         "hint": "90-10 = 80. Quersumme von 2026 (2+0+2+6 = 10) * 10 = 100. Zusammen: 80100."
     },
+    
+    # AKT 2: DAS LABYRINTH (5-12)
     5: {
         "person": "Person B",
         "title": "Tag 5: Das Nebel-Tor & Fragment 1",
@@ -136,7 +139,7 @@ DOORS = {
         "story": "Der Schlitten stoppt vor einer massiven Nebelwand aus blauem Eis.",
         "question": "Welchen Aggregatzustand nimmt Wasser bei klarem Frost an?",
         "answer": "EIS",
-        "puzzle_piece": "🧩 Fragment 1 (Buchstabe unten links): **E**",
+        "puzzle_piece": "🧩 Fragment 1: **E**",
         "hint": "Ein kurzes, dreibuchstabiges Wort."
     },
     6: {
@@ -146,7 +149,7 @@ DOORS = {
         "story": "Ihr findet ein magisches 3x3-Sudoku, bei dem Zeilen, Spalten und Diagonalen exakt 15 ergeben. Die Mitte ist 5.",
         "question": "Trage die fehlenden Zahlen in die leeren Felder ein (Zeile 1: 8, ?, 6 | Zeile 2: 3, 5, 7 | Zeile 3: 4, ?, 2). Welcher Wert fehlt oben in der Mitte?",
         "answer": "1",
-        "puzzle_piece": "🧩 Fragment 2 (Buchstabe unten links): **X**",
+        "puzzle_piece": "🧩 Fragment 2: **X**",
         "hint": "Die Summe jeder Zeile muss 15 ergeben (8 + ? + 6 = 15)."
     },
     7: {
@@ -156,7 +159,7 @@ DOORS = {
         "story": "Vor der Eisspalte müsst ihr anhand von Hinweisen herausfinden, welcher Elf welchen Weg gewählt hat.",
         "question": "Hinweise:\n1. Der Elf mit dem Eispickel nahm den gefährlichsten Weg.\n2. Elf A nahm den Gletscher-Pfad.\n3. Elf B nahm den Schlucht-Pfad.\nWelchen Weg nahm folglich Elf C mit dem Eispickel?",
         "answer": "EISHÖHLEN-WEG",
-        "puzzle_piece": "🧩 Fragment 3 (Buchstabe unten links): **P**",
+        "puzzle_piece": "🧩 Fragment 3: **P**",
         "hint": "Schließe durch Ausschlussverfahren aus, welche Wege A und B belegt haben."
     },
     8: {
@@ -166,7 +169,7 @@ DOORS = {
         "story": "Ein Funksignal hallt durch die Nebelwände. Nutze das Morse-Terminal, um das universelle Notsignal **SOS** abzusetzen!",
         "question": "Klicke die Tasten in der korrekten Reihenfolge: Drei mal Kurz (•), drei mal Lang (-), drei mal Kurz (•).",
         "answer": "...---...",
-        "puzzle_piece": "🧩 Fragment 4 (Buchstabe unten links): **E**",
+        "puzzle_piece": "🧩 Fragment 4: **E**",
         "hint": "SOS = 3x Punkt, 3x Strich, 3x Punkt."
     },
     9: {
@@ -176,7 +179,7 @@ DOORS = {
         "story": "Ein Laserstrahl bricht durch den Nebel. Der Strahl kommt von Süden und muss nach Osten abgelenkt werden.",
         "question": "Bringe die Spiegel in die richtige Kombination, damit der Strahl von Süden nach Osten umgelenkt wird.",
         "answer": "NO",
-        "puzzle_piece": "🧩 Fragment 5 (Buchstabe unten links): **D**",
+        "puzzle_piece": "🧩 Fragment 5: **D**",
         "hint": "Ein schräger Spiegel '/' lenkt einen von unten kommenden Strahl nach rechts (Osten) ab."
     },
     10: {
@@ -186,7 +189,7 @@ DOORS = {
         "story": "Du stehst am Gletscherfluss mit Wolf, Ziege und Kohl. Du darfst immer nur einen Passagier mitnehmen.",
         "question": "Bringe alle sicher auf die andere Seite, ohne dass Fressfeinde unbeaufsichtigt gelassen werden!",
         "answer": "COMPLETED",
-        "puzzle_piece": "🧩 Fragment 6 (Buchstabe unten links): **I**",
+        "puzzle_piece": "🧩 Fragment 6: **I**",
         "hint": "Nimm zuerst die Ziege rüber, fahre allein zurück, nimm den Wolf rüber..."
     },
     11: {
@@ -196,7 +199,7 @@ DOORS = {
         "story": "Das Schloss vor dem Ausgang verlangt die Lösung eines Kombinatorik-Rätsels.",
         "question": "Wie viele verschiedene Möglichkeiten gibt es, 3 verschiedene Geschenke unter den Elfen aufzuteilen? (Fakultät von 3 = 3!)\n\n**Eingabe:** Zahl eingeben.",
         "answer": "6",
-        "puzzle_piece": "🧩 Fragment 7 (Buchstabe unten links): **T**",
+        "puzzle_piece": "🧩 Fragment 7: **T**",
         "hint": "3 * 2 * 1 = 6."
     },
     12: {
@@ -206,124 +209,128 @@ DOORS = {
         "story": "Ihr habt alle Fragmente von Tag 5 bis 11 gesammelt. Unten links auf jedem Fragment stand ein Buchstabe!",
         "question": "Setzt die gesammelten Buchstaben von Tag 5 bis 11 in der richtigen Reihenfolge zu einem 7-stelligen Lösungswort zusammen und tippt es ein.",
         "answer": "EXPEDIT",
-        "puzzle_piece": "🏆 GEWONNEN: Die Werkstatt ist geöffnet!",
+        "puzzle_piece": "🏆 GEWONNEN: Das Tor zur Werkstatt ist geöffnet!",
         "hint": "Die Buchstaben aus den Fragmenten (Tag 5 bis 11) ergeben hintereinander gelesen ein Wort rund um unsere Reise."
     },
+    
+    # AKT 3: DIE WERKSTATT-RETTUNG (13-21)
     13: {
         "person": "Person A",
         "title": "Tag 13: Das Zahnrad-Getriebe ⚙️",
         "type": "gear_puzzle",
-        "story": "Die Hauptzahnräder der Werkstatt klemmen!",
-        "question": "Stelle die benötigte Umdrehung des 12er-Rads ein (kgV von 12, 18, 24 = 72).",
+        "story": "Ihr tretet durch das Tor. Überall dampft es, Elfen rennen panisch im Kreis und die Hauptzahnräder der Geschenkeproduktion stehen stockstifft!",
+        "question": "Synchronisiert das Getriebe durch Einstellen der korrekten Umdrehungen des 12er-Rads (kgV von 12, 18, 24 = 72).",
         "answer": 6,
         "puzzle_piece": None,
         "hint": "72 / 12 = 6 Umdrehungen."
     },
     14: {
         "person": "Person B",
-        "title": "Tag 14: Chaos in der Packstation",
-        "type": "text",
-        "story": "Sortiere die durcheinandergeratenen Buchstaben.",
-        "question": "Entferne alle Buchstaben von 'MAGIE' aus 'ELFENMAGIE'.",
-        "answer": "ELFEN",
+        "title": "Tag 14: Chaos in der Paketstation 📦",
+        "type": "package_sort",
+        "story": "Transport-Roboter sind durchgedreht und Pakete wurden vertauscht. Die Elfen brauchen Ordnung im System.",
+        "question": "Welche Paket-Priorität muss als Nächstes verarbeitet werden? (Tippe den exakten Code: 'EXPRESS')",
+        "answer": "EXPRESS",
         "puzzle_piece": None,
-        "hint": "ELFENMAGIE - MAGIE = ELFEN."
+        "hint": "Der Standard für dringende Weihnachtsfracht lautet E-X-P-R-E-S-S."
     },
     15: {
         "person": "Person C",
-        "title": "Tag 15: Rentierfutter-Mischstation ⚖️",
-        "type": "scale_puzzle",
-        "story": "Mische das Futter auf der Balkenwaage im exakten Verhältnis an.",
-        "question": "Stelle Schieberegler so ein, dass exakt 50 kg entstehen (Hafer: 25, Sternenstaub: 10, Äpfel: 15).",
-        "answer": {"hafer": 25, "staub": 10, "aepfel": 15},
-        "puzzle_piece": None,
-        "hint": "Hafer=25, Staub=10, Äpfel=15."
-    },
-    16: {
-        "person": "Person A",
-        "title": "Tag 16: Schalttafel für Notstrom",
-        "type": "binary_switches",
-        "story": "Aktiviere den Notstrom-Schaltkreis für die Binärzahl 25.",
-        "question": "Schalte die passenden Schalter ein (16 + 8 + 1).",
-        "answer": [True, True, False, False, True],
-        "puzzle_piece": None,
-        "hint": "Schalter 1 (16), 2 (8) und 5 (1) auf AN."
-    },
-    17: {
-        "person": "Person B",
-        "title": "Tag 17: Die Wunschzettel-Maschine",
+        "title": "Tag 15: Wunschzettel-Priorisierung 📜",
         "type": "text",
-        "story": "Kalibriere den Daten-Sortierer.",
+        "story": "Die Wunschzettel-Maschine spuckt Millionen Briefe ungeordnet aus. Berechne den Median für die Sortierreihenfolge.",
         "question": "Bestimme den Median der Zahlenreihe: 12, 45, 7, 23, 89, 34, 19",
         "answer": "23",
         "puzzle_piece": None,
-        "hint": "Sortiert: 7, 12, 19, [23], 34, 45, 89."
+        "hint": "Sortiere die Zahlen aufsteigend: 7, 12, 19, [23], 34, 45, 89."
+    },
+    16: {
+        "person": "Person A",
+        "title": "Tag 16: Der Notstrom-Ausfall ⚡",
+        "type": "binary_switches",
+        "story": "Plötzlich – *Zappenduster!* Der Hauptstrom ist ausgefallen. Ihr müsst im Notfall-Keller die Schalter für die Dezimalzahl 25 einrasten.",
+        "question": "Aktiviere die passenden Starkstrom-Relais (16 + 8 + 1).",
+        "answer": [True, True, False, False, True],
+        "puzzle_piece": None,
+        "hint": "Schalter 1 (16), 2 (8) und 5 (1) auf AN stellen."
+    },
+    17: {
+        "person": "Person B",
+        "title": "Tag 17: Polarlichter-Frequenz 📻",
+        "type": "frequency_tuner",
+        "story": "Kaum läuft der Strom wieder, bricht der Funkkontakt ab, weil Polarlichter das Funksignal stören.",
+        "question": "Richte das Frequenz-Widget auf exakt 87.5 MHz aus.",
+        "answer": 87.5,
+        "puzzle_piece": None,
+        "hint": "Schieberegler auf 87.5 MHz einstellen."
     },
     18: {
         "person": "Person C",
-        "title": "Tag 18: Das Werkstatt-Schloss",
+        "title": "Tag 18: Die Sicherheitstür zum Hangar 🔐",
         "type": "text",
-        "story": "Sichere das System ab.",
-        "question": "Rechne: (Tag 13: 6) × (Tag 15 Sternenstaub: 10) + (Tag 17: 23)",
+        "story": "Um zum Hangar vorzudringen, verlangt das Sicherheitsschloss eine Verknüpfung vorheriger Daten.",
+        "question": "Rechne: (Zahnrad-Umdrehungen aus Tag 13: 6) × (Frequenz-Basis: 10) + (Median aus Tag 15: 23)",
         "answer": "83",
         "puzzle_piece": None,
         "hint": "6 * 10 + 23 = 83."
     },
     19: {
         "person": "Person A",
-        "title": "Tag 19: Flugrouten-Kalkulation",
+        "title": "Tag 19: Rentiere anspannen (Teil 1) 🦌",
         "type": "text",
-        "story": "Berechne die optimalen Fluglinien.",
+        "story": "Die Rentiere stehen bereit, aber ihre Aufstellung muss mathematisch exakt berechnet werden.",
+        "question": "Wie viele Anordnungen gibt es für 7 Rentiere hinter Rudolph? (Fakultät von 7 = 7!)",
+        "answer": "5040",
+        "puzzle_piece": None,
+        "hint": "7 × 6 × 5 × 4 × 3 × 2 × 1 = 5040."
+    },
+    20: {
+        "person": "Person B",
+        "title": "Tag 20: Rentierfutter-Mischstation ⚖️",
+        "type": "scale_puzzle",
+        "story": "Mische das Spezialfutter auf der Balkenwaage für den langen Flug an.",
+        "question": "Stelle Schieberegler so ein, dass exakt 50 kg entstehen (Hafer: 25, Sternenstaub: 10, Äpfel: 15).",
+        "answer": {"hafer": 25, "staub": 10, "aepfel": 15},
+        "puzzle_piece": None,
+        "hint": "Hafer=25, Staub=10, Äpfel=15."
+    },
+    21: {
+        "person": "Person C",
+        "title": "Tag 21: Flugrouten-Kalkulation 🗺️",
+        "type": "text",
+        "story": "Der Bordcomputer des Schlittens braucht die perfekte, spritzsichere Route.",
         "question": "Kürzeste Strecke (in km), um alle 4 Ecken eines 100x100km Quadrats nacheinander zu besuchen?",
         "answer": "300",
         "puzzle_piece": None,
         "hint": "3 Kanten abfliegen: 100 + 100 + 100 = 300 km."
     },
-    20: {
-        "person": "Person B",
-        "title": "Tag 20: Polarlichter-Frequenz",
-        "type": "frequency_tuner",
-        "story": "Der Funkempfänger ist verstellt! Finde die Resonanzfrequenz.",
-        "question": "Richte das Frequenz-Widget auf 87.5 MHz aus.",
-        "answer": 87.5,
-        "puzzle_piece": None,
-        "hint": "Schieberegler auf 87.5 MHz einstellen."
-    },
-    21: {
-        "person": "Person C",
-        "title": "Tag 21: Rentiere anspannen",
-        "type": "text",
-        "story": "Berechne die Aufstellung der Rentiere.",
-        "question": "Wie viele Anordnungen für 7 Rentiere hinter Rudolph? (Fakultät von 7 = 7!)",
-        "answer": "5040",
-        "puzzle_piece": None,
-        "hint": "7 × 6 × 5 × 4 × 3 × 2 × 1 = 5040."
-    },
+    
+    # AKT 4: DAS GROSSE FINALE (22-24)
     22: {
         "person": "Person A",
-        "title": "Tag 22: Frachtraum-Ausgleich",
+        "title": "Tag 22: Der Frachtraum-Ausgleich ⚖️",
         "type": "text",
-        "story": "Der Schlitten benötigt die finale Gewichtsanpassung.",
-        "question": "Geladen: (3 × 150 kg) + (4 × 110 kg) = 890 kg. Wie viel kg fehlen bis zu 1000 kg?",
+        "story": "Der Schlitten ist vollgepackt, aber die digitale Waage blinkt rot. Übergewicht droht über Grönland!",
+        "question": "Geladen: (3 × 150 kg) + (4 × 110 kg) = 890 kg. Wie viel kg fehlen bis zum Startgewicht von 1000 kg?",
         "answer": "110",
         "puzzle_piece": None,
         "hint": "1000 - 890 = 110."
     },
     23: {
         "person": "Person B",
-        "title": "Tag 23: Finale Startbereitschaft",
+        "title": "Tag 23: Triebwerke zünden (Der Countdown) 🔥",
         "type": "text",
-        "story": "Der Weihnachts-Countdown läuft!",
-        "question": "Rechne: (Tag 3 Ergebnis: 8) + (Tag 18 Ergebnis: 83) + Basiszahl.",
+        "story": "Alle Systeme stehen auf grün. Jetzt müssen die magischen Haupttriebwerke in exakter Sequenz hochgefahren werden.",
+        "question": "Rechne: (Tag 3 Ergebnis: 8) + (Tag 18 Sicherheits-Ergebnis: 83).",
         "answer": "91",
         "puzzle_piece": None,
         "hint": "8 + 83 = 91."
     },
     24: {
         "person": "Alle 3 gemeinsam",
-        "title": "Tag 24: HEILIGABEND – Der Master-Code!",
+        "title": "Tag 24: HEILIGABEND – Der Start & Das Meister-Finale 🎄",
         "type": "text",
-        "story": "Hauptkontrollraum! Auf den Monitoren blinkt die Eingabe.",
+        "story": "Hauptkontrollraum! Stille liegt über der Werkstatt. Nur das Glitzern der Kufen ist zu hören. Der Master-Computer verlangt den ultimativen Start-Code.",
         "question": "Fügt zusammen: Code Tag 3 (500) + Code Tag 12 (NORD12) + Code Tag 23 (583)",
         "answer": "500NORD12583",
         "puzzle_piece": "🏆 MEISTER-TITEL: RETTER VON WEIHNACHTEN!",
@@ -358,7 +365,7 @@ if "river" not in st.session_state:
 # 4. KOPFZEILE & FORTSCHRITT
 # ==============================================================================
 st.title("🎄 Nordpol-Expedition 2026")
-st.caption("Das mathematisch-logische Advents-Abenteuer (Optimierte Version)")
+st.caption("Das mathematisch-logische Advents-Abenteuer (Komplett-Version)")
 
 col_prog, col_stats = st.columns([3, 1])
 with col_prog:
@@ -376,7 +383,14 @@ cols = st.columns(6)
 for i in range(1, 25):
     col = cols[(i - 1) % 6]
     
-    prefix = "🌀 " if 5 <= i <= 12 else ""
+    prefix = ""
+    if 5 <= i <= 12:
+        prefix = "🌀 "
+    elif 13 <= i <= 21:
+        prefix = "⚙️ "
+    elif 22 <= i <= 24:
+        prefix = "🔥 "
+        
     label = f"🎁 {prefix}Tag {i}" if i in st.session_state.solved_doors else f"{prefix}Tag {i}"
         
     if col.button(label, key=f"btn_{i}"):
@@ -492,7 +506,7 @@ with main_col:
                 st.session_state.solved_doors.append(day)
                 st.rerun()
 
-    # STANDARD-WIDGETS FÜR ANDERE TAGE
+    # TAG 9: SPIEGEL-RÄTSEL
     elif door["type"] == "mirror_puzzle":
         st.write("🔦 **Laser-Spiegel-Ausrichtung:** Klicke auf die Spiegel, um die Ausrichtung zu ändern.")
         m_col1, m_col2, m_col3 = st.columns(3)
@@ -515,16 +529,46 @@ with main_col:
         else:
             st.warning("🔴 Strahl wird noch falsch reflektiert.")
 
+    # TAG 13: GETRIEBE-RÄTSEL
     elif door["type"] == "gear_puzzle":
         rot = st.slider("⚙️ Umdrehungen des 12er-Rads:", 1, 12, 1, key="rot_slider")
         if st.button("Zahnräder einrasten ⚙️", key=f"chk_{day}"):
             if rot == door["answer"]:
-                st.success("🎉 Synchronisiert!")
+                st.success("🎉 Synchronisiert! Die Fließbänder laufen wieder an.")
                 if day not in st.session_state.solved_doors:
                     st.session_state.solved_doors.append(day)
                     st.rerun()
             else:
-                st.error("❌ Noch nicht synchron.")
+                st.error("❌ Noch nicht synchron. Prüfe das kgV.")
+
+    # TAG 16: BINÄR-SCHALTER
+    elif door["type"] == "binary_switches":
+        b1, b2, b3, b4, b5 = st.columns(5)
+        s1 = b1.checkbox("Schalter 1 (16)", key="cb1")
+        s2 = b2.checkbox("Schalter 2 (8)", key="cb2")
+        s3 = b3.checkbox("Schalter 3 (4)", key="cb3")
+        s4 = b4.checkbox("Schalter 4 (2)", key="cb4")
+        s5 = b5.checkbox("Schalter 5 (1)", key="cb5")
+        if st.button("Schaltkreis aktivieren ⚡", key=f"chk_{day}"):
+            if [s1, s2, s3, s4, s5] == door["answer"]:
+                st.success("🎉 Stromkreis aktiv! Das Licht flackert und brennt hell.")
+                if day not in st.session_state.solved_doors:
+                    st.session_state.solved_doors.append(day)
+                    st.rerun()
+            else:
+                st.error("❌ Falsche Schaltung für Dezimalzahl 25.")
+
+    # TAG 17 & 20: FREQUENZ / WAGE
+    elif door["type"] == "frequency_tuner":
+        freq = st.slider("📻 Empfänger (MHz):", 80.0, 100.0, 92.0, step=0.5, key="freq_slider")
+        if st.button("Signal-Frequenz feststellen 📡", key=f"chk_{day}"):
+            if abs(freq - door["answer"]) < 0.1:
+                st.success("🎉 Glasklarer Empfang mit dem Kontrollturm!")
+                if day not in st.session_state.solved_doors:
+                    st.session_state.solved_doors.append(day)
+                    st.rerun()
+            else:
+                st.error("❌ Nur Rauschen im Äther.")
 
     elif door["type"] == "scale_puzzle":
         w_hafer = st.slider("🌾 Hafer (kg)", 0, 50, 20, key="w_h")
@@ -532,7 +576,7 @@ with main_col:
         w_aepfel = st.slider("🍎 Äpfel (kg)", 0, 50, 10, key="w_a")
         if st.button("Futter-Mischung wiegen ⚖️", key=f"chk_{day}"):
             if w_hafer == 25 and w_staub == 10 and w_aepfel == 15:
-                st.success("🎉 Perfektes Verhältnis!")
+                st.success("🎉 Perfektes Futter-Verhältnis!")
                 if day not in st.session_state.solved_doors:
                     st.session_state.solved_doors.append(day)
                     st.rerun()
@@ -554,35 +598,9 @@ with main_col:
             else:
                 st.error("❌ Falscher Code.")
 
-    elif door["type"] == "binary_switches":
-        b1, b2, b3, b4, b5 = st.columns(5)
-        s1 = b1.checkbox("Schalter 1 (16)", key="cb1")
-        s2 = b2.checkbox("Schalter 2 (8)", key="cb2")
-        s3 = b3.checkbox("Schalter 3 (4)", key="cb3")
-        s4 = b4.checkbox("Schalter 4 (2)", key="cb4")
-        s5 = b5.checkbox("Schalter 5 (1)", key="cb5")
-        if st.button("Schaltkreis aktivieren ⚡", key=f"chk_{day}"):
-            if [s1, s2, s3, s4, s5] == door["answer"]:
-                st.success("🎉 Stromkreis aktiv!")
-                if day not in st.session_state.solved_doors:
-                    st.session_state.solved_doors.append(day)
-                    st.rerun()
-            else:
-                st.error("❌ Falsche Schaltung.")
-
-    elif door["type"] == "frequency_tuner":
-        freq = st.slider("📻 Empfänger (MHz):", 80.0, 100.0, 92.0, step=0.5, key="freq_slider")
-        if st.button("Signal-Frequenz feststellen 📡", key=f"chk_{day}"):
-            if abs(freq - door["answer"]) < 0.1:
-                st.success("🎉 Glasklarer Empfang!")
-                if day not in st.session_state.solved_doors:
-                    st.session_state.solved_doors.append(day)
-                    st.rerun()
-            else:
-                st.error("❌ Nur Rauschen.")
-
+    # STANDARD-TEXT ODER SPEZIAL-TEXT FÜR AKT 3 & 4
     else:
-        if door["type"] not in ["sudoku_puzzle", "logic_grid", "morse_terminal", "river_crossing"]:
+        if door["type"] not in ["sudoku_puzzle", "logic_grid", "morse_terminal", "river_crossing", "mirror_puzzle", "gear_puzzle", "binary_switches", "frequency_tuner", "scale_puzzle", "lock_sliders"]:
             ans = st.text_input("Deine Lösung:", key=f"input_{day}")
             if st.button("Prüfen 🔍", key=f"chk_{day}"):
                 user_clean = ans.strip().replace(" ", "").upper()
@@ -591,6 +609,8 @@ with main_col:
                     st.success("🎉 Richtig gelöst!")
                     if day not in st.session_state.solved_doors:
                         st.session_state.solved_doors.append(day)
+                        if day == 24:
+                            st.balloons()
                         st.rerun()
                 else:
                     st.error("❌ Leider nicht korrekt.")
