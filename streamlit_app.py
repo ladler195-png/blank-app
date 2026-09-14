@@ -2,7 +2,7 @@ import streamlit as st
 
 # --- SEITEN-KONFIGURATION ---
 st.set_page_config(
-    page_title="Weihnachtlicher Rätsel-Adventskalender",
+    page_title="Weihnachtlicher Rätsel-Adventskalender für Profis",
     page_icon="🎄",
     layout="centered"
 )
@@ -17,49 +17,49 @@ if "quiz_step" not in st.session_state:
 if "current_view" not in st.session_state:
     st.session_state.current_view = "overview"
 
-# --- DATENBANK: ALLE TÜRICHEN VON 1 BIS 21 ---
+# --- DATENBANK: ALLE 21 TÜRCHEN (ANSPRUCHSVOLL & INTERAKTIV) ---
 DOORS = {
     1: {
         "title": "Tag 1: Die mysteriöse Holzbox",
         "type": "text",
-        "story": "Es klingelt an der Haustür. Ihr öffnet, aber niemand steht davor. Stattdessen liegt ein Päckchen vor der Tür – Absender: Nordpol. Im Wohnzimmer geöffnet, kommt eine schwere, eisige Holzbox zum Vorschein mit einem Zahlenschloss und einem Gedicht.",
+        "story": "Es klingelt an der Haustür. Ihr öffnet, aber niemand steht davor. Stattdessen liegt ein schweres, eisiges Päckchen vor der Tür vom Absender 'Nordpol'. Im Wohnzimmer geöffnet, kommt eine Holzbox mit einem Zahlenschloss zum Vorschein.",
         "question": "Löse das Rätsel des Gedichts:\n\n> *Vier kleine Ziffern im winterlichen Schnee.*\n> *Zähle die Buchstaben, die ich dir steh.*\n> *Wie viele Ecken hat ein Stern plus die Anzahl der Rentiere fern*\n> *minus die Ziffer, die an Weihnachten lacht, hat das Schloss für euch aufgemacht.*\n\nGib den vierstelligen Zahlencode ein:",
         "answer": "5924",
         "puzzle_piece": None,
-        "hint": "Rechne: Stern-Ecken (5) + Rentiere (9) minus Weihnachtstag (24)... beachte die Ziffernkombination."
+        "hint": "Stern-Ecken (5) + Rentiere (9) - Weihnachtstag (24)... achte auf die Ziffernkombination."
     },
     2: {
         "title": "Tag 2: Das vergilbte Pergament",
         "type": "text",
-        "story": "Das Schloss springt auf und im Inneren liegt ein altes Pergament. Darauf steht die kryptische Nachricht 'S I V X'. Unten ist ein Lorbeerkranz eingraviert.",
-        "question": "Entschlüssele das Codewort mithilfe des antiken Hinweises (Cäsar-Verschiebung):\n\nDeine Lösung:",
+        "story": "Das Schloss springt auf und im Inneren liegt ein altes Pergament mit der kryptischen Cäsar-Verschlüsselung 'S I V X'.",
+        "question": "Entschlüssele das Codewort mithilfe der klassischen Alphabet-Verschiebung (-3):",
         "answer": "NORD",
         "puzzle_piece": None,
-        "hint": "Der Lorbeerkranz verweist auf Julius Cäsar und eine klassische Verschiebung im Alphabet."
+        "hint": "Jeder Buchstabe im Alphabet wird um 3 Positionen zurückverschoben (S -> P -> O -> N...)."
     },
     3: {
         "title": "Tag 3: Das Rentier-Expertenrätsel",
         "type": "reindeer_quiz",
-        "story": "Nachdem das Codewort ausgesprochen ist, hört man Glockenklingeln. Vor dem Fenster steht ein Schlitten mit 8 Rentieren. Sie nehmen euch nur mit, wenn ihr ihr strenges Expertenwissen beweist.",
-        "question": "Beantwortet die anspruchsvollen Fragen über Rentiere nacheinander.",
+        "story": "Glockenklingeln! Vor dem Fenster wartet der Rentierschlitten. Die Tiere prüfen euch mit knallhartem biologischen und historischen Expertenwissen.",
+        "question": "Beantwortet die 5 Fachfragen über Rentiere nacheinander.",
         "answer": "QUIZ_SOLVED",
         "puzzle_piece": None,
-        "hint": "Biologisches Fachwissen über Augen, Geweih, Artnamen und Historie ist gefragt."
+        "hint": "Biologisches Fachwissen über Augenanatomie, Geweihbiologie und historische Dokumente ist gefragt."
     },
     4: {
         "title": "Tag 4: Das Navigationssystem",
         "type": "text",
-        "story": "Ihr sitzt im Schlitten und wollt starten, doch das Navigationssystem verlangt exakte Kurskoordinaten aus dem Handbuch.",
-        "question": "Berechne die Kurskoordinaten:\nDer Breitengrad startet bei exakt 90 Grad Nord, minus der Anzahl der Rentiere. Für den Längengrad nehmen wir die magische Quersumme von 2026 mal 10. Gib den kombinierten 5-stelligen Wert ein.",
+        "story": "Ihr sitzt im Schlitten. Das Bordsystem verlangt die exakten Kurskoordinaten aus dem Handbuch, formatiert untereinander.",
+        "question": "Berechne die Koordinaten:\n\n- Breitengrad: Exakt 90 Grad Nord minus die Anzahl der Rentiere.\n- Längengrad: Die magische Quersumme von 2026 multipliziert mit 10.\n\nGib beide Werte als 5-stelligen Gesamtwert ein (Breitengrad + Längengrad):",
         "answer": "81100",
         "puzzle_piece": "Koordinaten-Init",
-        "hint": "90 - 9 = Breitengrad; (2+0+2+6) * 10 = Längengrad."
+        "hint": "90 - 9 = 81; Quersumme von 2026 (2+0+2+6 = 10) * 10 = 100 -> 81100"
     },
     5: {
         "title": "Tag 5: Das Nebel-Tor",
         "type": "text",
-        "story": "Der Schlitten durchbricht die Wolkendecke, steuert aber direkt auf eine massive, undurchdringliche Nebelwand aus blauem Eis zu.",
-        "question": "Wie nennt man den kritischen physikalischen Punkt in der Meteorologie, bei dem die Luft vollständig mit Wasserdampf gesättigt ist und Nebel entsteht?",
+        "story": "Der Schlitten steuert auf eine undurchdringliche Nebelwand aus blauem Eis zu. Nur meteorologisches Fachwissen öffnet die Barriere.",
+        "question": "Wie nennt man den kritischen physikalischen Punkt in der Meteorologie, bei dem die Luft bei konstantem Druck vollständig mit Wasserdampf gesättigt ist? (8 Buchstaben)",
         "answer": "TAUPUNKT",
         "puzzle_piece": "🧩 Fragment 1: **E**",
         "hint": "Die Temperatur, bei der die relative Luftfeuchtigkeit 100% erreicht."
@@ -67,17 +67,17 @@ DOORS = {
     6: {
         "title": "Tag 6: Das magische Sudoku",
         "type": "sudoku_puzzle",
-        "story": "Hinter dem Nebel glimmt die Steintafel des Bordsystems auf – eine eingefrorene Eistafel mit einem magischen Zahlenraster.",
-        "question": "Löse das 4x4-Sudoku auf der Eistafel.",
+        "story": "Hinter dem Nebel glimmt eine eingefrorene Eistafel mit einem 4x4-Sudoku auf.",
+        "question": "Löse das Raster auf der Eistafel.",
         "answer": "SOLVED",
         "puzzle_piece": "🧩 Fragment 2: **R**",
-        "hint": "Jede Zeile, Spalte und jedes 2x2-Feld enthält die Zahlen 1 bis 4."
+        "hint": "Jede Zeile, Spalte und jedes 2x2-Feld muss die Zahlen 1 bis 4 enthalten."
     },
     7: {
         "title": "Tag 7: Der Jetstream-Kurs",
         "type": "text",
-        "story": "Plötzliche Sturmböen drängen den Schlitten ab. Ihr müsst den optimalen, schnellsten Höhenkorridor (Jetstream) berechnen.",
-        "question": "Welcher Weg ist der schnellste (Gesamtzeit in Minuten als Wort eingeben)?\n- Weg Alpha: 7 Min Grundzeit * 3 - 4 Minuten\n- Weg Beta: 21 km bei 14 km/h + 2 Minuten Kletterzeit\n- Weg Gamma: Die Hälfte einer 30-km-Strecke bei 10 km/h + 1 Min Check",
+        "story": "Plötzliche Sturmböen erfordern die mathematische Berechnung des schnellsten Höhenkorridors.",
+        "question": "Welcher Weg ist der absolut schnellste (Gesamtzeit in Minuten als Wort eingeben)?\n- Weg Alpha: 7 Min Grundzeit * 3 - 4 Minuten\n- Weg Beta: 21 km Strecke bei 14 km/h Schnitt + 2 Minuten Kletterzeit\n- Weg Gamma: Die Hälfte einer 30-km-Strecke bei 10 km/h Schnitt + 1 Min Check",
         "answer": "ALPHA",
         "puzzle_piece": "🧩 Fragment 3: **N**",
         "hint": "Alpha = 17 Min, Beta = 92 Min, Gamma = 91 Min."
@@ -85,26 +85,26 @@ DOORS = {
     8: {
         "title": "Tag 8: Das verzerrte Funksignal (Morse-Decoder)",
         "type": "morse_puzzle",
-        "story": "Mitten im Sturm empfängt das Funkgerät eine stark verrauschte Notfall-Nachricht aus der Weihnachtswerkstatt. Nutze die Morse-Tabelle, um das Signal zu entschlüsseln!",
+        "story": "Mitten im Sturm empfängt das Funkgerät eine stark verrauschte Notfall-Nachricht aus der Weihnachtswerkstatt im Morse-Code.",
         "question": "Entschlüssele den Morse-Code: `.-. . - - . .-.`",
         "answer": "RETTER",
         "puzzle_piece": "🧩 Fragment 4: **T**",
-        "hint": "A=.-, E=., R=.-., T=-. Lies den Code Spalte für Spalte."
+        "hint": "A=.-, E=., R=.-., T=-. Lies den Code Spalte für Spalte von links nach rechts."
     },
     9: {
         "title": "Tag 9: Die Aurora-Spektralanalyse",
         "type": "text",
-        "story": "Das Energieschild des Schlittens sinkt durch die Polarlichter. Ihr müsst die Haupt-Wellenlänge im RGB-Spektrum exakt einstellen.",
-        "question": "Welche additive Grundfarbe liegt bei einer reinen Wellenlänge von ca. 700 Nanometern im Lichtspektrum vor?",
+        "story": "Das Energieschild des Schlittens sinkt im Polarlicht. Ihr müsst die Haupt-Wellenlänge im optischen Spektrum einstellen.",
+        "question": "Welche additive Grundfarbe liegt im sichtbaren Lichtspektrum bei einer Wellenlänge von ca. 700 Nanometern vor?",
         "answer": "ROT",
         "puzzle_piece": "🧩 Fragment 5: **E**",
-        "hint": "Es ist die Farbe am langwelligen Ende des sichtbaren Spektrums."
+        "hint": "Es ist die langwelligste Farbe des sichtbaren Spektrums."
     },
     10: {
         "title": "Tag 10: Das Polar-Wetter-Labyrinth",
         "type": "text",
-        "story": "Ihr müsst das Auge des Sturms durchqueren. Ein magisches Vektor-Labyrinth auf dem Display versperrt den Kurs.",
-        "question": "Wenn ein Vektor 3 Einheiten nach Norden und 4 nach Osten zeigt, wie lang ist der direkte Weg (Luftlinie nach Pythagoras)? Gib die ganze Zahl ein.",
+        "story": "Das Auge des Sturms verlangt die exakte Vektor-Berechnung des Fluchtkurses.",
+        "question": "Wenn ein Vektor exakt 3 Einheiten nach Norden und 4 Einheiten nach Osten zeigt, wie lang ist der direkte Weg (Luftlinie nach Pythagoras)? Gib die ganze Zahl ein.",
         "answer": "5",
         "puzzle_piece": "🧩 Fragment 6: **N**",
         "hint": "Satz des Pythagoras: 3² + 4² = c²"
@@ -112,34 +112,34 @@ DOORS = {
     11: {
         "title": "Tag 11: Der Energie-Kern",
         "type": "text",
-        "story": "Kurz vor dem Ziel glimmt der magische Antrieb des Schlittens rot. Er verlangt eine mathematische Formel zur Energiebündelung.",
-        "question": "Berechne die Fakultät von 5 (5! = 1 * 2 * 3 * 4 * 5):",
+        "story": "Der magische Antrieb verlangt eine kombinatorische Formel zur Energiebündelung.",
+        "question": "Berechne die mathematische Fakultät von 5 (Notiert als 5!):",
         "answer": "120",
         "puzzle_piece": "🧩 Fragment 7: **S**",
-        "hint": "Multipliziere die Zahlen von 1 bis 5 fortlaufend durch."
+        "hint": "Multipliziere fortlaufend: 1 * 2 * 3 * 4 * 5."
     },
     12: {
         "title": "Tag 12: Das Tor zum Polarkreis",
         "type": "text",
-        "story": "Der Nordpol kommt in Sicht! Eine finale magische Eistür verlangt das aus den Fragmenten gebildete Lösungswort.",
-        "question": "Setze die gesammelten Fragmente zu dem 7-stelligen Ziel-Codewort zusammen:",
+        "story": "Der Nordpol ist erreicht. Eine magische Eistür verlangt das aus den 7 gesammelten Fragmenten gebildete Codewort.",
+        "question": "Setze die Fragmente (E-R-N-T-E-N-S oder analog angeordnet als Lösungswort) zusammen:",
         "answer": "STERNEN",
         "puzzle_piece": "🏆 ZUGANG ZUR WERKSTATT FREIGESCHALTET",
-        "hint": "Anordnung der gesammelten Hinweise am Himmel."
+        "hint": "Ordne die Buchstaben zu einem hellen Himmelsphänomen an."
     },
     13: {
         "title": "Tag 13: Das Notstrom-Aggregat",
         "type": "binary_slider",
-        "story": "Ihr betretet die Haupthalle der Werkstatt. Schalte die Binär-Schalter passend ein, um das Aggregat auf den Wert **13** zu bringen.",
-        "question": "Bringe die Schalter in die richtige Position für die Dezimalzahl 13.",
+        "story": "Ihr betretet die dunkle Haupthalle. Schalte die Binär-Bits korrekt, um das Aggregat auf den dezimalen Wert **13** zu takten.",
+        "question": "Bringe die Schalter in die richtige Position.",
         "answer": "13",
         "puzzle_piece": None,
-        "hint": "Binär: 8 + 4 + 0 + 1 (Schalter 8, 4 und 1 auf ON)."
+        "hint": "Binärsumme: 8 + 4 + 0 + 1."
     },
     14: {
         "title": "Tag 14: Das Terminal der Chef-Elfe",
         "type": "text",
-        "story": "Das Licht flackert an, aber der Hauptcomputer verlangt das Benutzerpasswort der Chef-Elfe.",
+        "story": "Das Hauptterminal verlangt ein kryptografisches Master-Passwort, basierend auf dem Kernfest.",
         "question": "Welches entscheidende Fest bildet das Herzstück des gesamten Nordpols? (9 Buchstaben)",
         "answer": "WEIHNACHT",
         "puzzle_piece": None,
@@ -148,73 +148,73 @@ DOORS = {
     15: {
         "title": "Tag 15: Die Wunschlisten-Matrix",
         "type": "text",
-        "story": "In der Sortierhalle läuft ein Fließband Amok, weil die Wunschlisten nach einer mathematischen Reihe verrutscht sind.",
-        "question": "Führe die Fibonacci-Reihe logisch fort: 1, 1, 2, 3, 5, 8, 13, ?",
+        "story": "In der Sortierhalle läuft ein Fließband Amok, weil die Wunschlisten nach einer mathematischen Rekursionsformel verrutscht sind.",
+        "question": "Führe die berühmte Fibonacci-Reihe logisch fort: 1, 1, 2, 3, 5, 8, 13, ?",
         "answer": "21",
         "puzzle_piece": None,
-        "hint": "Addiere immer die beiden vorherigen Zahlen (8 + 13)."
+        "hint": "Die Summe der beiden vorherigen Zahlen (8 + 13)."
     },
     16: {
         "title": "Tag 16: Der Fließband-Takt",
         "type": "text",
-        "story": "Das Band stoppt vor einer Barriere. Die Steuerung verlangt das Lösen einer linearen Gleichung.",
-        "question": "Löse die Gleichung: 2x + 4 = 12. Welchen Wert hat x?",
-        "answer": "4",
+        "story": "Eine automatische Sicherheitssperre verlangt die Lösung einer linearen Gleichung höheren Grades.",
+        "question": "Löse die Gleichung nach x auf: 3x - 7 = 20. Welchen Wert hat x?",
+        "answer": "9",
         "puzzle_piece": None,
-        "hint": "Subtrahiere 4 von 12 und teile durch 2."
+        "hint": "Addiere 7 zu 20 und teile das Ergebnis durch 3."
     },
     17: {
-        "title": "Tag 17: Die Geschenk-Waage",
-        "type": "text",
-        "story": "In der Verpackungsstation blockiert eine Sicherheitswaage den Weg. Es müssen Gewichte verglichen werden.",
-        "question": "Du hast 9 Päckchen, von denen eines schwerer ist. Wie viele Wägungen auf einer Balkenwaage brauchst du im Worst-Case mindestens?",
-        "answer": "2",
+        "title": "Tag 17: Das Fluss-Logikrätsel (Eisbär, Robbe & Fisch)",
+        "type": "river_puzzle",
+        "story": "An der eisigen Schlucht blockiert eine alte mechanische Brücke den Weg. Du musst einen Eisbären, eine Robbe und einen gefrorenen Fisch im Boot sicher über den eisigen Fluss bringen – allerdings darf der Eisbär die Robbe und die Robbe den Fisch nicht unbeaufsichtigt zurücklassen!",
+        "question": "Wer darf als Erster in der ersten Überfahrt im Boot transportiert werden?",
+        "answer": "ROBBE",
         "puzzle_piece": None,
-        "hint": "Teile in Dreiergruppen auf (3-3-3)."
+        "hint": "Der natürliche Feind in der Mitte muss zuerst rübergebracht werden."
     },
     18: {
-        "title": "Tag 18: Der Elfen-Schichtplan (Logik-Rätsel)",
+        "title": "Tag 18: Der Elfen-Schichtplan (Logik-Gitter)",
         "type": "elf_puzzle",
-        "story": "Vor der Spielzeug-Manufaktur hängt ein interaktives Logikgitter für den Schichtplan.",
-        "question": "Ordne die Elfen nach Geschwindigkeit zu: Wer arbeitet am schnellsten?",
+        "story": "Vor der Manufaktur hängt ein komplexes Logikgitter für die Schichtzuweisung.",
+        "question": "Elfe A arbeitet schneller als Elfe B. Elfe C arbeitet langsamer als Elfe B. Wer ist am schnellsten?",
         "answer": "A",
         "puzzle_piece": None,
-        "hint": "Elfe A arbeitet schneller als B, C arbeitet langsamer als B."
+        "hint": "Der absolute Spitzenreiter im Geschwindigkeitsvergleich."
     },
     19: {
         "title": "Tag 19: Der Tresor des Weihnachtsmanns",
         "type": "text",
-        "story": "Ihr erreicht das Büro des Weihnachtsmanns. An der Wand hängt ein schwerer Stahltresor.",
-        "question": "In welchem Jahr erreichte die historische Amundsen-Expedition als erste den Südpol? (Vierstellige Jahreszahl)",
+        "story": "Im Büro des Weihnachtsmanns hängt ein schwerer Stahltresor für die Master-Schablone.",
+        "question": "In welchem historischen Jahr erreichte die Amundsen-Expedition als erste den Südpol? (Vierstellige Jahreszahl)",
         "answer": "1911",
         "puzzle_piece": None,
-        "hint": "Es war im Dezember des Jahres 191... (1)."
+        "hint": "Es war im Dezember des Jahres 191..."
     },
     20: {
         "title": "Tag 20: Der magische Polar-Kristall",
         "type": "text",
-        "story": "Im Tresor findet ihr den rohen Polar-Kristall. Um ihn aufzuladen, muss ein Laserstrahl gelenkt werden.",
-        "question": "Wie viel Grad beträgt die Winkelsumme in einem klassischen Dreieck?",
+        "story": "Um den rohen Polar-Kristall im Tresor aufzuladen, muss die Winkelsumme geometrisch bestimmt werden.",
+        "question": "Wie viel Grad beträgt die klassische euklidische Innwinkelsumme in einem Dreieck?",
         "answer": "180",
         "puzzle_piece": None,
-        "hint": "Zweimal ein rechter Winkel."
+        "hint": "Genau die Hälfte eines Vollkreises bzw. zwei rechte Winkel."
     },
     21: {
         "title": "Tag 21: Das Erwachen der Werkstatt",
         "type": "text",
-        "story": "Der Kristall glüht in hellem Licht und wird in den Hauptkern eingesetzt. Die Maschinen erwachen zum Leben!",
-        "question": "Gib das finale Lösungswort ein, das den Wendepunkt der Mission markiert:",
+        "story": "Der Kristall glüht in hellem Licht. Die Maschinen erwachen ratternd zum Leben!",
+        "question": "Gib das finale Lösungswort ein, das den ultimativen Wendepunkt der Mission markiert:",
         "answer": "WENDEPUNKT",
         "puzzle_piece": "🌟 WERKSTATT VOLL EINSATZBEREIT",
-        "hint": "Das entscheidende Wort für den Wendepunkt."
+        "hint": "Das zentrale Wort für den Wendepunkt."
     }
 }
 
 # --- HAUPTSEITE / TÜRCHEN-ÜBERSICHT ---
 if st.session_state.current_view == "overview":
     st.title("🎄 Weihnachtlicher Rätsel-Adventskalender")
-    st.markdown("### Mission: Weihnachten retten 🎅✨")
-    st.write("Wähle ein Türchen aus, um die interaktiven Aufgaben zu testen.")
+    st.markdown("### Mission: Weihnachten retten (Profi-Edition) 🎅✨")
+    st.write("Wähle ein Türchen aus, um die anspruchsvollen Rätsel direkt zu testen.")
     
     solved_count = len(st.session_state.solved_doors)
     total_count = len(DOORS)
@@ -266,13 +266,13 @@ else:
             st.write(f"**Experten-Frage {st.session_state.quiz_step} von 5**")
             step = st.session_state.quiz_step
             if step == 1:
-                q1 = st.text_input("F1: Welche Farbe nimmt das Tapetum lucidum im Rentierauge im Winter an (Gold zu...)?", key="rq1")
+                q1 = st.text_input("F1: Welche Farbe nimmt das Tapetum lucidum im Rentierauge im Winter an?", key="rq1")
                 if st.button("Antwort 1 senden"):
                     if "BLAU" in q1.upper():
                         st.session_state.quiz_step = 2
                         st.rerun()
                     else:
-                        st.error("❌ Falsch. Denk an Polarlichter.")
+                        st.error("❌ Falsch. Denk an das Spektrum der Polarlichter.")
             elif step == 2:
                 q2 = st.selectbox("F2: Welches Geschlecht behält im Winter sein Geweih?", ["Bitte wählen...", "Männchen", "Weibchen / Kühe", "Beide"], key="rq2")
                 if st.button("Antwort 2 senden"):
@@ -306,7 +306,7 @@ else:
                         st.session_state.quiz_step = 1
                         st.rerun()
                     else:
-                        st.error("❌ Falsch. Versuche es mit dem Slider.")
+                        st.error("❌ Falsch.")
 
         # 2. SUDOKU (Tag 6)
         elif door["type"] == "sudoku_puzzle":
@@ -334,13 +334,12 @@ else:
                 else:
                     st.error("❌ Fehler im Raster.")
 
-        # 3. MORSE-DECODER WIDGET (Tag 8)
+        # 3. MORSE-DECODER (Tag 8)
         elif door["type"] == "morse_puzzle":
             st.markdown("""
-            > **Morse-Alphabet Referenz:**
-            > A = `.-` | E = `.` | R = `.-.` | T = `-`
+            > **Morse-Alphabet:** A = `.-` | E = `.` | R = `.-.` | T = `-`
             """)
-            morse_input = st.text_input("Tippe das entschlüsselte Wort (Großbuchstaben):", key=f"morse_{day}")
+            morse_input = st.text_input("Tippe das entschlüsselte Wort:", key=f"morse_{day}")
             if st.button("Morsecode abschicken 📡"):
                 if morse_input.strip().upper() == "RETTER":
                     st.success("🎉 Signal erfolgreich decodiert!")
@@ -349,18 +348,18 @@ else:
                     st.session_state.solved_doors.append(day)
                     st.rerun()
                 else:
-                    st.error("❌ Das Signal stimmt noch nicht ganz.")
+                    st.error("❌ Das Signal stimmt nicht.")
 
-        # 4. BINÄR-SCHALTER WIDGET (Tag 13)
+        # 4. BINÄR-SCHALTER (Tag 13)
         elif door["type"] == "binary_slider":
-            st.markdown("Stelle die Bits ein (Wert = $8 \\cdot b_3 + 4 \\cdot b_2 + 2 \\cdot b_1 + 1 \\cdot b_0$):")
-            b3 = st.checkbox("Bit 8er-Stelle (Wert 8)")
-            b2 = st.checkbox("Bit 4er-Stelle (Wert 4)")
-            b1 = st.checkbox("Bit 2er-Stelle (Wert 2)")
-            b0 = st.checkbox("Bit 1er-Stelle (Wert 1)")
+            st.markdown("Stelle die Bits ein:")
+            b3 = st.checkbox("Bit 8er-Stelle")
+            b2 = st.checkbox("Bit 4er-Stelle")
+            b1 = st.checkbox("Bit 2er-Stelle")
+            b0 = st.checkbox("Bit 1er-Stelle")
             
             calculated_val = (8 if b3 else 0) + (4 if b2 else 0) + (2 if b1 else 0) + (1 if b0 else 0)
-            st.write (f"Aktueller Wert: **{calculated_val}** (Gesucht: 13)")
+            st.write(f"Aktueller Wert: **{calculated_val}** (Gesucht: 13)")
 
             if st.button("Aggregat starten ⚡"):
                 if calculated_val == 13:
@@ -368,9 +367,20 @@ else:
                     st.session_state.solved_doors.append(day)
                     st.rerun()
                 else:
-                    st.error(f"❌ Der Wert ist derzeit {calculated_val}, benötigt werden 13.")
+                    st.error(f"❌ Der Wert ist {calculated_val}, benötigt werden 13.")
 
-        # 5. ELFEN-LOGIK WIDGET (Tag 18)
+        # 5. FLUSS-LOGIKRÄTSEL (Tag 17)
+        elif door["type"] == "river_puzzle":
+            r_choice = st.selectbox("Wen nimmst du zuerst mit?", ["Bitte wählen...", "Eisbär", "Robbe", "Fisch"])
+            if st.button("Überfahrt starten"):
+                if r_choice == "Robbe":
+                    st.success("🎉 Richtig! Die Robbe wird zuerst rübergebracht, da Eisbär und Fisch sich zwar nicht fressen, aber der Eisbär die Robbe gefährdet (bzw. klassisches Prinzip).")
+                    st.session_state.solved_doors.append(day)
+                    st.rerun()
+                else:
+                    st.error("❌ Falsch. Überlege, wer wen fressen würde, wenn man ihn allein lässt.")
+
+        # 6. ELFEN-LOGIK (Tag 18)
         elif door["type"] == "elf_puzzle":
             elf_choice = st.radio("Wähle die schnellste Elfe:", ["Elfe A", "Elfe B", "Elfe C"])
             if st.button("Schichtplan bestätigen"):
@@ -379,9 +389,9 @@ else:
                     st.session_state.solved_doors.append(day)
                     st.rerun()
                 else:
-                    st.error("❌ Falsch. Überprüfe die Bedingungen.")
+                    st.error("❌ Falsch.")
 
-        # STANDARD-TEXT-EINGABE FÜR REST
+        # STANDARD-TEXT-EINGABE
         else:
             user_input = st.text_input("Deine Lösung:", key=f"input_{day}")
             if st.button("Antwort einreichen 🚀", key=f"btn_{day}"):
