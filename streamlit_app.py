@@ -1,5 +1,6 @@
 import streamlit as st
 import streamlit.components.v1 as components
+import base64
 
 # ==============================================================================
 # 1. SEITEN-KONFIGURATION & DUNKELGRÜNES DESIGN (CSS)
@@ -10,6 +11,7 @@ st.set_page_config(
     layout="wide"
 )
 
+# [EASTER EGG - SYSTEM OVERRIDE: BASE64: T1ZFUlJJREU5OSE= (Decodiert: OVERRIDE99!)]
 st.markdown("""
     <style>
     .stApp {
@@ -85,7 +87,7 @@ components.html("""
 """, height=0)
 
 # ==============================================================================
-# 2. RÄTSEL-DATENBANK (AKT 1 BIS 4)
+# 2. RÄTSEL-DATENBANK (AKT 1 BIS 4 - HARDCORE EDITION)
 # ==============================================================================
 DOORS = {
     # AKT 1: ZUHAUSE & AUFTAKT (1-4)
@@ -304,36 +306,36 @@ DOORS = {
         "hint": "A->B->C = 120 + 150 = 270. Express A->C = 240. Differenz: 270 - 240 = 30."
     },
     
-    # AKT 4: DAS GROSSE FINALE (22-24)
+    # AKT 4: DAS HARDCORE-FINALE (22-24)
     22: {
-        "person": "Person A",
-        "title": "Tag 22: Der Frachtraum-Ausgleich ⚖️",
+        "person": "System-Administrator R-01",
+        "title": "Tag 22: Das Quelltext-Easter-Egg (OSINT-Hack) 🕵️‍♂️",
         "type": "text",
-        "story": "Der Schlitten ist vollgepackt, aber die digitale Waage blinkt rot. Übergewicht droht über Grönland!",
-        "question": "Geladen: (3 × 150 kg) + (4 × 110 kg) = 890 kg. Wie viel kg fehlen bis zum Startgewicht von 1000 kg?",
-        "answer": "110",
+        "story": "Das Haupt-Terminal blockiert den Systemstart mit einer Firewall. Ein alter Entwickler-Kommentar im Quelltext der Web-App verrät den verdeckten Base64-Override-String. Ohne diesen Code bleibt die Tür verrammelt!",
+        "question": "Inspiziere den Quelltext der Python-Applikation (im HTML/CSS-Kopfbereich) nach dem Base64-Easter-Egg-String, dekodiere ihn und gib den Klartext ein.",
+        "answer": "OVERRIDE99!",
         "puzzle_piece": None,
-        "hint": "1000 - 890 = 110."
+        "hint": "Schau ganz oben in den Code-Kommentaren nach dem Base64-String (T1ZFUlJJREU5OSE=) und dekodiere ihn."
     },
     23: {
-        "person": "Person B",
-        "title": "Tag 23: Triebwerke zünden (Der Countdown) 🔥",
+        "person": "Krypto-Prozessor",
+        "title": "Tag 23: Die RSA-Primzahlen-Faktorisierung 🧮",
         "type": "text",
-        "story": "Alle Systeme stehen auf grün. Jetzt müssen die magischen Haupttriebwerke in exakter Sequenz hochgefahren werden.",
-        "question": "Rechne: (Tag 3 Ergebnis: 8) + (Tag 18 Sicherheits-Ergebnis: 57).",
-        "answer": "65",
+        "story": "Die Hauptschotten verlangen die Entschlüsselung des RSA-Modulus für den Hangar-Sicherheits-Token.",
+        "question": "Gegeben ist das RSA-Modulus $N = 323$. Finde die zwei Primfaktoren $p$ und $q$ ($p < q$). Berechne daraus den privaten Schlüsselwert mittels Eulers Phi-Funktion $\\phi(N) = (p-1) \\times (q-1)$. Welches Ergebnis liefert $\\phi(323)$?",
+        "answer": "288",
         "puzzle_piece": None,
-        "hint": "8 + 57 = 65."
+        "hint": "Die Primfaktoren von 323 sind 17 und 19. Also: (17-1) * (19-1) = 16 * 18 = 288."
     },
     24: {
-        "person": "Alle 3 gemeinsam",
-        "title": "Tag 24: HEILIGABEND – Der Start & Das Meister-Finale 🎄",
+        "person": "Turing-Master-KI",
+        "title": "Tag 24: HEILIGABEND – Die Turing-Zustandsmaschine 💻",
         "type": "text",
-        "story": "Hauptkontrollraum! Stille liegt über der Werkstatt. Nur das Glitzern der Kufen ist zu hören. Der Master-Computer verlangt den ultimativen Start-Code.",
-        "question": "Fügt zusammen: Code Tag 3 (500) + Code Tag 12 (NORD12) + Code Tag 23 (65)",
-        "answer": "500NORD1265",
-        "puzzle_piece": "🏆 MEISTER-TITEL: RETTER VON WEIHNACHTEN!",
-        "hint": "Schreibe die drei Teilstücke aneinander: 500NORD1265"
+        "story": "Der Start-Countdown läuft! Die finale Start-KI läuft auf einer virtuellen Turing-Maschine, deren Zustandsvektor vervollständigt werden muss.",
+        "question": "Eine Turing-Maschine mit 2 Zuständen ($q_0, q_1$) verarbeitet das Band. Wenn der Startvektor $q_0$ bei Eingabe von 1 in Zustand $q_1$ übergeht und das Band invertiert (0), wie lautet die binäre Zustandssumme ($q_0 = 10, q_1 = 11$, multipliziert mit dem Faktor 4)?",
+        "answer": "84",
+        "puzzle_piece": "🏆 HARDCORE MEISTER-TITEL: SYSTEM OVERRIDE ERFOLGREICH!",
+        "hint": "(10 + 11) * 4 = 21 * 4 = 84."
     }
 }
 
@@ -363,8 +365,8 @@ if "river" not in st.session_state:
 # ==============================================================================
 # 4. KOPFZEILE & FORTSCHRITT
 # ==============================================================================
-st.title("🎄 Nordpol-Expedition 2026")
-st.caption("Das mathematisch-logische Advents-Abenteuer (Advanced Adult Edition)")
+st.title("🎄 Nordpol-Expedition 2026 (Hardcore Edition)")
+st.caption("Das mathematisch-logische Advents-Abenteuer mit System-Override")
 
 col_prog, col_stats = st.columns([3, 1])
 with col_prog:
@@ -591,7 +593,7 @@ with main_col:
             else:
                 st.error("❌ Das Signal ist noch verrauscht. Überprüfe die Rechnungsformel im Text.")
 
-    # TAG 19: RENTIER-AUFSTELLUNGS-RASTER (3 Reihen à 2 Plätze, Comet ganz oben)
+    # TAG 19: RENTIER-AUFSTELLUNGS-RASTER
     elif door["type"] == "reindeer_puzzle":
         st.write("🦌 **Rentier-Aufstellungs-Raster (3 Reihen à 2 Plätze):**")
         st.markdown("Platziere die Rentiere in den 3 Reihen. Beachte die strengen Regeln (Prancer vor Dancer, Blitz und Donner dürfen nicht in derselben Reihe stehen).")
@@ -599,21 +601,18 @@ with main_col:
         r_list = ["Cupid (🏹)", "Dancer (💃)", "Prancer (⭐)", "Blitz (⚡)", "Donner (🌩️)"]
         
         st.markdown("---")
-        # Reihe 1
         c_r1_l, c_r1_r = st.columns(2)
         with c_r1_l:
             st.info("🎯 Platz 1 (Reihe 1, links): **Comet (☄️)**")
         with c_r1_r:
             r1_right = st.selectbox("Platz 2 (Reihe 1, rechts)", r_list, key="r1_r")
             
-        # Reihe 2
         c_r2_l, c_r2_r = st.columns(2)
         with c_r2_l:
             r2_left = st.selectbox("Platz 3 (Reihe 2, links)", r_list, key="r2_l")
         with c_r2_r:
             r2_right = st.selectbox("Platz 4 (Reihe 2, rechts)", r_list, key="r2_r")
             
-        # Reihe 3
         c_r3_l, c_r3_r = st.columns(2)
         with c_r3_l:
             r3_left = st.selectbox("Platz 5 (Reihe 3, links)", r_list, key="r3_l")
@@ -666,7 +665,7 @@ with main_col:
             else:
                 st.error("❌ Falsch.")
 
-    # STANDARD-TEXT ODER ANDERE TAGE
+    # STANDARD-TEXT ODER ANDERE TAGE (INKLUSIVE HARDCORE FINALE 22-24)
     else:
         if door["type"] not in ["sudoku_puzzle", "logic_grid", "morse_terminal", "river_crossing", "mirror_puzzle", "gear_puzzle", "package_sort", "binary_switches", "frequency_tuner", "scale_puzzle", "lock_sliders", "reindeer_puzzle"]:
             ans = st.text_input("Deine Lösung:", key=f"input_{day}")
@@ -704,3 +703,4 @@ if show_sidebar:
                 
         st.write("---")
         st.metric("Gefundene Fragmente", f"{len(lab_pieces)} / 8")
+        
