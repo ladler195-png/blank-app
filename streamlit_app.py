@@ -8,12 +8,12 @@ st.set_page_config(
     layout="wide"
 )
 
-# --- DESIGN & FARBZELLEN (Dunkelrot, Dunkelgrün & Gold) ---
+# --- DESIGN & FARBZELLEN (Hintergrund: Dunkelgrün, Türchen/Boxen: Dunkelrot & Gold) ---
 st.markdown("""
 <style>
-    /* Gesamter Hintergrund in edlem Dunkelrot */
+    /* Gesamter Hintergrund in edlem Dunkelgrün */
     .stApp {
-        background-color: #4a0e17;
+        background-color: #0b2d1d;
         color: #f4f6f5;
     }
     
@@ -23,23 +23,23 @@ st.markdown("""
         font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
     }
     
-    /* Advents-Türchen / Buttons: Dunkelgrün mit goldenem Rand */
+    /* Advents-Türchen / Buttons: Dunkelrot mit goldenem Rand */
     .stButton>button {
-        background-color: #1e5631 !important;
+        background-color: #4a0e17 !important;
         color: #ffd700 !important;
         border: 2px solid #ffd700 !important;
         border-radius: 8px;
         font-weight: bold;
     }
     .stButton>button:hover {
-        background-color: #2e7d43 !important;
+        background-color: #61131f !important;
         color: #ffffff !important;
         border-color: #ffffff !important;
     }
     
     /* Puzzleteile / Karten */
     .puzzle-card {
-        background-color: #143d26;
+        background-color: #4a0e17;
         border: 1px solid #ffd700;
         padding: 10px;
         border-radius: 6px;
@@ -53,12 +53,12 @@ st.markdown("""
         overflow-x: auto;
         gap: 15px;
         padding: 15px 0;
-        scrollbar-color: #ffd700 #143d26;
+        scrollbar-color: #ffd700 #4a0e17;
     }
     
     /* Morse-Terminal Bildschirm */
     .morse-screen {
-        background-color: #143d26;
+        background-color: #4a0e17;
         border: 2px solid #ffd700;
         color: #00ff66;
         padding: 15px;
@@ -69,9 +69,9 @@ st.markdown("""
         margin-bottom: 15px;
     }
 
-    /* NEU: Story-Boxen (früher blau, jetzt im dunkelgrünen Look mit Gold) */
+    /* Story-Boxen (jetzt im dunkelroten Look mit Gold) */
     div.stAlert {
-        background-color: #143d26 !important; /* Dunkelgrün */
+        background-color: #4a0e17 !important; /* Dunkelrot */
         color: #ffffff !important;           /* Weißer Text */
         border: 1px solid #ffd700 !important; /* Goldener Rand */
     }
@@ -81,7 +81,7 @@ st.markdown("""
     
     /* Eingabefelder und kleine Texte */
     .stTextInput input {
-        background-color: #380a11 !important;
+        background-color: #2e080e !important;
         color: #ffffff !important;
         border: 1px solid #ffd700 !important;
     }
@@ -612,7 +612,15 @@ with main_col:
     # TAG 24: SPEZIAL-FINALE
     elif door["type"] == "special_finale":
         st.markdown("## 🎁✨ DER HEILIGABEND IST DA! ✨🎁")
-        st.balloons()
+        # Hier regnen Geschenke / Schnee vom Himmel
+        st.snow()
+        
+        # Zusätzlich ein kleiner optischer Geschenke-Regen per HTML/Text
+        st.markdown("""
+        <div style="text-align: center; font-size: 2.5rem; letter-spacing: 10px; margin: 15px 0;">
+            🎁 🎄 📦 🌟 🎁 🧸 🎀
+        </div>
+        """, unsafe_allow_html=True)
         
         if st.button("🚀 Schlitten starten & Geschenke verteilen!", key="final_start_btn"):
             progress = st.progress(0)
