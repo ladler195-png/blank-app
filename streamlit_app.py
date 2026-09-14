@@ -1,4 +1,5 @@
 import streamlit as st
+import time
 
 # --- SEITEN-KONFIGURATION ---
 st.set_page_config(
@@ -78,7 +79,7 @@ if "mirror_state" not in st.session_state:
 if "package_sort_step" not in st.session_state:
     st.session_state.package_sort_step = 0
 
-# --- DATENBANK: ALLE TÜRCHEN (1 bis 21) ---
+# --- DATENBANK: ALLE TÜRCHEN (1 bis 24) ---
 DOORS = {
     1: {
         "title": "Tag 1: Die mysteriöse Holzbox",
@@ -289,6 +290,36 @@ DOORS = {
         "answer": "WENDEPUNKT",
         "puzzle_piece": "🌟 WERKSTATT VOLL EINSATZBEREIT",
         "hint": "Das zentrale Wort für den Wendepunkt."
+    },
+    22: {
+        "title": "Tag 22: Der magische Polar-Kompass",
+        "person": "Navigatorin Polarstern",
+        "type": "text",
+        "story": "Der Schlitten nähert sich dem Ziel, aber der Nordstern wird von dichten Wolken verdeckt. Nur der magische Kompass zeigt den Weg, wenn man die Himmelsrichtungen richtig deutet.",
+        "question": "Welche Himmelsrichtung liegt exakt im 90-Grad-Winkel rechts von Norden? (Antworte auf Deutsch, Großbuchstaben):",
+        "answer": "OSTEN",
+        "puzzle_piece": None,
+        "hint": "Denke an den Spruch: 'Norden, ...'"
+    },
+    23: {
+        "title": "Tag 23: Das letzte Rätsel des Weihnachtsmanns",
+        "person": "Der Weihnachtsmann",
+        "type": "text",
+        "story": "Vor der allerletzten Tür steht der Weihnachtsmann persönlich. Er lächelt und stellt dir eine klassische Denksportaufgabe für die allerletzte Vorbereitungsnacht.",
+        "question": "Ich habe Städte, aber keine Häuser. Ich habe Wälder, aber keine Bäume. Ich habe Wasser, aber keine Fische. Was bin ich?",
+        "answer": "KARTE",
+        "puzzle_piece": None,
+        "hint": "Man schaut hinein, wenn man den Weg sucht (Land-... oder Welt-...)."
+    },
+    24: {
+        "title": "Tag 24: HEILIGABEND – Das große Weihnachts-Finale! 🎄",
+        "person": "Alle Elfen & Rentiere",
+        "type": "special_finale",
+        "story": "Alle Türchen sind geöffnet! Die Geschenke sind verpackt, die Rentiere gesattelt und der Sternenhimmel brennt in den schönsten Farben. Die Mission ist geschafft: Weihnachten ist gerettet!",
+        "question": "Klicke unten auf den Start-Button, um den Startschuss für die Bescherung zu geben!",
+        "answer": "GESCHAFFT",
+        "puzzle_piece": "🌟 FROHE WEIHNACHTEN!",
+        "hint": "Genieße den Moment – du hast es geschafft!"
     }
 }
 
@@ -297,11 +328,11 @@ st.title("🎄 Weihnachtlicher Rätsel-Adventskalender")
 st.markdown("### Mission: Weihnachten retten (Profi-Edition) 🎅✨")
 st.write("Wähle ein Türchen in der interaktiven Zeitleiste aus, um die anspruchsvollen Aufgaben zu lösen.")
 
-# --- ZEITLEISTE (TIMELINE) ALS NAVIGATION ---
-st.markdown("#### ⏳ Advents-Zeitstrahl (Türchen 1 bis 21)")
-timeline_cols = st.columns(21)
+# --- ZEITLEISTE (TIMELINE) ALS NAVIGATION (1 bis 24) ---
+st.markdown("#### ⏳ Advents-Zeitstrahl (Türchen 1 bis 24)")
+timeline_cols = st.columns(24)
 
-for d_num in range(1, 22):
+for d_num in range(1, 25):
     is_solved = d_num in st.session_state.solved_doors
     is_active = st.session_state.active_day == d_num
     
@@ -315,7 +346,7 @@ for d_num in range(1, 22):
 st.markdown("---")
 
 # ==============================================================================
-# RÄTSEL-FLÄCHE & DYNAMISCHES LAYOUT (Sidebar / Puzzle-Fragmente für Tag 5 bis 12)
+# RÄTSEL-FLÄCHE & DYNAMISCHES LAYOUT
 # ==============================================================================
 show_sidebar = 5 <= st.session_state.active_day <= 12
 if show_sidebar:
@@ -551,9 +582,40 @@ with main_col:
             else:
                 st.error("❌ Falscher Code.")
 
+    # TAG 24: SPEZIAL-FINALE
+    elif door["type"] == "special_finale":
+        st.markdown("## 🎁✨ DER HEILIGABEND IST DA! ✨🎁")
+        st.balloons()
+        
+        if st.button("🚀 Schlitten starten & Geschenke verteilen!", key="final_start_btn"):
+            progress = st.progress(0)
+            status = st.empty()
+            
+            for i in range(100):
+                time.sleep(0.015)
+                progress.progress(i + 1)
+                status.text(f"Schlitten-Antrieb auf Höchstleistung... {i + 1}%")
+            
+            status.text("🎅 Ho Ho Ho! Der Schlitten ist abgehoben! Frohe Weihnachten!")
+            st.success("🎉 MISSION ERFOLGREICH BEENDET! Du hast den ultimativen Adventskalender gemeistert.")
+            
+            st.markdown("""
+            ---
+            ### 📜 Urkunde des Chef-Elfen
+            > **Hiermit wird feierlich bestätigt:**
+            > Du hast alle 24 Stationen dieses kniffligen Profi-Kalenders gelöst.
+            > Du bist offiziell **Ehren-Elf des Nordpols** und Retter des Weihnachtsfests!
+            > 
+            > *Vielen Dank fürs Miträtseln und fröhliche, besinnliche Feiertage!* 🎄✨
+            """)
+            
+            if 24 not in st.session_state.solved_doors:
+                st.session_state.solved_doors.append(24)
+                st.rerun()
+
     # STANDARD-TEXT RÄTSEL
     else:
-        if door["type"] not in ["sudoku_puzzle", "logic_grid", "morse_terminal", "river_crossing", "mirror_puzzle", "gear_puzzle", "package_sort", "binary_switches", "frequency_tuner", "scale_puzzle", "lock_sliders"]:
+        if door["type"] not in ["sudoku_puzzle", "logic_grid", "morse_terminal", "river_crossing", "mirror_puzzle", "gear_puzzle", "package_sort", "binary_switches", "frequency_tuner", "scale_puzzle", "lock_sliders", "special_finale"]:
             ans = st.text_input("Deine Lösung:", key=f"input_{day}")
             if st.button("Prüfen 🔍", key=f"chk_{day}"):
                 user_clean = ans.strip().replace(" ", "").upper()
@@ -562,8 +624,6 @@ with main_col:
                     st.success("🎉 Richtig gelöst!")
                     if day not in st.session_state.solved_doors:
                         st.session_state.solved_doors.append(day)
-                        if day == 21:
-                            st.balloons()
                         st.rerun()
                 else:
                     st.error("❌ Leider nicht korrekt.")
