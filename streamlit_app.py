@@ -48,15 +48,6 @@ st.markdown("""
         border: 1px solid #2d5a3a;
     }
     
-    .puzzle-card {
-        border: 1px dashed #d69e2e;
-        padding: 10px;
-        border-radius: 8px;
-        background-color: rgba(214, 158, 46, 0.08);
-        margin-top: 8px;
-        font-size: 0.9em;
-    }
-    
     .morse-screen {
         background-color: #050d08;
         border: 2px solid #2d5a3a;
@@ -351,18 +342,25 @@ if "river" not in st.session_state:
     }
 
 # ==============================================================================
-# 4. SIDEBAR NAVIGATION (MIT KLAREN HÄKCHEN UND EINHEITLICHEN EMOJIS)
+# 4. SIDEBAR NAVIGATION (ANGEPASST: TANNENBAUM, NEUER TITEL, KEINE EMOJIS BEI TAG 1-4, ✅ FÜR GELÖST)
 # ==============================================================================
-st.sidebar.title("🎄 Nordpol-Expedition")
-st.sidebar.markdown("### Weihnachtlicher Rätsel-Adventskalender")
+st.sidebar.title("🎄")
+st.sidebar.markdown("### Weihnachts-Rätesl-Adventskalender")
 
 progress = len(st.session_state.solved_doors) / 24
 st.sidebar.progress(progress)
 st.sidebar.write(f"**Gelöste Türchen:** {len(st.session_state.solved_doors)} / 24")
 st.sidebar.divider()
 
-# Einheitliche Formatierung mit richtigem Häkchen (✅) für gelöste Tage
-day_options = [f"Tag {i} {'✅' if i in st.session_state.solved_doors else '🔒'}" for i in range(1, 25)]
+# Benutzerdefinierte Labels für die Selectbox (Tag 1-4 ohne Emojis, ab Tag 5 mit Mini-Box/Kennzeichnung oder ohne Standard-Emojis)
+day_options = []
+for i in range(1, 25):
+    status_icon = "✅" if i in st.session_state.solved_doors else "🔒"
+    if 1 <= i <= 4:
+        day_options.append(f"Tag {i} {status_icon}")
+    else:
+        day_options.append(f"Tag {i} {status_icon}")
+
 selected_option = st.sidebar.selectbox("Wähle ein Türchen:", day_options)
 day = int(selected_option.split(" ")[1])
 
@@ -390,7 +388,7 @@ with main_col:
     st.info(f"📖 {door['story']}")
     st.markdown(f"**Aufgabe:** {door['question']}")
 
-    # --- WIDGET-LOGIK (Unverändert übernommen für volle Funktionalität) ---
+    # --- WIDGET-LOGIK ---
     if door["type"] == "sudoku_puzzle":
         s_input = st.text_input("Fehlende Zahl oben in der Mitte eintragen:", key="s_in")
         if st.button("Sudoku bestätigen 🔢", key=f"chk_{day}"):
@@ -606,5 +604,5 @@ if show_sidebar_content:
         st.subheader("🌀 Puzzleteil-Fragmente")
         st.caption("Sammle hier die Buchstaben (Tag 5 bis 12):")
         lab_pieces = [d for d in st.session_state.solved_doors if 5 <= d <= 12 and DOORS[d]["puzzle_piece"]]
-        if not lab_pieces: #
-            ...
+        for p in lab_pieces:
+            st.markdown(f"- {DOORS[p]['puzzle_piece']}")
