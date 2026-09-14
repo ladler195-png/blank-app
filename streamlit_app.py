@@ -234,34 +234,34 @@ DOORS = {
         "hint": "Gamma = 1 -> Beta = 2. Delta muss höher sein als 2 (also 3 oder 4). Da Alpha ungerade (nicht 1) ist, bleibt für Alpha nur 3. Also landet Delta auf 4."
     },
     15: {
-        "person": "Altes Wölfe-Archiv",
-        "title": "Tag 15: Der Frost-Kodex der Alpha-Wölfe 🐺",
+        "person": "Chef-Elf Barnaby",
+        "title": "Tag 15: Die magische Wunschzettel-Maschine 📜",
         "type": "text",
-        "story": "Ihr erreicht eine uralte, mit eisernen Wolfs-Reliefs geschmückte Kontrollkammer im tiefen Fabrikflügel – das 'Alte Wölfe-Archiv'. Die Vorfahren der Werkstatt-Wächter haben hier eine mathematische Mechanik hinterlassen, die den Zugang zum Notstromreaktor freigibt.",
-        "question": "Analysiere die Ziffern-Folge des Frost-Kodex: 3, 5, 9, 17, 33, ?\nWelche Zahl bildet das nächste logische Glied dieser Reihe?",
-        "answer": "65",
+        "story": "Ihr erreicht den Zentralraum der Wunschzettelmaschine. Barnaby seufzt erleichtert: *'Hier werden alle Kinderwünsche verarbeitet, aber das Haupt-Datenband hängt fest! Wir müssen den Sortier-Code für den Stapel berechnen.'*\nDas Terminal zeigt: Ein Wunschzettel-Paket besteht aus Zetteln, die nach einer bestimmten Ziffernfolge sortiert werden müssen.",
+        "question": "Analysiere die Code-Reihe der Wunschzettel-Maschine: 4, 9, 19, 39, 79, ?\nWelche Zahl bildet das nächste logische Glied dieser Reihe?",
+        "answer": "159",
         "puzzle_piece": None,
-        "hint": "Betrachte die Abstände zwischen den Zahlen: +2, +4, +8, +16... Die Differenz verdoppelt sich bei jedem Schritt."
+        "hint": "Jedes Glied wird verdoppelt und 1 addiert: (4*2)+1=9, (9*2)+1=19, (19*2)+1=39, (39*2)+1=79, (79*2)+1=159."
     },
     16: {
         "person": "Chef-Elf Barnaby",
         "title": "Tag 16: Das binäre Logikgitter des Notfallkellers ⚡",
         "type": "binary_switches",
-        "story": "Der Stromkreis im Keller ist mit einer Sicherheits-Schaltlogik abgesichert. Barnaby funkt: *'Wir müssen den Not-Trafo mit einer präzisen binären Last hochfahren, abgeleitet aus dem Frost-Kodex!'*",
-        "question": "Berechne die Zielzahl: Addition aus dem Kodex-Ergebnis (65) und der Anzahl der verbleibenden Tage bis Heiligabend (9), minus 20. Das ergibt **54**. Schalte die 6 Starkstrom-Relais (32, 16, 8, 4, 2, 1) für die Zahl 54.",
-        "answer": [True, True, False, True, True, False],
+        "story": "Der Stromkreis im Keller ist mit einer Sicherheits-Schaltlogik abgesichert. Barnaby funkt: *'Wir müssen den Not-Trafo mit einer präzisen binären Last hochfahren!'*",
+        "question": "Berechne die Zielzahl: Addition aus dem Wunschzettel-Ergebnis an zweiter Stelle (9) und der Anzahl der verbleibenden Tage bis Heiligabend (9), mal 3 minus 6 = **48**. Schalte die 6 Starkstrom-Relais (32, 16, 8, 4, 2, 1) für die Zahl 48.",
+        "answer": [True, True, False, False, False, False],
         "puzzle_piece": None,
-        "hint": "32 + 16 + 4 + 2 = 54. Aktiviere die entsprechenden Relais."
+        "hint": "32 + 16 = 48. Aktiviere die entsprechenden Relais."
     },
     17: {
         "person": "Radio-Kontrolltisch",
         "title": "Tag 17: Die geheimnisvolle Signal-Frequenz 📻",
         "type": "frequency_tuner",
-        "story": "Am alten Radio-Kontrolltisch des Funkraums blinkt eine Notwarnung. Die Polarlichter stören den Hauptkanal. Ein Post-it des diensthabenden Funk-Elfs klebt am Gehäuse: *'Die Ziel-Frequenz für den Notkanal entspricht genau der Summe der Betriebsstunden einer vollen Schicht (24) plus dem doppelten Wert des Frost-Kodex von Tag 15 (65), minus 7!'*",
-        "question": "Berechne den Frequenz-Wert ($24 + (2 \\times 65) - 7$) und stelle beide Reaktor-Regler (Alpha und Beta) auf diesen exakten MHz-Wert ein.",
-        "answer": {"fa": 147.0, "fb": 147.0},
+        "story": "Am alten Radio-Kontrolltisch des Funkraums blinkt eine Notwarnung. Die Polarlichter stören den Hauptkanal. Ein Post-it des diensthabenden Funk-Elfs klebt am Gehäuse: *'Die Ziel-Frequenz für den Notkanal entspricht genau der Summe der Betriebsstunden einer vollen Schicht (24) plus dem doppelten Wert des Wunschzettel-Startwerts (4), mal 3 minus 7!'*",
+        "question": "Berechne den Frequenz-Wert ($((24 + (2 \\times 4)) \\times 3) - 7$) und stelle beide Reaktor-Regler (Alpha und Beta) auf diesen exakten MHz-Wert ein.",
+        "answer": {"fa": 89.0, "fb": 89.0},
         "puzzle_piece": None,
-        "hint": "24 + 130 - 7 = 147 MHz. (Hinweis: Stelle den Regler auf 147.0 ein)."
+        "hint": "(24 + 8) * 3 - 7 = 96 - 7 = 89 MHz. (Stelle den Regler auf 89.0 ein)."
     },
     18: {
         "person": "Hangar-Sicherheits-Schloss",
@@ -275,13 +275,13 @@ DOORS = {
     },
     19: {
         "person": "Rentier-Planungsstation",
-        "title": "Tag 19: Das Rentier-Aufstellungs-Raster 🦌",
+        "title": "Tag 19: Das Rentier-Aufstellungs-Raster (3 Reihen à 2 Plätze) 🦌",
         "type": "reindeer_puzzle",
-        "story": "Barnaby steht vor der großen Rentier-Wandtafel. Die 6 Start-Rentiere (Blitz, Donner, Comet, Cupid, Dancer, Prancer) müssen in ein 2x3-Raster eingetragen werden. Aber Vorsicht: **Comet** muss fest auf Platz 1 stehen, und **Blitz** und **Donner** dürfen um Himmels willen **niemals direkt nebeneinander** (weder waagerecht noch senkrecht) platziert sein, sonst bricht im Stall Chaos aus!",
-        "question": "Wie viele mathematisch gültige Aufstellungen der restlichen Rentiere auf den Positionen 2 bis 6 gibt es unter dieser Bedingung?",
-        "answer": "72",
+        "story": "Barnaby steht vor der großen Rentier-Wandtafel. Das Raster ist nun in **3 Reihen mit jeweils 2 Plätzen** unterteilt. **Comet (☄️)** sitzt unumstößlich fest auf **Platz 1 (ganz oben links)**. Um den perfekten Flug zu garantieren, müssen die 5 übrigen Rentiere (Cupid, Dancer, Prancer, Blitz, Donner) nach strikten Regeln eingetragen werden:\n1. Prancer (⭐) muss direkt vor Dancer (💃) fliegen.\n2. Blitz (⚡) und Donner (🌩️) dürfen wegen statischer Entladung niemals in derselben Reihe (nebeneinander) stehen.",
+        "question": "Wie viele mathematisch valide Aufstellungen der Rentiere auf den Plätzen 2 bis 6 erfüllen exakt diese Bedingungen?",
+        "answer": "12",
         "puzzle_piece": None,
-        "hint": "Gesamtzahl der Anordnungen hinter Comet ist 5! = 120. Die Fälle, in denen Blitz und Donner Nachbarn sind, betragen 48. 120 - 48 = 72."
+        "hint": "Analysiere die fixen Blöcke (Prancer vor Dancer) und schließe die verbotenen Quer-Nachbarn von Blitz und Donner aus."
     },
     20: {
         "person": "Person B",
@@ -294,14 +294,14 @@ DOORS = {
         "hint": "x + 2x + (2x - 15) = 75 => x = 18 (Hafer), 36 (Staub), 21 (Essenz)."
     },
     21: {
-        "person": "Gewächshaus-Beet",
-        "title": "Tag 21: Das magische Polar-Kräuterbeet 🌱",
+        "person": "Flugleitstand-Terminal",
+        "title": "Tag 21: Der effizienteste Routen-Algorithmus ✈️",
         "type": "text",
-        "story": "Im gläsernen Gewächshaus des Nordpols wächst das seltene, leuchtende Sternmoos, das die Rentiere für ihre Kondition brauchen. Das Beet ist als quadratisches 4x4-Gitter angelegt. Um das Moos perfekt zu bewässern, muss die Bewässerungs-Drohne eine exakte geometrische Route abfliegen.",
-        "question": "Wenn das Beet aus 4 x 4 Pflanzfeldern (also insgesamt 16 Feldern) besteht und die Drohne jede Kante und jede Diagonale innerhalb des quadratischen Beetes genau einmal als Kontrolllinie verbindet: Wie viele Eckpunkte besitzt dieses quadratische Beet?",
-        "answer": "4",
+        "story": "Jetzt geht es um die finale Flug-Effizienz! Der Navigationscomputer der Rentiere berechnet die optimale Route über die Zeitzonen. Um den Treibstoff (Magie-Staub) zu sparen, muss die kürzeste Gesamtdistanz im Kurven-Graph ermittelt werden.",
+        "question": "Ein Flugknoten hat 3 Stationen: Start (A) -> Zwischenstopp Nordpol (B) -> Ziel Grönland (C). Die Verbindung A->B kostet 120 Einheiten Magie, B->C kostet 150 Einheiten, und ein direkter Express-Modus A->C kostet 240 Einheiten. Wie hoch ist die Differenz (Ersparnis) zwischen der teuersten Route (A->B->C) und dem effizienten Express-Modus (A->C)?",
+        "answer": "30",
         "puzzle_piece": None,
-        "hint": "Ein Quadrat hat klassischerweise genau 4 Ecken."
+        "hint": "A->B->C = 120 + 150 = 270. Express A->C = 240. Differenz: 270 - 240 = 30."
     },
     
     # AKT 4: DAS GROSSE FINALE (22-24)
@@ -359,9 +359,6 @@ if "river" not in st.session_state:
         "goat": "left",
         "cabbage": "left"
     }
-
-if "package_sort_step" not in st.session_state:
-    st.session_state.package_sort_step = 0
 
 # ==============================================================================
 # 4. KOPFZEILE & FORTSCHRITT
@@ -545,7 +542,7 @@ with main_col:
     # TAG 14: LOGISTIK-CONSTRAINT-RÄTSEL
     elif door["type"] == "package_sort":
         st.write("📦 **Intelligentes Paket-Leitsystem:**")
-        st.markdown("Basierend auf den Logik-Axiomen: Welche Rutsche (1 bis 4) gehört zu Paket **Delta**?")
+        st.markdown("Basierend on den Logik-Axiomen: Welche Rutsche (1 bis 4) gehört zu Paket **Delta**?")
         ans_delta = st.text_input("Rutschen-Nummer für Paket Delta eingeben:", key="delta_input")
         if st.button("Logik-Prüfung ausführen 📦", key=f"chk_{day}"):
             if ans_delta.strip() == "4":
@@ -558,7 +555,7 @@ with main_col:
 
     # TAG 16: STARKSTROM-RELAY NETZWERK
     elif door["type"] == "binary_switches":
-        st.write("⚡ **Notfall-Keller SPS-Schaltpult (Zielzahl: 54):**")
+        st.write("⚡ **Notfall-Keller SPS-Schaltpult (Zielzahl: 48):**")
         b1, b2, b3, b4, b5, b6 = st.columns(6)
         s1 = b1.checkbox("32", key="cb1")
         s2 = b2.checkbox("16", key="cb2")
@@ -568,25 +565,25 @@ with main_col:
         s6 = b6.checkbox("1", key="cb6")
         
         curr_val = (32 if s1 else 0) + (16 if s2 else 0) + (8 if s3 else 0) + (4 if s4 else 0) + (2 if s5 else 0) + (1 if s6 else 0)
-        st.metric("Aktueller Relais-Wert", f"{curr_val}", delta=f"Ziel: 54")
+        st.metric("Aktueller Relais-Wert", f"{curr_val}", delta=f"Ziel: 48")
         
         if st.button("SPS-Schaltkreis zünden ⚡", key=f"chk_{day}"):
-            if curr_val == 54:
+            if curr_val == 48:
                 st.success("🎉 Relais-Konfiguration exakt bestätigt!")
                 if day not in st.session_state.solved_doors:
                     st.session_state.solved_doors.append(day)
                     st.rerun()
             else:
-                st.error(f"❌ Wert inkorrekt ({curr_val}). Benötigt: 54.")
+                st.error(f"❌ Wert inkorrekt ({curr_val}). Benötigt: 48.")
 
     # TAG 17: FREQUENZ-REGLER
     elif door["type"] == "frequency_tuner":
         st.write("📻 **Radio-Notkanal Resonanz-Tuner:**")
-        fa = st.slider("Frequenz-Regler (MHz)", 100.0, 200.0, 120.0, step=0.5, key="fa_slide")
+        fa = st.slider("Frequenz-Regler (MHz)", 50.0, 150.0, 70.0, step=0.5, key="fa_slide")
         st.markdown(f"**Aktuell eingestellt:** `{fa} MHz`")
         
         if st.button("Frequenz synchronisieren 📡", key=f"chk_{day}"):
-            if abs(fa - 147.0) < 0.1:
+            if abs(fa - 89.0) < 0.1:
                 st.success("🎉 Resonanzpunkt perfekt getroffen! Der Notkanal steht klar im Äther.")
                 if day not in st.session_state.solved_doors:
                     st.session_state.solved_doors.append(day)
@@ -594,34 +591,46 @@ with main_col:
             else:
                 st.error("❌ Das Signal ist noch verrauscht. Überprüfe die Rechnungsformel im Text.")
 
-    # TAG 19: RENTIER-AUFSTELLUNGS-RASTER (Interaktiv mit Emojis)
+    # TAG 19: RENTIER-AUFSTELLUNGS-RASTER (3 Reihen à 2 Plätze, Comet ganz oben)
     elif door["type"] == "reindeer_puzzle":
-        st.write("🦌 **Rentier-Aufstellungs-Raster (2 Reihen à 3 Plätze):**")
-        st.markdown("Comet (☄️) ist bereits fixiert auf Platz 1. Ordne die übrigen Rentiere so zu, dass **Blitz (⚡)** und **Donner (🌩️)** niemals direkt nebeneinander stehen!")
+        st.write("🦌 **Rentier-Aufstellungs-Raster (3 Reihen à 2 Plätze):**")
+        st.markdown("Platziere die Rentiere in den 3 Reihen. Beachte die strengen Regeln (Prancer vor Dancer, Blitz und Donner dürfen nicht in derselben Reihe stehen).")
         
         r_list = ["Cupid (🏹)", "Dancer (💃)", "Prancer (⭐)", "Blitz (⚡)", "Donner (🌩️)"]
         
-        c_p1, c_p2, c_p3 = st.columns(3)
-        with c_p1:
-            pos2 = st.selectbox("Platz 2", r_list, key="p2")
-            pos5 = st.selectbox("Platz 5", r_list, key="p5")
-        with c_p2:
-            pos3 = st.selectbox("Platz 3", r_list, key="p3")
-            pos6 = st.selectbox("Platz 6", r_list, key="p6")
-        with c_p3:
-            pos4 = st.selectbox("Platz 4", r_list, key="p4")
-            st.info("🎯 Platz 1: **Comet (☄️)**")
-
-        ans_count = st.text_input("Wie viele valide Kombinationsmöglichkeiten gibt es insgesamt für die Rentiere?", key="reindeer_count_ans")
+        st.markdown("---")
+        # Reihe 1
+        c_r1_l, c_r1_r = st.columns(2)
+        with c_r1_l:
+            st.info("🎯 Platz 1 (Reihe 1, links): **Comet (☄️)**")
+        with c_r1_r:
+            r1_right = st.selectbox("Platz 2 (Reihe 1, rechts)", r_list, key="r1_r")
+            
+        # Reihe 2
+        c_r2_l, c_r2_r = st.columns(2)
+        with c_r2_l:
+            r2_left = st.selectbox("Platz 3 (Reihe 2, links)", r_list, key="r2_l")
+        with c_r2_r:
+            r2_right = st.selectbox("Platz 4 (Reihe 2, rechts)", r_list, key="r2_r")
+            
+        # Reihe 3
+        c_r3_l, c_r3_r = st.columns(2)
+        with c_r3_l:
+            r3_left = st.selectbox("Platz 5 (Reihe 3, links)", r_list, key="r3_l")
+        with c_r3_r:
+            r3_right = st.selectbox("Platz 6 (Reihe 3, rechts)", r_list, key="r3_r")
+            
+        st.markdown("---")
+        ans_count = st.text_input("Wie viele valide Kombinationsmöglichkeiten gibt es insgesamt?", key="reindeer_count_ans")
         
         if st.button("Aufstellung verifizieren 🦌", key=f"chk_{day}"):
-            if ans_count.strip() == "72":
-                st.success("🎉 Perfekt! Die Anzahl (72) ist haargenau richtig errechnet. Barnaby spannt die Rentiere an!")
+            if ans_count.strip() == "12":
+                st.success("🎉 Perfekt! 12 valide Permutationen exakt errechnet. Barnaby gibt das Startsignal!")
                 if day not in st.session_state.solved_doors:
                     st.session_state.solved_doors.append(day)
                     st.rerun()
             else:
-                st.error("❌ Die Gesamtzahl der mathematischen Permutationen (120 - 48) stimmt noch nicht.")
+                st.error("❌ Die Anzahl der Kombinationen stimmt nicht ganz. Prüfe die Nachbarschafts- und Reihenregeln.")
 
     # TAG 20: ALCHEMISTISCHE STERNENSTAUB-WAAGE
     elif door["type"] == "scale_puzzle":
