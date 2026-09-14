@@ -215,25 +215,25 @@ DOORS = {
     
     # AKT 3: DIE WERKSTATT-RETTUNG (13-21)
     13: {
-        "person": "Person A",
-        "title": "Tag 13: Das Zahnrad-Getriebe ⚙️",
+        "person": "Chef-Elf Barnaby",
+        "title": "Tag 13: Das Dampf- und Druckventil ⚙️",
         "type": "gear_puzzle",
-        "story": "Ihr tretet durch das Tor. Überall dampft es, Elfen rennen panisch im Kreis und die Hauptzahnräder der Geschenkeproduktion stehen stockstifft!",
-        "question": "Synchronisiert das Getriebe durch Einstellen der korrekten Umdrehungen des 12er-Rads (kgV von 12, 18, 24 = 72).",
-        "answer": 6,
+        "story": "Ihr tretet durch das schwere Eistor. Hinter euch schließt es sich mit einem dumpfen Knall. Überall in der riesigen Fabrikhalle zischen Dampfwolken, Elfen rennen im Zickzack umher, und Ober-Elf Barnaby stürzt mit rußgeschwärztem Gesicht auf euch zu: *'Endlich Verstärkung! Die Haupt-Dampfleitung pfeift aus dem letzten Loch, weil das primäre Getriebe blockiert ist. Wir müssen den optimalen Betriebsdruck einstellen, sonst fliegt uns hier alles um die Ohren!'*",
+        "question": "Kalibriere die Hauptventile. Finde den exakten Druckpunkt, bei dem der Systemdruck (Ventil A mal Ventil B) genau 72 Bar erreicht.",
+        "answer": 6,  # 12er Rad Logik oder 8x9 etc., hier als Ventil-Balance gelöst
         "puzzle_piece": None,
-        "hint": "72 / 12 = 6 Umdrehungen."
+        "hint": "Barnaby murmelt etwas von einer Zielzahl von 72 und einem Hauptventil, das auf 12 voreingestellt ist. Wie oft muss es greifen?"
     },
     14: {
-        "person": "Person B",
+        "person": "Paket-Roboter R-04",
         "title": "Tag 14: Chaos in der Paketstation 📦",
         "type": "package_sort",
-        "story": "Transport-Roboter sind durchgedreht und Pakete wurden vertauscht. Die Elfen brauchen Ordnung im System.",
-        "question": "Welche Paket-Priorität muss als Nächstes verarbeitet werden? (Tippe den exakten Code: 'EXPRESS')",
-        "answer": "EXPRESS",
+        "story": "Kaum läuft der Dampf, fängt das Hauptförderband an zu rasen. Ein Software-Bug im Logistik-Roboter R-04 hat hunderte Pakete durcheinandergewirbelt. Pakete stapeln sich meterhoch an der Decke. Barnaby ruft: *'Ihr müsst die ankommenden Sendungen blitzschnell nach ihrer Dringlichkeit in die richtige Rutsche sortieren, sonst ertrinken wir in Geschenkpapier!'*",
+        "question": "Sortiere die ankommenden Pakete korrekt nach ihren Vorgaben, um das Band zu entlasten.",
+        "answer": "COMPLETED",
         "puzzle_piece": None,
-        "hint": "Der Standard für dringende Weihnachtsfracht lautet E-X-P-R-E-S-S."
-    },
+        "hint": "Beachte die Prioritäts-Anzeigen der drei Test-Pakete auf dem Bildschirm."
+    },,
     15: {
         "person": "Person C",
         "title": "Tag 15: Wunschzettel-Priorisierung 📜",
@@ -529,17 +529,63 @@ with main_col:
         else:
             st.warning("🔴 Strahl wird noch falsch reflektiert.")
 
-    # TAG 13: GETRIEBE-RÄTSEL
+    # TAG 13: GETRIEBE- / VENTIL-KALIBRIERUNG (Neu gestaltet)
     elif door["type"] == "gear_puzzle":
-        rot = st.slider("⚙️ Umdrehungen des 12er-Rads:", 1, 12, 1, key="rot_slider")
-        if st.button("Zahnräder einrasten ⚙️", key=f"chk_{day}"):
-            if rot == door["answer"]:
-                st.success("🎉 Synchronisiert! Die Fließbänder laufen wieder an.")
+        st.write("⚙️ **Ventil-Steuerung:** Justiere Ventil A und Ventil B so, dass der Zieldruck von 72 Bar erreicht wird.")
+        v_a = st.slider("Ventil A (Hauptfaktor)", 1, 12, 4, key="v_a_slider")
+        v_b = st.slider("Ventil B (Multiplikator)", 1, 12, 4, key="v_b_slider")
+        current_pressure = v_a * v_b
+        st.metric("Aktueller Systemdruck", f"{current_pressure} Bar", delta=f"{current_pressure - 72} Bar Abweichung")
+        
+        if st.button("Ventile einrasten ⚙️", key=f"chk_{day}"):
+            if current_pressure == 72:
+                st.success("🎉 Perfekt! Der Systemdruck stabilisiert sich bei exakt 72 Bar. Die Fließbänder laufen an.")
                 if day not in st.session_state.solved_doors:
                     st.session_state.solved_doors.append(day)
                     st.rerun()
             else:
-                st.error("❌ Noch nicht synchron. Prüfe das kgV.")
+                st.error(f"❌ Druck inkorrekt ({current_pressure} Bar). Benötigt werden exakt 72 Bar!")
+
+    # TAG 14: INTERAKTIVES PAKET-SORTIER-MINISPIEL (Neu gestaltet)
+    elif door["type"] == "package_sort":
+        st.write("📦 **Paket-Sortier-Station:** Lenke die ankommenden Pakete in die richtige Rutsche!")
+        
+        steps = [
+            {"paket": "🎁 Riesen-Teddybär (Schwer, Standard-Post)", "correct": "Standard-Rutsche"},
+            {"paket": "⚡ Magischer Sternenstaub (Hochbrisant, Notfall)", "correct": "Express-Rutsche"},
+            {"paket": "🧸 Holz-Eisenbahn (Mittel, Standard-Post)", "correct": "Standard-Rutsche"}
+        ]
+        
+        current_s = st.session_state.package_sort_step if "package_sort_step" in st.session_state else 0
+        
+        if current_s < len(steps):
+            st.markdown(f"**Aktuelles Paket auf dem Band:** `{steps[current_s]['paket']}`")
+            col_p1, col_p2 = st.columns(2)
+            with col_p1:
+                if st.button("📥 In Standard-Rutsche lenken", key=f"sort_std_{current_s}"):
+                    if steps[current_s]["correct"] == "Standard-Rutsche":
+                        st.session_state.package_sort_step += 1
+                        st.success("Richtig einsortiert!")
+                        st.rerun()
+                    else:
+                        st.error("Falsche Rutsche! Roboter R-04 piepst alarmiert.")
+            with col_p2:
+                if st.button("🚀 In Express-Rutsche lenken", key=f"sort_exp_{current_s}"):
+                    if steps[current_s]["correct"] == "Express-Rutsche":
+                        st.session_state.package_sort_step += 1
+                        st.success("Richtig einsortiert!")
+                        st.rerun()
+                    else:
+                        st.error("Falsche Rutsche! Das Paket verkeilt sich.")
+            st.caption(gelöste_schritte := f"Fortschritt: {current_s} / {len(steps)} Pakete fehlerfrei sortiert")
+        else:
+            st.success("🎉 Alle Pakete erfolgreich sortiert! Das System ist wieder frei.")
+            if day not in st.session_state.solved_doors:
+                st.session_state.solved_doors.append(day)
+                st.rerun()
+            if st.button("Sortierung zurücksetzen 🔄", key="reset_sorting"):
+                st.session_state.package_sort_step = 0
+                st.rerun()
 
     # TAG 16: BINÄR-SCHALTER
     elif door["type"] == "binary_switches":
