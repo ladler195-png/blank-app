@@ -1,35 +1,77 @@
 import streamlit as st
+import streamlit.components.v1 as components
 
 # ==============================================================================
-# 1. SEITEN-EINSTELLUNGEN & DESIGN
+# 1. SEITEN-KONFIGURATION & STYLING (CSS)
 # ==============================================================================
 st.set_page_config(
-    page_title="Expedition Nordpol: Der Adventskalender",
-    page_icon="🎄",
-    layout="centered"
+    page_title="Nordpol-Expedition 2026",
+    page_icon="❄️",
+    layout="wide"
 )
 
-# Custom CSS für weihnachtliches Aussehen
+# Weihnachtliches Custom-CSS
 st.markdown("""
     <style>
-    .main {
-        background-color: #0b1d3a;
-        color: #f1f5f9;
+    /* Dunkelblauer Nacht-Hintergrund */
+    .stApp {
+        background: linear-gradient(180deg, #0b1d3a 0%, #1a365d 100%);
+        color: #ffffff;
     }
-    .stButton>button {
-        background-color: #d97706;
+    
+    /* Überschriften im Weihnachts-Look */
+    h1, h2, h3 {
+        color: #f6ad55 !important;
+        font-family: 'Georgia', serif;
+        text-shadow: 2px 2px 4px #000000;
+    }
+
+    /* Styling der Türchen-Buttons */
+    div.stButton > button {
+        background-color: #2b6cb0;
         color: white;
-        border-radius: 8px;
+        border-radius: 12px;
+        border: 2px solid #ed8936;
         font-weight: bold;
+        width: 100%;
+        padding: 10px;
+        transition: all 0.3s ease;
+    }
+    
+    /* Hover-Effekt auf Buttons */
+    div.stButton > button:hover {
+        background-color: #c53030;
+        color: white;
+        border-color: #f6ad55;
+        transform: scale(1.03);
+    }
+
+    /* Container für Rätsel-Karten */
+    .stAlert {
+        border-radius: 10px;
+        background-color: rgba(255, 255, 255, 0.1);
     }
     </style>
 """, unsafe_allow_html=True)
 
+# Animierter Schneefall-Effekt
+components.html("""
+    <script src="https://unpkg.com/magic-snowflakes/dist/snowflakes.min.js"></script>
+    <script>
+        var snowflakes = new Snowflakes({
+            color: '#ffffff',
+            count: 25,
+            minOpacity: 0.2,
+            maxOpacity: 0.8
+        });
+    </script>
+""", height=0)
+
 # ==============================================================================
-# RÄTSEL-DATENBANK (TAGE 1 BIS 24)
+# 2. RÄTSEL-DATENBANK (TAGE 1 BIS 24)
 # ==============================================================================
 DOORS = {
-    # ------------------ AKT I: DER RUF AUS DEM ELFENREICH ------------------
+    # AKT I: DER RUF AUS DEM ELFENREICH
     1: {
         "person": "Person A",
         "title": "Tag 1: Das geheimnisvolle Päckchen",
@@ -71,7 +113,7 @@ DOORS = {
         "hint": "Kombiniere den Begriff von Tag 2 (NORD) direkt mit der Zahl von Tag 4 (60)."
     },
 
-    # ------------------ AKT II: DAS NEBEL-LABYRINTH ------------------
+    # AKT II: DAS NEBEL-LABYRINTH
     6: {
         "person": "Person C",
         "title": "Tag 6: Nikolaus im Eisnebel",
@@ -129,19 +171,19 @@ DOORS = {
         "hint": "Kombiniere die Himmelsrichtung von Tag 9 (NORD) direkt mit der Zahl von Tag 11 (12)."
     },
 
-    # ------------------ AKT III: DIE RETTUNG DER WERKSTATT ------------------
+    # AKT III: DIE RETTUNG DER WERKSTATT
     13: {
         "person": "Person A",
         "title": "Tag 13: Der vereiste Maschinensaal",
         "story": "Die Hauptgetriebe der Geschenkmaschine stecken fest. Drei Zahnräder mit 12, 18 und 24 Zähnen greifen ineinander.",
-        "question": "Nach wie vielen Umdrehungen des ersten Rads (12 Zähne) stehen alle drei Räder wieder in ihrer Startposition? (Kleinstes gemeinsames Vielfaches durch 12)",
+        "question": "Nach wie vielen Umdrehungen des ersten Rads (12 Zähne) stehen alle drei Räder wieder in ihrer Startposition?",
         "answer": "6",
         "hint": "Das kgV von 12, 18 und 24 ist 72. Teile 72 durch 12 Zähne."
     },
     14: {
         "person": "Person B",
         "title": "Tag 14: Das Durcheinander in der Packstation",
-        "story": "Ein Kobold hat die Geschenkaufkleber vertauscht! Auf 4 Paketen kleben falsche Namen: A ist nicht B, B ist nicht C. Nur ein Anagramm enthüllt den echten Namen des Oberelfs.",
+        "story": "Ein Kobold hat die Geschenkaufkleber vertauscht! Nur ein Anagramm enthüllt den echten Namen des Oberelfs.",
         "question": "Welches Wort ergibt sich aus den Buchstaben 'E-L-F-E-N-M-A-G-I-E', wenn man das Wort 'MAGIE' entfernt?",
         "answer": "ELFEN",
         "hint": "Streich die Buchstaben M-A-G-I-E aus dem Wort heraus."
@@ -149,7 +191,7 @@ DOORS = {
     15: {
         "person": "Person C",
         "title": "Tag 15: Das Rentier-Futter-Rezept",
-        "story": "Rudolph und seine Freunde brauchen Stärkung! Das magische Kraftfutter besteht aus Hafer, Sternenstaub und Äpfeln im Verhältnis 5 : 2 : 3.",
+        "story": "Rudolph und seine Freunde brauchen Stärkung! Das Kraftfutter besteht aus Hafer, Sternenstaub und Äpfeln im Verhältnis 5 : 2 : 3.",
         "question": "Ihr wollt insgesamt 50 kg Futter herstellen. Wie viele kg Sternenstaub benötigt ihr?",
         "answer": "10",
         "hint": "Gesamtteile: 5 + 2 + 3 = 10 Teile. 50 kg / 10 Teile = 5 kg pro Teil. Sternenstaub hat 2 Teile (2 * 5 kg)."
@@ -165,25 +207,25 @@ DOORS = {
     17: {
         "person": "Person B",
         "title": "Tag 17: Die Wunschzettel-Sortiermaschine",
-        "story": "Millionen Briefe fliegen durch die Luft! Der Sortieralgorithmus fragt nach dem Median einer Datenreihe von Wünschen pro Minute.",
-        "question": "Wie lautet der Median der Folgenden Werte: 12, 45, 7, 23, 89, 34, 19? (Sortieren und die Mitte finden)",
+        "story": "Millionen Briefe fliegen durch die Luft! Der Sortieralgorithmus fragt nach dem Median einer Datenreihe.",
+        "question": "Wie lautet der Median der folgenden Werte: 12, 45, 7, 23, 89, 34, 19?",
         "answer": "23",
         "hint": "Sortiere die 7 Zahlen aufsteigend: 7, 12, 19, 23, 34, 45, 89. Nimm genau die vierte (mittlere) Zahl."
     },
     18: {
         "person": "Person C",
         "title": "Tag 18: Das Sicherheitssystem der Werkstatt",
-        "story": "Die Schalttafel der Werkstatt verlangt den Werkstatt-Schlüsselcode. Dieser wird aus euren vorherigen Erfolgen generiert.",
+        "story": "Die Schalttafel der Werkstatt verlangt den Werkstatt-Schlüsselcode.",
         "question": "Berechne den Werkstatt-Code: (Lösung Tag 13: 6) × (Lösung Tag 15: 10) + (Lösung Tag 17: 23)",
         "answer": "83",
         "hint": "Rechne: 6 * 10 + 23"
     },
 
-    # ------------------ AKT IV: DAS FINALE ------------------
+    # AKT IV: DAS FINALE
     19: {
         "person": "Person A",
         "title": "Tag 19: Der Flugrouten-Optimierer",
-        "story": "Der Weihnachtsmann muss 4 Städte anfliegen (A, B, C, D). Die Distanzen bilden ein Quadrat mit Seitenlänge 100 km und Diagonale 141 km.",
+        "story": "Der Weihnachtsmann muss 4 Städte anfliegen (A, B, C, D). Die Distanzen bilden ein Quadrat mit Seitenlänge 100 km.",
         "question": "Was ist die kürzeste Strecke (in km), um alle 4 Ecken eines 100x100km Quadrats einmal abzufliegen?",
         "answer": "300",
         "hint": "Du musst 3 Kanten des Quadrats entlangfliegen: 100 km + 100 km + 100 km."
@@ -199,8 +241,8 @@ DOORS = {
     21: {
         "person": "Person C",
         "title": "Tag 21: Die magische Rentiere-Aufstellung",
-        "story": "Die 8 Rentiere müssen vor den Schlitten gespannt werden. Das Leitrüstzeug hat 8 Positionen.",
-        "question": "Wenn Das Rudolph immer ganz vorne stehen muss, wie viele Möglichkeiten gibt es dann noch, die restlichen 7 Rentiere anzuordnen? (Fakultät von 7)",
+        "story": "Die 8 Rentiere müssen vor den Schlitten gespannt werden.",
+        "question": "Wenn Rudolph immer ganz vorne stehen muss, wie viele Möglichkeiten gibt es dann noch für die restlichen 7 Rentiere? (7!)",
         "answer": "5040",
         "hint": "Berechne 7! = 7 × 6 × 5 × 4 × 3 × 2 × 1."
     },
@@ -215,7 +257,7 @@ DOORS = {
     23: {
         "person": "Person B",
         "title": "Tag 23: Die finale Startbereitschaft",
-        "story": "Alle Systeme stehen auf Grün! Nur noch der Freigabe-Schlüssel fehlt. Er verbindet den Schlitten-Code mit dem Werkstatt-Code.",
+        "story": "Alle Systeme stehen auf Grün! Nur noch der Freigabe-Schlüssel fehlt.",
         "question": "Addiere den Schlitten-Code von Tag 3 (500) und den Werkstatt-Code von Tag 18 (83).",
         "answer": "583",
         "hint": "Rechne: 500 + 83"
@@ -223,50 +265,45 @@ DOORS = {
     24: {
         "person": "Alle 3 gemeinsam",
         "title": "Tag 24: HEILIGABEND – Die Rettung von Weihnachten!",
-        "story": "Ihr steht gemeinsam im Kontrollraum. Um Punkt 24:00 Uhr muss der Master-Code eingegeben werden. Jede Person muss dazu ihren persönlichen Schlüssel-Code aus den vergangenen Tagen mitbringen!",
+        "story": "Ihr steht gemeinsam im Kontrollraum. Um Punkt 24:00 Uhr muss der Master-Code eingegeben werden!",
         "question": "Kombiniert den Schlitten-Code (Tag 3: 500) + Tor-Code (Tag 12: NORD12) + Freigabe-Code (Tag 23: 583) ohne Leerzeichen!",
         "answer": "500NORD12583",
         "hint": "Setze die drei Ergebnisse direkt hintereinander zusammen: 500 + NORD12 + 583"
     }
 }
+
 # ==============================================================================
-# 3. SPEICHERSTAND (SESSION STATE)
+# 3. SESSION STATE INITIALISIERUNG
 # ==============================================================================
 if "solved_doors" not in st.session_state:
     st.session_state.solved_doors = []
 
-# ==============================================================================
-# 4. KOPFBEREICH & STATUS
-# ==============================================================================
-st.title("🎄 Expedition Nordpol")
-st.caption("Ein Adventskalender für die Familie")
+if "active_day" not in st.session_state:
+    st.session_state.active_day = 1
 
-col_a, col_b, col_c = st.columns(3)
-with col_a:
-    solved_a = sum(1 for d in st.session_state.solved_doors if DOORS.get(d, {}).get("person") == "Person A")
-    st.metric("Person A", f"{solved_a} / 8 Gelöst")
-with col_b:
-    solved_b = sum(1 for d in st.session_state.solved_doors if DOORS.get(d, {}).get("person") == "Person B")
-    st.metric("Person B", f"{solved_b} / 8 Gelöst")
-with col_c:
-    solved_c = sum(1 for d in st.session_state.solved_doors if DOORS.get(d, {}).get("person") == "Person C")
-    st.metric("Person C", f"{solved_c} / 8 Gelöst")
+# ==============================================================================
+# 4. KOPFZEILE & FORTSCHRITT
+# ==============================================================================
+st.title("🎄 Expedition Nordpol: Das Escape-Adventskalender-Abenteuer")
+
+# Fortschrittsbalken
+progress = len(st.session_state.solved_doors) / 24
+st.write(f"**Expeditions-Fortschritt:** {len(st.session_state.solved_doors)} von 24 Rätseln gelöst")
+st.progress(progress)
 
 st.divider()
 
 # ==============================================================================
-# 5. TÜRCHEN-GRID
+# 5. TÜRCHEN-GRID (24 TAGE)
 # ==============================================================================
 st.write("### 📅 Wähle dein Türchen")
 
-# Erzeugt 4 Zeilen à 6 Spalten
 cols = st.columns(6)
 for i in range(1, 25):
     col = cols[(i - 1) % 6]
     
-    # Aussehen je nach Status
     if i in st.session_state.solved_doors:
-        label = f"✅ Tag {i}"
+        label = f"🎁 Tag {i}"
     elif i == 24:
         label = f"⭐ Tag {i}"
     else:
@@ -275,34 +312,37 @@ for i in range(1, 25):
     if col.button(label, key=f"door_btn_{i}"):
         st.session_state.active_day = i
 
+st.divider()
+
 # ==============================================================================
-# 6. RÄTSEL-DIALOG
+# 6. AKTIVES RÄTSEL-INTEREST
 # ==============================================================================
-if "active_day" in st.session_state:
-    day = st.session_state.active_day
-    
-    if day in DOORS:
-        puzzle = DOORS[day]
-        st.markdown("---")
-        st.markdown(f"### 🚪 {puzzle['title']} ({puzzle['person']})")
-        st.info(puzzle["story"])
-        st.write(f"**Rätsel:** {puzzle['question']}")
-        
-        if day in st.session_state.solved_doors:
-            st.success(f"🎉 Richtig gelöst! Die richtige Antwort war: **{puzzle['answer']}**")
+day = st.session_state.active_day
+door_data = DOORS[day]
+
+st.subheader(f"✨ {door_data['title']}")
+st.caption(f"👤 Zuständig: **{door_data['person']}**")
+
+# Geschichte & Rätsel anzeigen
+st.info(f"📖 **Geschichte:** {door_data['story']}")
+st.markdown(f"❓ **Aufgabe:** {door_data['question']}")
+
+# Eingabefeld für die Antwort
+user_input = st.text_input("Deine Antwort:", key=f"input_{day}")
+
+col1, col2 = st.columns([1, 4])
+
+with col1:
+    if st.button("Antwort prüfen 🚀"):
+        # Groß-/Kleinschreibung und Leerzeichen ignorieren
+        if user_input.strip().upper() == door_data["answer"].upper():
+            st.success("🎉 Richtig! Das Türchen ist geöffnet.")
+            if day not in st.session_state.solved_doors:
+                st.session_state.solved_doors.append(day)
+                st.rerun()
         else:
-            user_input = st.text_input("Deine Lösung:", key=f"input_{day}")
-            
-            c1, c2 = st.columns([1, 1])
-            with c1:
-                if st.button("Lösung prüfen", type="primary"):
-                    if user_input.strip().upper() == puzzle["answer"].upper():
-                        st.session_state.solved_doors.append(day)
-                        st.balloons()
-                        st.success("Richtig! Der Weg öffnet sich.")
-                        st.rerun()
-                    else:
-                        st.error("Falsch. Versucht es noch einmal!")
-            with c2:
-                if st.button("Hinweis anzeigen"):
-                    st.warning(puzzle["hint"])
+            st.error("❌ Leider falsch! Versuche es noch einmal.")
+
+# Hinweis-Button (ausklappbar)
+with st.expander("💡 Brauchst du einen Hinweis?"):
+    st.write(door_data["hint"])
