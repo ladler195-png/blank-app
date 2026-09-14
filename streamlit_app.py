@@ -94,7 +94,7 @@ DOORS = {
         "type": "text",
         "image": None,
         "story": "Das Schloss der Holzbox springt auf! Ihr öffnet den Deckel und findet im Inneren ein altes, steif gefrorenes Pergament mit der verschlüsselten Nachricht: *„SIVX“*. Am Rand ist fein ein Lorbeerkranz eingraviert.",
-        "question": "Entschlüssele das Codewort. Der Lorbeerkranz flüstert euch einen alten Trick zu: *'Gehe im Alphabet so viele Schritte zurück, wie es der berühmte römische Feldherr einst tat.'* (Gemeint ist eine klassische Verschiebung um 4 Positionen).\n\n**Eingabe:** Welches Wort steht entschlüsselt auf dem Pergament?",
+        "question": "Entschlüssele das Codewort.\n\n**Eingabe:** Welches Wort steht entschlüsselt auf dem Pergament?",
         "answer": "NORD",
         "puzzle_piece": None,
         "hint": "Betrachte jeden Buchstaben des Codes und wandere im Alphabet vier Positionen nach links (Richtung A)."
@@ -104,7 +104,7 @@ DOORS = {
         "title": "Tag 3: Das Rentier-Experten-Rätsel",
         "type": "text",
         "image": None,
-        "story": "Ihr sprecht das magische Wort „NORD“ laut aus. Ein feines Glockenklingeln ertönt, und draußen im Schnee steht ein prachtvoller Elfen-Schlitten! Ihr klettert hinein, doch das Armaturenbrett verlangt einen Zündcode – basierend auf einem echten, faszinierenden Rentier-Geheimnis.",
+        "story": "Ihr sprecht das magische Wort „NORD“ laut aus. Ein feines Glockenklingeln ertönt, und draußen im Schnee steht ein prachtvoller Elfen-Schlitten! Ihr klettert hinein, doch das Armaturenbrett verlangt einen Zündcode basierend auf einem echten, faszinierenden Rentier-Geheimnis.",
         "question": "Um das Cockpit zu starten, musst du ein echtes Biologie-Geheimnis der Rentiere lüften:\n*Wusstest du, dass Rentiere im Winter ihre Augenfarbe von goldbraun auf ein eisiges Blau umstellen, um im dunklen Polarlicht besser zu sehen?* \n\nSuche nach der Anzahl der Buchstaben dieses englischen Farbworts für Blau und multipliziere diese Zahl mit der Anzahl der Rentier-Geschlechter, die im Winter ein Geweih tragen (beide Geschlechter = ?).\n\n**Eingabe:** Tippe das Ergebnis als zweistellige Zahl ein (z.B. 42).",
         "answer": "8",
         "puzzle_piece": None,
@@ -116,7 +116,7 @@ DOORS = {
         "type": "text",
         "image": None,
         "story": "Der Schlitten brummt startklar! Ihr nehmt Platz, aber das Navigationssystem zeigt eine Fehlermeldung: „Kurs unbekannt. Bitte Zielkoordinaten eingeben.“",
-        "question": "Berechne den 5-stelligen Kurs-Code aus Breit- und Längengrad:\n- Breitengrad: Nimm die fixen 90 Grad des Nordpols minus 10.\n- Längengrad: Nimm die Quersumme des aktuellen Jahres (2+0+2+6 = 10) mal 10.\n\n**Eingabe:** Schreibe beide Zahlen ohne Leerzeichen direkt zusammen (z.B. 12345).",
+        "question": "Berechne den 5-stelligen Kurs-Code aus Breit- und Längengrad:\n- Breitengrad: Nimm die fixen 90 Grad des Nordpols minus 10.\n- Längengrad: Nimm die Quersumme des aktuellen Jahres mal 10.\n\n**Eingabe:** Schreibe beide Zahlen ohne Leerzeichen direkt zusammen (z.B. 12345).",
         "answer": "80100",
         "puzzle_piece": None,
         "hint": "Rechne den Breitengrad (90 - 10) und den Längengrad (Quersumme von 2026 mal 10) getrennt aus und setze sie nahtlos aneinander."
