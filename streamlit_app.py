@@ -69,7 +69,6 @@ DOORS = {
         "answer": "NORD60",
         "hint": "Kombiniere den Begriff von Tag 2 (NORD) direkt mit der Zahl von Tag 4 (60)."
     }
-}
     # ------------------ AKT II: DAS NEBEL-LABYRINTH ------------------
     6: {
         "person": "Person C",
@@ -157,8 +156,6 @@ st.divider()
 # 5. TÜRCHEN-GRID
 # ==============================================================================
 st.write("### 📅 Wähle dein Türchen")
-
-# 6 Spalten pro Zeile anzeigen
 cols = st.columns(6)
 for i in range(1, 13):
     col = cols[(i - 1) % 6]
