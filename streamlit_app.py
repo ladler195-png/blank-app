@@ -69,17 +69,6 @@ st.markdown("""
         letter-spacing: 4px;
         margin-bottom: 10px;
     }
-    
-    .sudoku-grid {
-        background-color: #142e1d;
-        border: 2px solid #d69e2e;
-        padding: 10px;
-        border-radius: 8px;
-        text-align: center;
-        font-family: monospace;
-        font-size: 1.2em;
-        margin-bottom: 15px;
-    }
     </style>
 """, unsafe_allow_html=True)
 
@@ -97,7 +86,7 @@ components.html("""
 """, height=0)
 
 # ==============================================================================
-# 2. RÄTSEL-DATENBANK (Überarbeitet & Logisch optimiert)
+# 2. RÄTSEL-DATENBANK
 # ==============================================================================
 DOORS = {
     1: {
@@ -147,28 +136,28 @@ DOORS = {
         "story": "Der Schlitten stoppt vor einer massiven Nebelwand aus blauem Eis.",
         "question": "Welchen Aggregatzustand nimmt Wasser bei klarem Frost an?",
         "answer": "EIS",
-        "puzzle_piece": "🧩 Fragment 1: Rahmenteil Oben-Links",
+        "puzzle_piece": "🧩 Fragment 1 (Buchstabe unten links): **E**",
         "hint": "Ein kurzes, dreibuchstabiges Wort."
     },
     6: {
         "person": "Person C",
         "title": "Tag 6: Das magische Sudoku-Gitter 🔢",
         "type": "sudoku_puzzle",
-        "story": "Ihr findet einen gefrorenen Monolithen. Die Struktur ist ein magisches 3x3-Quadrat, bei dem Zeilen, Spalten und Diagonalen jeweils 15 ergeben.",
-        "question": "Trage die fehlenden Zahlen ein. In der Mitte steht fest die 5. Die Ecken enthalten die geraden Zahlen (2, 4, 6, 8) und die Rand-Mitten die ungeraden (1, 3, 7, 9). Löse das Raster!",
-        "answer": None,
-        "puzzle_piece": "🧩 Fragment 2: Rahmenteil Oben-Mitte",
-        "hint": "Zentrum ist 5. Oben links = 8, Oben rechts = 6, Unten links = 2, Unten rechts = 4."
+        "story": "Ihr findet ein magisches 3x3-Sudoku, bei dem Zeilen, Spalten und Diagonalen exakt 15 ergeben. Die Mitte ist 5.",
+        "question": "Trage die fehlenden Zahlen in die leeren Felder ein (Zeile 1: 8, ?, 6 | Zeile 2: 3, 5, 7 | Zeile 3: 4, ?, 2). Welcher Wert fehlt oben in der Mitte?",
+        "answer": "1",
+        "puzzle_piece": "🧩 Fragment 2 (Buchstabe unten links): **X**",
+        "hint": "Die Summe jeder Zeile muss 15 ergeben (8 + ? + 6 = 15)."
     },
     7: {
         "person": "Person A",
         "title": "Tag 7: Das Logikgitter der Schlucht 🗺️",
         "type": "logic_grid",
-        "story": "Vor der Eisspalte müsst ihr anhand von Hinweisen herausfinden, welcher Elf (A, B, C) welchen Weg und welches Werkzeug gewählt hat.",
-        "question": "Hinweise:\n1. Elf C war am schnellsten und wählte den gefährlichsten Weg (Eishöhlen-Weg) mit dem Eispickel.\n2. Elf A war langsamer als B und nahm den leichten Gletscher-Pfad.\n3. Elf B nahm folglich den Schlucht-Pfad mit den Schneeschuhen.\nOrdne die Wege korrekt zu!",
-        "answer": None,
-        "puzzle_piece": "🧩 Fragment 3: Rahmenteil Oben-Rechts",
-        "hint": "Elf A = Gletscher-Pfad, Elf B = Schlucht-Pfad, Elf C = Eishöhlen-Weg."
+        "story": "Vor der Eisspalte müsst ihr anhand von Hinweisen herausfinden, welcher Elf welchen Weg gewählt hat.",
+        "question": "Hinweise:\n1. Der Elf mit dem Eispickel nahm den gefährlichsten Weg.\n2. Elf A nahm den Gletscher-Pfad.\n3. Elf B nahm den Schlucht-Pfad.\nWelchen Weg nahm folglich Elf C mit dem Eispickel?",
+        "answer": "EISHÖHLEN-WEG",
+        "puzzle_piece": "🧩 Fragment 3 (Buchstabe unten links): **P**",
+        "hint": "Schließe durch Ausschlussverfahren aus, welche Wege A und B belegt haben."
     },
     8: {
         "person": "Person B",
@@ -177,18 +166,18 @@ DOORS = {
         "story": "Ein Funksignal hallt durch die Nebelwände. Nutze das Morse-Terminal, um das universelle Notsignal **SOS** abzusetzen!",
         "question": "Klicke die Tasten in der korrekten Reihenfolge: Drei mal Kurz (•), drei mal Lang (-), drei mal Kurz (•).",
         "answer": "...---...",
-        "puzzle_piece": "🧩 Fragment 4: Rahmenteil Mitte-Links",
+        "puzzle_piece": "🧩 Fragment 4 (Buchstabe unten links): **E**",
         "hint": "SOS = 3x Punkt, 3x Strich, 3x Punkt."
     },
     9: {
         "person": "Person C",
         "title": "Tag 9: Der Lichtstrahl-Spiegelpfad",
         "type": "mirror_puzzle",
-        "story": "Ein Laserstrahl bricht durch den Nebel. Der Strahl kommt von Süden und muss nach Osten abgelenkt werden. Welcher Spiegelwinkel ist nötig?",
-        "question": "Der Strahl soll von Süden kommend nach Osten gelenkt werden. Ein Spiegel mit der Ausrichtung '/' oder '\\' ist nötig. Finde die richtige Kombination für die 3 Spiegel (Tipp: Korrekt ist / \\ /).",
+        "story": "Ein Laserstrahl bricht durch den Nebel. Der Strahl kommt von Süden und muss nach Osten abgelenkt werden.",
+        "question": "Bringe die Spiegel in die richtige Kombination, damit der Strahl von Süden nach Osten umgelenkt wird.",
         "answer": "NO",
-        "puzzle_piece": "🧩 Fragment 5: Zentrum-Teil",
-        "hint": "Die Ausrichtung für Nord-Ost ist im System als 'NO' hinterlegt."
+        "puzzle_piece": "🧩 Fragment 5 (Buchstabe unten links): **D**",
+        "hint": "Ein schräger Spiegel '/' lenkt einen von unten kommenden Strahl nach rechts (Osten) ab."
     },
     10: {
         "person": "Person A",
@@ -197,28 +186,28 @@ DOORS = {
         "story": "Du stehst am Gletscherfluss mit Wolf, Ziege und Kohl. Du darfst immer nur einen Passagier mitnehmen.",
         "question": "Bringe alle sicher auf die andere Seite, ohne dass Fressfeinde unbeaufsichtigt gelassen werden!",
         "answer": "COMPLETED",
-        "puzzle_piece": "🧩 Fragment 6: Rahmenteil Unten-Links",
-        "hint": "Nimm zuerst die Ziege rüber, fahre allein zurück, nimm den Wolf rüber, bringe die Ziege wieder mit zurück..."
+        "puzzle_piece": "🧩 Fragment 6 (Buchstabe unten links): **I**",
+        "hint": "Nimm zuerst die Ziege rüber, fahre allein zurück, nimm den Wolf rüber..."
     },
     11: {
         "person": "Person B",
         "title": "Tag 11: Das Krypto-Zahlenschloss",
         "type": "text",
         "story": "Das Schloss vor dem Ausgang verlangt die Lösung eines Kombinatorik-Rätsels.",
-        "question": "Wie viele verschiedene Möglichkeiten gibt es, 3 verschiedene Geschenke (A, B, C) unter den Elfen aufzuteilen? (Fakultät von 3 = 3!)\n\n**Eingabe:** Zahl eingeben.",
+        "question": "Wie viele verschiedene Möglichkeiten gibt es, 3 verschiedene Geschenke unter den Elfen aufzuteilen? (Fakultät von 3 = 3!)\n\n**Eingabe:** Zahl eingeben.",
         "answer": "6",
-        "puzzle_piece": "🧩 Fragment 7: Rahmenteil Unten-Mitte",
+        "puzzle_piece": "🧩 Fragment 7 (Buchstabe unten links): **T**",
         "hint": "3 * 2 * 1 = 6."
     },
     12: {
         "person": "Person C",
-        "title": "Tag 12: Das visuelle Puzzleteile-Haupttor 🧩",
-        "type": "puzzle_assembly",
-        "story": "Ihr habt alle 7 Fragmente gesammelt! Setzt sie im Master-Rahmen zusammen, um das Tor zu öffnen.",
-        "question": "Klicke auf die Fragmente in der korrekten Reihenfolge (von Oben nach Unten / Mitte), um das Bild zu finalisieren.",
-        "answer": "SOLVED",
+        "title": "Tag 12: Das geheime Lösungswort 🧩",
+        "type": "text",
+        "story": "Ihr habt alle Fragmente von Tag 5 bis 11 gesammelt. Unten links auf jedem Fragment stand ein Buchstabe!",
+        "question": "Setzt die gesammelten Buchstaben von Tag 5 bis 11 in der richtigen Reihenfolge zu einem 7-stelligen Lösungswort zusammen und tippt es ein.",
+        "answer": "EXPEDIT",
         "puzzle_piece": "🏆 GEWONNEN: Die Werkstatt ist geöffnet!",
-        "hint": "Klicke nacheinander auf die Teile 1 bis 7, um sie einzurasten."
+        "hint": "Die Buchstaben aus den Fragmenten (Tag 5 bis 11) ergeben hintereinander gelesen ein Wort rund um unsere Reise."
     },
     13: {
         "person": "Person A",
@@ -365,9 +354,6 @@ if "river" not in st.session_state:
         "cabbage": "left"
     }
 
-if "puzzle_assembled" not in st.session_state:
-    st.session_state.puzzle_assembled = False
-
 # ==============================================================================
 # 4. KOPFZEILE & FORTSCHRITT
 # ==============================================================================
@@ -390,7 +376,7 @@ cols = st.columns(6)
 for i in range(1, 25):
     col = cols[(i - 1) % 6]
     
-    prefix = "🌀 " if 5 <= i <= 11 else ""
+    prefix = "🌀 " if 5 <= i <= 12 else ""
     label = f"🎁 {prefix}Tag {i}" if i in st.session_state.solved_doors else f"{prefix}Tag {i}"
         
     if col.button(label, key=f"btn_{i}"):
@@ -399,9 +385,10 @@ for i in range(1, 25):
 st.divider()
 
 # ==============================================================================
-# 6. RÄTSEL-FLÄCHE & LABYRINTH-SAMMLUNG
+# 6. RÄTSEL-FLÄCHE & FRAGMENT-SAMMLUNG (Nur Tag 5-12 in Sidebar)
 # ==============================================================================
-main_col, puzzle_col = st.columns([2, 1])
+show_sidebar = 5 <= st.session_state.active_day <= 12
+main_col, puzzle_col = st.columns([2, 1] if show_sidebar else [1, 0])
 
 with main_col:
     day = st.session_state.active_day
@@ -415,41 +402,29 @@ with main_col:
 
     # --- SONDER-WIDGETS ---
     
-    # TAG 6: SUDOKU (Klar und visuell)
+    # TAG 6: SUDOKU
     if door["type"] == "sudoku_puzzle":
-        st.markdown("""
-            <div class='sudoku-grid'>
-            [ 8 ] [ 1 ] [ 6 ]<br>
-            [ 3 ] [ 5 ] [ 7 ]<br>
-            [ 4 ] [ 9 ] [ 2 ]
-            </div>
-        """, unsafe_allow_html=True)
-        st.write("🔢 **Trage die Summen-Bestätigung ein (Jede Reihe ergibt 15):**")
-        s_input = st.text_input("Tippe die Summe ein (15):", key="s_in")
+        s_input = st.text_input("Fehlende Zahl oben in der Mitte eintragen:", key="s_in")
         if st.button("Sudoku bestätigen 🔢", key=f"chk_{day}"):
-            if s_input.strip() == "15":
-                st.success("🎉 Perfekt! Das magische Sudoku ist bestätigt!")
+            if s_input.strip() == "1":
+                st.success("🎉 Richtig! Die Zahl 1 vervollständigt die Zeilensumme 15.")
                 if day not in st.session_state.solved_doors:
                     st.session_state.solved_doors.append(day)
                     st.rerun()
             else:
-                st.error("❌ Falsche Summe. Es müssen genau 15 sein.")
+                st.error("❌ Falsch. Überprüfe die Zeilensumme 8 + ? + 6 = 15.")
 
     # TAG 7: LOGIKGITTER
     elif door["type"] == "logic_grid":
-        st.write("🗺️ **Logikgitter-Auswahl:**")
-        elf_a_weg = st.selectbox("Welchen Weg nahm Elf A?", ["-", "Schlucht-Pfad", "Gletscher-Pfad", "Eishöhlen-Weg"], key="lg_a")
-        elf_b_weg = st.selectbox("Welchen Weg nahm Elf B?", ["-", "Schlucht-Pfad", "Gletscher-Pfad", "Eishöhlen-Weg"], key="lg_b")
-        elf_c_weg = st.selectbox("Welchen Weg nahm Elf C?", ["-", "Schlucht-Pfad", "Gletscher-Pfad", "Eishöhlen-Weg"], key="lg_c")
-        
+        ans_lg = st.text_input("Deine Lösung (Weg):", key="lg_input")
         if st.button("Logikgitter auswerten 🗺️", key=f"chk_{day}"):
-            if elf_a_weg == "Gletscher-Pfad" and elf_b_weg == "Schlucht-Pfad" and elf_c_weg == "Eishöhlen-Weg":
-                st.success("🎉 Logikgitter fehlerfrei gelöst!")
+            if ans_lg.strip().upper() in ["EISHÖHLEN-WEG", "EISHOHLEN-WEG", "EISHÖHLE"]:
+                st.success("🎉 Richtig gelöst!")
                 if day not in st.session_state.solved_doors:
                     st.session_state.solved_doors.append(day)
                     st.rerun()
             else:
-                st.error("❌ Die Zuordnung stimmt noch nicht. Siehe Hinweise.")
+                st.error("❌ Die Zuordnung stimmt noch nicht.")
 
     # TAG 8: MORSE-TERMINAL
     elif door["type"] == "morse_terminal":
@@ -475,7 +450,7 @@ with main_col:
             else:
                 st.error(f"❌ Falsches Signal ('{st.session_state.morse_buffer}'). Benötigt: ...---...")
 
-    # TAG 10: TRANSPORT-RÄTSEL (Stabil & korrigiert)
+    # TAG 10: TRANSPORT-RÄTSEL (Mit Wolf, Ziege, Kohl auf Deutsch)
     elif door["type"] == "river_crossing":
         st.write("🐺🐐🥬 **Fluss-Transport-Steuerung:**")
         r = st.session_state.river
@@ -486,7 +461,7 @@ with main_col:
         
         col_act1, col_act2 = st.columns(2)
         with col_act1:
-            item_to_move = st.selectbox("Wer kommt mit ins Boot?", ["Niemand (leer fahren)", "wolf", "goat", "cabbage"], key="river_item")
+            item_to_move = st.selectbox("Passagier mitnehmen:", ["Niemand (leer fahren)", "wolf", "goat", "cabbage"], key="river_item")
         with col_act2:
             if st.button("Ufer wechseln 🛶", key="river_move"):
                 target = "right" if r["boat"] == "left" else "left"
@@ -512,27 +487,6 @@ with main_col:
             if day not in st.session_state.solved_doors:
                 st.session_state.solved_doors.append(day)
                 st.rerun()
-
-    # TAG 12: PUZZLE-ZUSAMMENBAU (Stabiles Matrix-Einrasten)
-    elif door["type"] == "puzzle_assembly":
-        st.write("🧩 **Puzzleteile-Masterrahmen:** Setze die 7 Fragmente in der richtigen Reihenfolge zusammen.")
-        
-        p1 = st.checkbox("Teil 1: Oben-Links einrasten", key="pz1")
-        p2 = st.checkbox("Teil 2: Oben-Mitte einrasten", key="pz2")
-        p3 = st.checkbox("Teil 3: Oben-Rechts einrasten", key="pz3")
-        p4 = st.checkbox("Teil 4: Mitte-Links einrasten", key="pz4")
-        p5 = st.checkbox("Teil 5: Zentrum-Teil einrasten", key="pz5")
-        p6 = st.checkbox("Teil 6: Unten-Links einrasten", key="pz6")
-        p7 = st.checkbox("Teil 7: Unten-Mitte einrasten", key="pz7")
-        
-        if st.button("Puzzle-Vollständigkeit prüfen 🏆", key=f"chk_{day}"):
-            if p1 and p2 and p3 and p4 and p5 and p6 and p7:
-                st.success("🎉 Das Tor ist komplett zusammengesetzt und öffnet sich!")
-                if day not in st.session_state.solved_doors:
-                    st.session_state.solved_doors.append(day)
-                    st.rerun()
-            else:
-                st.error("❌ Es fehlen noch Teile im Rahmen.")
 
     # STANDARD-WIDGETS FÜR ANDERE TAGE
     elif door["type"] == "mirror_puzzle":
@@ -624,7 +578,7 @@ with main_col:
                 st.error("❌ Nur Rauschen.")
 
     else:
-        if door["type"] not in ["sudoku_puzzle", "logic_grid", "morse_terminal", "river_crossing", "puzzle_assembly"]:
+        if door["type"] not in ["sudoku_puzzle", "logic_grid", "morse_terminal", "river_crossing"]:
             ans = st.text_input("Deine Lösung:", key=f"input_{day}")
             if st.button("Prüfen 🔍", key=f"chk_{day}"):
                 user_clean = ans.strip().replace(" ", "").upper()
@@ -641,19 +595,20 @@ with main_col:
         st.write(door["hint"])
 
 # ==============================================================================
-# SEITENLEISTE (FRAGMENT-SAMMLUNG)
+# SEITENLEISTE (FRAGMENT-SAMMLUNG NUR FÜR TAG 5 BIS 12)
 # ==============================================================================
-with puzzle_col:
-    st.subheader("🌀 Labyrinth-Puzzleteile")
-    st.caption("Sammlertasche für das Haupttor:")
-    
-    lab_pieces = [d for d in st.session_state.solved_doors if DOORS[d]["puzzle_piece"]]
-    
-    if not lab_pieces:
-        st.write("*Noch keine Puzzleteile gefunden.*")
-    else:
-        for d in sorted(lab_pieces):
-            st.markdown(f"<div class='puzzle-card'><b>Tag {d}:</b><br>{DOORS[d]['puzzle_piece']}</div>", unsafe_allow_html=True)
-            
-    st.write("---")
-    st.metric("Gefundene Fragmente", f"{len(lab_pieces)} / 7")
+if show_sidebar:
+    with puzzle_col:
+        st.subheader("🌀 Puzzleteil-Fragmente")
+        st.caption("Sammle hier die Buchstaben (Tag 5 bis 12):")
+        
+        lab_pieces = [d for d in st.session_state.solved_doors if 5 <= d <= 12 and DOORS[d]["puzzle_piece"]]
+        
+        if not lab_pieces:
+            st.write("*Noch keine Fragmente gesammelt.*")
+        else:
+            for d in sorted(lab_pieces):
+                st.markdown(f"<div class='puzzle-card'><b>Tag {d}:</b><br>{DOORS[d]['puzzle_piece']}</div>", unsafe_allow_html=True)
+                
+        st.write("---")
+        st.metric("Gefundene Fragmente", f"{len(lab_pieces)} / 8")
