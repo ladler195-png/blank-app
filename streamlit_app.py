@@ -70,7 +70,64 @@ DOORS = {
         "hint": "Kombiniere den Begriff von Tag 2 (NORD) direkt mit der Zahl von Tag 4 (60)."
     }
 }
-
+    # ------------------ AKT II: DAS NEBEL-LABYRINTH ------------------
+    6: {
+        "person": "Person C",
+        "title": "Tag 6: Nikolaus im Eisnebel (Spezial)",
+        "story": "Im dichten Nebel findet ihr eine goldene Nikolaus-Statuette im Schnee. Auf dem Sockel befindet sich ein 3x3 Zahlen-Raster. Nur wenn die Zeilen- und Spaltensummen magisch überall 15 ergeben, leuchtet der Nikolaus-Kompass auf!",
+        "question": "Welche Zahl gehört in die Mitte (Feld X) des magischen 3x3-Quadrats (Zahlen 1-9)?",
+        "answer": "5",
+        "hint": "In jedem magischen 3x3-Quadrat mit den Zahlen 1 bis 9 liegt die Zahl 5 immer genau in der Mitte."
+    },
+    7: {
+        "person": "Person A",
+        "title": "Tag 7: Die Weggabelung der Eiszapfen",
+        "story": "Das Labyrinth teilt sich in vier Pfade (N, O, S, W). Ein Wegweiser zeigt kryptische Zahlen an: 'N=12, O=24, S=36'. Die Eiszapfen am Weg W folgen einer mathematischen Gesetzmäßigkeit.",
+        "question": "Welche Zahl hat der Weg W, wenn die Folge 3, 6, 11, 18, 27, __ lautet?",
+        "answer": "38",
+        "hint": "Schau dir die Abstände an: +3, +5, +7, +9... Wie viel musst du zu 27 addieren?"
+    },
+    8: {
+        "person": "Person B",
+        "title": "Tag 8: Das Echo im Gletscher",
+        "story": "Ihr hört ein lautes Dröhnen. Das Nebelhorn der Elfen schallt durch die Spalten. Es wirft ein Echo zurück, das sich in seiner Frequenz verdoppelt.",
+        "question": "Ein Ton von 440 Hz wird 3-mal im Echo gedoppelt. Wie hoch ist die Endfrequenz in Hz?",
+        "answer": "3520",
+        "hint": "Rechne: 440 * 2 * 2 * 2 (oder 440 * 8)."
+    },
+    9: {
+        "person": "Person C",
+        "title": "Tag 9: Die Eisspiegel-Grotte",
+        "story": "Eine Sackgasse! Um die Nebeltür aufzubrennen, muss der Lichtstrahl einer Laterne über Spiegel umgelenkt werden. Jeder Spiegel dreht den Lichtstrahl um 90 Grad.",
+        "question": "Der Strahl startet nach Osten. Er trifft nacheinander auf 3 Spiegel: Links, Rechts, Links. In welche Himmelsrichtung schlägt der Strahl am Ende ein? (NORD, OST, SUED oder WEST)",
+        "answer": "NORD",
+        "hint": "Start: Ost -> Links abbiegen = Nord -> Rechts abbiegen = Ost -> Links abbiegen = Nord."
+    },
+    10: {
+        "person": "Person A",
+        "title": "Tag 10: Der gefrorene Kompass",
+        "story": "Ihr findet einen Kompass im Schnee. Die Nadel ist durch Eis blockiert. Auf dem Gehäuse stehen 4 Zahlen, die zusammen den korrekten Grad-Winkel (0-360°) ergeben.",
+        "question": "Welcher Winkel führt aus dem Nebel? Löse: (Höhe des Watzmanns: 2713) Modulo 360",
+        "answer": "193",
+        "hint": "Teile 2713 durch 360. Der Rest dieser Division (2713 - 7 * 360) ist das Ergebnis."
+    },
+    11: {
+        "person": "Person B",
+        "title": "Tag 11: Die brüchige Eisbrücke",
+        "story": "Vor euch liegt eine tief schimmernde Gletscherspalte. Die Steinbrücke ist nur passierbar, wenn ihr die Trittsteine nach der Logik der Primfaktoren wählt.",
+        "question": "Wie lautet die Summe aller Primfaktoren der Zahl 42? (42 = 2 × 3 × 7)",
+        "answer": "12",
+        "hint": "Addiere die drei Primzahlen 2, 3 und 7."
+    },
+    12: {
+        "person": "Person C",
+        "title": "Tag 12: Der Durchbruch am Nordpol",
+        "story": "Der Nebel lichtet sich schlagartig! Vor euch erstrahlen die Lichter der Nordpol-Werkstatt. Um das große Holztor zu öffnen, müsst ihr den Code aus den Hinweisen des Labyrinths eingeben.",
+        "question": "Setzt das Tor-Passwort zusammen: Wort von Tag 9 + Ergebnis von Tag 11 (z. B. WEST15).",
+        "answer": "NORD12",
+        "hint": "Kombiniere die Himmelsrichtung von Tag 9 (NORD) direkt mit der Zahl von Tag 11 (12)."
+    }
+}
 # ==============================================================================
 # 3. SPEICHERSTAND (SESSION STATE)
 # ==============================================================================
@@ -101,9 +158,10 @@ st.divider()
 # ==============================================================================
 st.write("### 📅 Wähle dein Türchen")
 
-cols = st.columns(5)
-for i in range(1, 6):
-    col = cols[(i - 1) % 5]
+# 6 Spalten pro Zeile anzeigen
+cols = st.columns(6)
+for i in range(1, 13):
+    col = cols[(i - 1) % 6]
     
     if i in st.session_state.solved_doors:
         label = f"✅ Tag {i}"
