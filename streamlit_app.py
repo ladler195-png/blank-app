@@ -236,173 +236,240 @@ if st.session_state.current_view == "overview":
                         st.session_state.current_view = d_num
                         st.rerun()
 
-# --- DETAIL-ANSICHT EINES TÜRICHENS ---
+# ==============================================================================
+# 6. RÄTSEL-FLÄCHE & DYNAMISCHES LAYOUT (Sidebar nur für Tag 5 bis 12)
+# ==============================================================================
+show_sidebar = 5 <= st.session_state.active_day <= 12
+if show_sidebar:
+    main_col, puzzle_col = st.columns([2, 1])
 else:
-    day = st.session_state.current_view
+    main_col = st.container()
+
+with main_col:
+    day = st.session_state.active_day
     door = DOORS[day]
 
-    if st.button("⬅️ Zurück zur Türchen-Übersicht"):
-        st.session_state.current_view = "overview"
-        st.rerun()
+    st.subheader(f"{door['title']}")
+    st.caption(f"Verantwortlich: **{door['person']}**")
+    
+    st.info(f"📖 {door['story']}")
+    st.markdown(f"**Aufgabe:** {door['question']}")
 
-    st.markdown("---")
-    st.header(door["title"])
-    st.info(door["story"])
-    st.markdown("---")
+    # --- SONDER-WIDGETS ---
+    
+    # TAG 6: SUDOKU
+    if door["type"] == "sudoku_puzzle":
+        s_input = st.text_input("Fehlende Zahl oben in der Mitte eintragen:", key="s_in")
+        if st.button("Sudoku bestätigen 🔢", key=f"chk_{day}"):
+            if s_input.strip() == "1":
+                st.success("🎉 Richtig! Die Zahl 1 vervollständigt die Zeilensumme 15.")
+                if day not in st.session_state.solved_doors:
+                    st.session_state.solved_doors.append(day)
+                    st.rerun()
+            else:
+                st.error("❌ Falsch. Überprüfe die Zeilensumme 8 + ? + 6 = 15.")
 
-    if day in st.session_state.solved_doors:
-        st.success("✅ Dieses Türchen wurde bereits erfolgreich gelöst!")
-        if door["puzzle_piece"]:
-            st.markdown(f"**Gesammeltes Element:** {door['puzzle_piece']}")
-        if st.button("🔄 Dieses Türchen zum Testen zurücksetzen"):
-            st.session_state.solved_doors.remove(day)
+    # TAG 7: LOGIKGITTER
+    elif door["type"] == "logic_grid":
+        ans_lg = st.text_input("Deine Lösung (Weg):", key="lg_input")
+        if st.button("Logikgitter auswerten 🗺️", key=f"chk_{day}"):
+            if ans_lg.strip().upper() in ["EISHÖHLEN-WEG", "EISHOHLEN-WEG", "EISHÖHLE"]:
+                st.success("🎉 Richtig gelöst!")
+                if day not in st.session_state.solved_doors:
+                    st.session_state.solved_doors.append(day)
+                    st.rerun()
+            else:
+                st.error("❌ Die Zuordnung stimmt noch nicht.")
+
+    # TAG 8: MORSE-TERMINAL
+    elif door["type"] == "morse_terminal":
+        st.write("📻 **Interaktives Morse-Terminal:**")
+        st.markdown(f"<div class='morse-screen'>{st.session_state.morse_buffer if st.session_state.morse_buffer else '--- SIGNAL BEREIT ---'}</div>", unsafe_allow_html=True)
+        
+        m_col1, m_col2, m_col3, m_col4 = st.columns(4)
+        if m_col1.button("• Kurz", key="morse_dot"):
+            st.session_state.morse_buffer += "."
             st.rerun()
-    else:
-        st.subheader("❓ Aufgabe:")
-        st.write(door["question"])
-
-        # 1. RENTIER-QUIZ (Tag 3)
-        if door["type"] == "reindeer_quiz":
-            st.write(f"**Experten-Frage {st.session_state.quiz_step} von 5**")
-            step = st.session_state.quiz_step
-            if step == 1:
-                q1 = st.text_input("F1: Welche Farbe nimmt das Tapetum lucidum im Rentierauge im Winter an?", key="rq1")
-                if st.button("Antwort 1 senden"):
-                    if "BLAU" in q1.upper():
-                        st.session_state.quiz_step = 2
-                        st.rerun()
-                    else:
-                        st.error("❌ Falsch. Denk an das Spektrum der Polarlichter.")
-            elif step == 2:
-                q2 = st.selectbox("F2: Welches Geschlecht behält im Winter sein Geweih?", ["Bitte wählen...", "Männchen", "Weibchen / Kühe", "Beide"], key="rq2")
-                if st.button("Antwort 2 senden"):
-                    if "Weibchen" in q2:
-                        st.session_state.quiz_step = 3
-                        st.rerun()
-                    else:
-                        st.error("❌ Falsch.")
-            elif step == 3:
-                q3 = st.text_input("F3: Wie lautet der wissenschaftliche Artname auf Latein?", key="rq3")
-                if st.button("Antwort 3 senden"):
-                    if "TARANDUS" in q3.upper():
-                        st.session_state.quiz_step = 4
-                        st.rerun()
-                    else:
-                        st.error("❌ Falsch.")
-            elif step == 4:
-                q4 = st.number_input("F4: In welchem Jahr erschien das klassische Rentier-Gedicht erstmals?", min_value=1800, max_value=1900, value=1800, key="rq4")
-                if st.button("Antwort 4 senden"):
-                    if q4 == 1823:
-                        st.session_state.quiz_step = 5
-                        st.rerun()
-                    else:
-                        st.error("❌ Falsch.")
-            elif step == 5:
-                q5 = st.slider("F5: Wie viele Rentiere zogen den Schlitten im Original ohne Rudolph?", 1, 12, 4, key="rq5")
-                if st.button("Finale Antwort senden"):
-                    if q5 == 8:
-                        st.success("🎉 Rentiere überzeugt! Das Rätsel ist geschafft.")
-                        st.session_state.solved_doors.append(day)
-                        st.session_state.quiz_step = 1
-                        st.rerun()
-                    else:
-                        st.error("❌ Falsch.")
-
-        # 2. SUDOKU (Tag 6)
-        elif door["type"] == "sudoku_puzzle":
-            st.markdown("""
-            | Raster | Spalte 1 | Spalte 2 | Spalte 3 | Spalte 4 |
-            | :---: | :---: | :---: | :---: | :---: |
-            | **Z1** | **1**    | *[ ? ]*  | 3        | 4        |
-            | **Z2** | 3        | 4        | *[ ? ]*  | 2        |
-            | **Z3** | *[ ? ]*  | 2        | 1        | 3        |
-            | **Z4** | 4        | 1        | 2        | *[ ? ]*  |
-            """)
-            c1, c2, c3, c4 = st.columns(4)
-            v1 = c1.text_input("Feld 1 (Z1S2)", max_chars=1)
-            v2 = c2.text_input("Feld 2 (Z2S3)", max_chars=1)
-            v3 = c3.text_input("Feld 3 (Z3S1)", max_chars=1)
-            v4 = c4.text_input("Feld 4 (Z4S4)", max_chars=1)
-
-            if st.button("Sudoku überprüfen"):
-                if v1.strip() == "2" and v2.strip() == "1" and v3.strip() == "4" and v4.strip() == "3":
-                    st.success("✨ Sudoku korrekt gelöst!")
-                    if door["puzzle_piece"]:
-                        st.info(f"**Erhaltenes Element:** {door['puzzle_piece']}")
+        if m_col2.button("- Lang", key="morse_dash"):
+            st.session_state.morse_buffer += "-"
+            st.rerun()
+        if m_col3.button("Löschen ⌫", key="morse_clear"):
+            st.session_state.morse_buffer = ""
+            st.rerun()
+        if m_col4.button("Signal senden 📡", key=f"chk_{day}"):
+            if st.session_state.morse_buffer == "...---...":
+                st.success("🎉 SOS-Signal erfolgreich übertragen!")
+                if day not in st.session_state.solved_doors:
                     st.session_state.solved_doors.append(day)
                     st.rerun()
-                else:
-                    st.error("❌ Fehler im Raster.")
+            else:
+                st.error(f"❌ Falsches Signal ('{st.session_state.morse_buffer}'). Benötigt: ...---...")
 
-        # 3. MORSE-DECODER (Tag 8)
-        elif door["type"] == "morse_puzzle":
-            st.markdown("""
-            > **Morse-Alphabet:** A = `.-` | E = `.` | R = `.-.` | T = `-`
-            """)
-            morse_input = st.text_input("Tippe das entschlüsselte Wort:", key=f"morse_{day}")
-            if st.button("Morsecode abschicken 📡"):
-                if morse_input.strip().upper() == "RETTER":
-                    st.success("🎉 Signal erfolgreich decodiert!")
-                    if door["puzzle_piece"]:
-                        st.info(f"**Erhaltenes Element:** {door['puzzle_piece']}")
+    # TAG 10: TRANSPORT-RÄTSEL (Mit Wolf, Ziege, Kohl auf Deutsch)
+    elif door["type"] == "river_crossing":
+        st.write("🐺🐐🥬 **Fluss-Transport-Steuerung:**")
+        r = st.session_state.river
+        
+        st.write(f"📍 **Linkes Ufer:** {[k for k, v in r.items() if v == 'left' and k != 'boat']}")
+        st.write(f"🛶 **Boot Position:** Ufer {r['boat'].upper()}")
+        st.write(f"📍 **Rechtes Ufer:** {[k for k, v in r.items() if v == 'right' and k != 'boat']}")
+        
+        col_act1, col_act2 = st.columns(2)
+        with col_act1:
+            item_to_move = st.selectbox("Passagier mitnehmen:", ["Niemand (leer fahren)", "wolf", "goat", "cabbage"], key="river_item")
+        with col_act2:
+            if st.button("Ufer wechseln 🛶", key="river_move"):
+                target = "right" if r["boat"] == "left" else "left"
+                r["boat"] = target
+                if item_to_move != "Niemand (leer fahren)":
+                    r[item_to_move] = target
+                
+                # Fress-Regeln
+                if r["wolf"] == r["goat"] and r["boat"] != r["wolf"]:
+                    st.error("💀 Der Wolf hat die Ziege gefressen! Zurückgesetzt.")
+                    st.session_state.river = {"boat": "left", "wolf": "left", "goat": "left", "cabbage": "left"}
+                elif r["goat"] == r["cabbage"] and r["boat"] != r["goat"]:
+                    st.error("💀 Die Ziege hat den Kohlkopf gefressen! Zurückgesetzt.")
+                    st.session_state.river = {"boat": "left", "wolf": "left", "goat": "left", "cabbage": "left"}
+                st.rerun()
+
+        if st.button("Spielstand zurücksetzen 🔄", key="river_reset"):
+            st.session_state.river = {"boat": "left", "wolf": "left", "goat": "left", "cabbage": "left"}
+            st.rerun()
+
+        if r["wolf"] == "right" and r["goat"] == "right" and r["cabbage"] == "right":
+            st.success("🎉 Alle sicher drüben!")
+            if day not in st.session_state.solved_doors:
+                st.session_state.solved_doors.append(day)
+                st.rerun()
+
+    # TAG 9: SPIEGEL-RÄTSEL
+    elif door["type"] == "mirror_puzzle":
+        st.write("🔦 **Laser-Spiegel-Ausrichtung:** Klicke auf die Spiegel, um die Ausrichtung zu ändern.")
+        m_col1, m_col2, m_col3 = st.columns(3)
+        if m_col1.button(f"Spiegel A: [ {st.session_state.mirror_state[0]} ]", key="m1"):
+            st.session_state.mirror_state[0] = "/" if st.session_state.mirror_state[0] == "\\" else "\\"
+            st.rerun()
+        if m_col2.button(f"Spiegel B: [ {st.session_state.mirror_state[1]} ]", key="m2"):
+            st.session_state.mirror_state[1] = "/" if st.session_state.mirror_state[1] == "\\" else "\\"
+            st.rerun()
+        if m_col3.button(f"Spiegel C: [ {st.session_state.mirror_state[2]} ]", key="m3"):
+            st.session_state.mirror_state[2] = "/" if st.session_state.mirror_state[2] == "\\" else "\\"
+            st.rerun()
+
+        if st.session_state.mirror_state == ["/", "\\", "/"]:
+            st.success("🟢 Strahlenverlauf korrekt!")
+            if st.button("Lichtstrahl aktivieren 🔦", key=f"chk_{day}"):
+                if day not in st.session_state.solved_doors:
                     st.session_state.solved_doors.append(day)
                     st.rerun()
-                else:
-                    st.error("❌ Das Signal stimmt nicht.")
-
-        # 4. BINÄR-SCHALTER (Tag 13)
-        elif door["type"] == "binary_slider":
-            st.markdown("Stelle die Bits ein:")
-            b3 = st.checkbox("Bit 8er-Stelle")
-            b2 = st.checkbox("Bit 4er-Stelle")
-            b1 = st.checkbox("Bit 2er-Stelle")
-            b0 = st.checkbox("Bit 1er-Stelle")
-            
-            calculated_val = (8 if b3 else 0) + (4 if b2 else 0) + (2 if b1 else 0) + (1 if b0 else 0)
-            st.write(f"Aktueller Wert: **{calculated_val}** (Gesucht: 13)")
-
-            if st.button("Aggregat starten ⚡"):
-                if calculated_val == 13:
-                    st.success("🎉 Perfekt! Aggregat läuft.")
-                    st.session_state.solved_doors.append(day)
-                    st.rerun()
-                else:
-                    st.error(f"❌ Der Wert ist {calculated_val}, benötigt werden 13.")
-
-        # 5. FLUSS-LOGIKRÄTSEL (Tag 17)
-        elif door["type"] == "river_puzzle":
-            r_choice = st.selectbox("Wen nimmst du zuerst mit?", ["Bitte wählen...", "Eisbär", "Robbe", "Fisch"])
-            if st.button("Überfahrt starten"):
-                if r_choice == "Robbe":
-                    st.success("🎉 Richtig! Die Robbe wird zuerst rübergebracht, da Eisbär und Fisch sich zwar nicht fressen, aber der Eisbär die Robbe gefährdet (bzw. klassisches Prinzip).")
-                    st.session_state.solved_doors.append(day)
-                    st.rerun()
-                else:
-                    st.error("❌ Falsch. Überlege, wer wen fressen würde, wenn man ihn allein lässt.")
-
-        # 6. ELFEN-LOGIK (Tag 18)
-        elif door["type"] == "elf_puzzle":
-            elf_choice = st.radio("Wähle die schnellste Elfe:", ["Elfe A", "Elfe B", "Elfe C"])
-            if st.button("Schichtplan bestätigen"):
-                if elf_choice == "Elfe A":
-                    st.success("🎉 Logikgitter gelöst!")
-                    st.session_state.solved_doors.append(day)
-                    st.rerun()
-                else:
-                    st.error("❌ Falsch.")
-
-        # STANDARD-TEXT-EINGABE
         else:
-            user_input = st.text_input("Deine Lösung:", key=f"input_{day}")
-            if st.button("Antwort einreichen 🚀", key=f"btn_{day}"):
-                if user_input.strip().upper() == door["answer"].upper():
-                    st.success("🎉 Richtig!")
-                    if door["puzzle_piece"]:
-                        st.info(f"**Erhaltenes Element:** {door['puzzle_piece']}")
+            st.warning("🔴 Strahl wird noch falsch reflektiert.")
+
+    # TAG 13: GETRIEBE-RÄTSEL
+    elif door["type"] == "gear_puzzle":
+        rot = st.slider("⚙️ Umdrehungen des 12er-Rads:", 1, 12, 1, key="rot_slider")
+        if st.button("Zahnräder einrasten ⚙️", key=f"chk_{day}"):
+            if rot == door["answer"]:
+                st.success("🎉 Synchronisiert! Die Fließbänder laufen wieder an.")
+                if day not in st.session_state.solved_doors:
                     st.session_state.solved_doors.append(day)
                     st.rerun()
-                else:
-                    st.error("❌ Leider falsch.")
+            else:
+                st.error("❌ Noch nicht synchron. Prüfe das kgV.")
 
-        with st.expander("💡 Einen Hinweis anzeigen"):
-            st.write(door["hint"])
+    # TAG 16: BINÄR-SCHALTER
+    elif door["type"] == "binary_switches":
+        b1, b2, b3, b4, b5 = st.columns(5)
+        s1 = b1.checkbox("Schalter 1 (16)", key="cb1")
+        s2 = b2.checkbox("Schalter 2 (8)", key="cb2")
+        s3 = b3.checkbox("Schalter 3 (4)", key="cb3")
+        s4 = b4.checkbox("Schalter 4 (2)", key="cb4")
+        s5 = b5.checkbox("Schalter 5 (1)", key="cb5")
+        if st.button("Schaltkreis aktivieren ⚡", key=f"chk_{day}"):
+            if [s1, s2, s3, s4, s5] == door["answer"]:
+                st.success("🎉 Stromkreis aktiv! Das Licht flackert und brennt hell.")
+                if day not in st.session_state.solved_doors:
+                    st.session_state.solved_doors.append(day)
+                    st.rerun()
+            else:
+                st.error("❌ Falsche Schaltung für Dezimalzahl 25.")
+
+    # TAG 17 & 20: FREQUENZ / WAGE
+    elif door["type"] == "frequency_tuner":
+        freq = st.slider("📻 Empfänger (MHz):", 80.0, 100.0, 92.0, step=0.5, key="freq_slider")
+        if st.button("Signal-Frequenz feststellen 📡", key=f"chk_{day}"):
+            if abs(freq - door["answer"]) < 0.1:
+                st.success("🎉 Glasklarer Empfang mit dem Kontrollturm!")
+                if day not in st.session_state.solved_doors:
+                    st.session_state.solved_doors.append(day)
+                    st.rerun()
+            else:
+                st.error("❌ Nur Rauschen im Äther.")
+
+    elif door["type"] == "scale_puzzle":
+        w_hafer = st.slider("🌾 Hafer (kg)", 0, 50, 20, key="w_h")
+        w_staub = st.slider("✨ Sternenstaub (kg)", 0, 50, 5, key="w_s")
+        w_aepfel = st.slider("🍎 Äpfel (kg)", 0, 50, 10, key="w_a")
+        if st.button("Futter-Mischung wiegen ⚖️", key=f"chk_{day}"):
+            if w_hafer == 25 and w_staub == 10 and w_aepfel == 15:
+                st.success("🎉 Perfektes Futter-Verhältnis!")
+                if day not in st.session_state.solved_doors:
+                    st.session_state.solved_doors.append(day)
+                    st.rerun()
+            else:
+                st.error("❌ Falsches Mischungsverhältnis.")
+
+    elif door["type"] == "lock_sliders":
+        c1, c2, c3, c4 = st.columns(4)
+        v1 = c1.number_input("Stelle 1", 0, 9, 0, key=f"n1_{day}")
+        v2 = c2.number_input("Stelle 2", 0, 9, 0, key=f"n2_{day}")
+        v3 = c3.number_input("Stelle 3", 0, 9, 0, key=f"n3_{day}")
+        v4 = c4.number_input("Stelle 4", 0, 9, 0, key=f"n4_{day}")
+        if st.button("Schloss prüfen 🗝️", key=f"chk_{day}"):
+            if [int(v1), int(v2), int(v3), int(v4)] == door["answer"]:
+                st.success("🎉 Schloss geöffnet!")
+                if day not in st.session_state.solved_doors:
+                    st.session_state.solved_doors.append(day)
+                    st.rerun()
+            else:
+                st.error("❌ Falscher Code.")
+
+    # STANDARD-TEXT ODER SPEZIAL-TEXT FÜR AKT 3 & 4
+    else:
+        if door["type"] not in ["sudoku_puzzle", "logic_grid", "morse_terminal", "river_crossing", "mirror_puzzle", "gear_puzzle", "binary_switches", "frequency_tuner", "scale_puzzle", "lock_sliders"]:
+            ans = st.text_input("Deine Lösung:", key=f"input_{day}")
+            if st.button("Prüfen 🔍", key=f"chk_{day}"):
+                user_clean = ans.strip().replace(" ", "").upper()
+                target_clean = str(door["answer"]).strip().replace(" ", "").upper()
+                if user_clean == target_clean:
+                    st.success("🎉 Richtig gelöst!")
+                    if day not in st.session_state.solved_doors:
+                        st.session_state.solved_doors.append(day)
+                        if day == 24:
+                            st.balloons()
+                        st.rerun()
+                else:
+                    st.error("❌ Leider nicht korrekt.")
+
+    with st.expander("💡 Hinweis anzeigen"):
+        st.write(door["hint"])
+
+# ==============================================================================
+# SEITENLEISTE (FRAGMENT-SAMMLUNG NUR FÜR TAG 5 BIS 12)
+# ==============================================================================
+if show_sidebar:
+    with puzzle_col:
+        st.subheader("🌀 Puzzleteil-Fragmente")
+        st.caption("Sammle hier die Buchstaben (Tag 5 bis 12):")
+        
+        lab_pieces = [d for d in st.session_state.solved_doors if 5 <= d <= 12 and DOORS[d]["puzzle_piece"]]
+        
+        if not lab_pieces:
+            st.write("*Noch keine Fragmente gesammelt.*")
+        else:
+            for d in sorted(lab_pieces):
+                st.markdown(f"<div class='puzzle-card'><b>Tag {d}:</b><br>{DOORS[d]['puzzle_piece']}</div>", unsafe_allow_html=True)
+                
+        st.write("---")
+        st.metric("Gefundene Fragmente", f"{len(lab_pieces)} / 8")
