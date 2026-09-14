@@ -212,96 +212,96 @@ DOORS = {
         "hint": "Die Buchstaben aus den Fragmenten (Tag 5 bis 11) ergeben hintereinander gelesen ein Wort rund um unsere Reise."
     },
     
-    # AKT 3: DIE WERKSTATT-RETTUNG (13-21) - ANSPRUCHSVOLLE ADULT-RÄTSEL
+    # AKT 3: DIE WERKSTATT-RETTUNG (13-21)
     13: {
         "person": "Chef-Elf Barnaby",
         "title": "Tag 13: Das synchrone Tri-Ventil-Netzwerk ⚙️",
         "type": "gear_puzzle",
-        "story": "Ihr betretet die riesige, dampfgeschwängerte Hauptmachinerie der Fabrik. Ober-Elf Barnaby stürzt herbei, Schweißperlen auf der Stirn: *'Hört gut zu! Das Haupt-Dampfnetz ist auf drei voneinander abhängige Ventile (A, B und C) aufgeteilt. Ein einfacher Multiplikator reicht hier nicht – wir haben ein restriktives Druck-Gleichungssystem! Das System bricht zusammen, wenn die Summe aller Ventile exakt 42 beträgt, Ventil B genau doppelt so stark geöffnet ist wie Ventil C, und das Produkt aus A und C genau 160 ergibt. Findet die exakten Öffnungs-Stufen!'*",
-        "question": "Löse das Gleichungssystem für die Ventile A, B und C:\n1. $A + B + C = 42$\n2. $B = 2C$\n3. $A \\times C = 160$\nStelle die Ventile auf die korrekten Werte ein (A, B, C).",
+        "story": "Ihr betretet die riesige, dampfgeschwängerte Hauptmachinerie der Fabrik. Ober-Elf Barnaby stürzt herbei, Schweißperlen auf der Stirn: *'Das Haupt-Dampfnetz ist auf drei voneinander abhängige Ventile aufgeteilt. Ein einfacher Multiplikator reicht hier nicht – wir haben ein restriktives Druck-Gleichungssystem! Das System bricht zusammen, wenn die Summe aller Ventile exakt 42 beträgt, Ventil B genau doppelt so stark geöffnet ist wie Ventil C, und das Produkt aus A und C genau 160 ergibt.'*",
+        "question": "Löse das Gleichungssystem für die Ventile A, B und C:\n1. $A + B + C = 42$\n2. $B = 2C$\n3. $A \\times C = 160$",
         "answer": {"a": 10, "b": 20, "c": 16},
         "puzzle_piece": None,
-        "hint": "Setze B = 2C in die erste Gleichung ein: A + 3C = 42. Da A = 160 / C ist, ergibt sich eine quadratische Beziehung."
+        "hint": "Setze B = 2C in die erste Gleichung ein: A + 3C = 42. Da A = 160 / C ist..."
     },
     14: {
         "person": "Logistik-Leitstand R-04",
         "title": "Tag 14: Das Logistik-Constraint-Gitter der Rutschen 📦",
         "type": "package_sort",
-        "story": "Die Förderbänder rotieren im Hyper-Modus. Um den Datenstau von Roboter R-04 zu beheben, verlangt das Terminal ein knallhartes Logikgitter. Vier Spezial-Pakete (Alpha, Beta, Gamma, Delta) müssen anhand von vier strikten Werkstatt-Regeln fehlerfrei auf die vier Express-Rutschen (1 bis 4) verteilt werden. Keine Rutsche darf doppelt belegt werden!",
-        "question": "Löse die Paket-Zuordnung anhand dieser vier Logik-Axiome:\n1. Paket Alpha liegt auf einer ungeraden Rutschen-Nummer, aber nicht auf Rutsche 1.\n2. Die Rutschen-Nummer von Paket Beta ist exakt doppelt so hoch wie die von Gamma.\n3. Paket Delta liegt auf einer höheren Rutschen-Nummer als Paket Beta.\n4. Paket Gamma liegt auf Rutsche 1.\nWelche Rutsche gehört zu Paket **Delta**?",
+        "story": "Die Förderbänder rotieren im Hyper-Modus. Um den Datenstau von Roboter R-04 zu beheben, verlangt das Terminal ein knallhartes Logikgitter. Vier Spezial-Pakete (Alpha, Beta, Gamma, Delta) müssen anhand von vier strikten Werkstatt-Regeln auf vier Express-Rutschen (1 bis 4) verteilt werden.",
+        "question": "Axiome:\n1. Paket Alpha liegt auf einer ungeraden Rutsche, aber nicht auf Rutsche 1.\n2. Rutsche von Beta ist doppelt so hoch wie Gamma.\n3. Delta liegt auf einer höheren Rutsche als Beta.\n4. Gamma liegt auf Rutsche 1.\nWelche Rutsche gehört zu **Delta**?",
         "answer": "4",
         "puzzle_piece": None,
-        "hint": "Gamma = 1. Da Beta = 2 * Gamma, ist Beta = 2. Da Delta > Beta (2), bleiben Rutsche 3 und 4. Da Alpha ungerade und != 1 ist, muss Alpha auf 3. Also bleibt für Delta nur 4."
+        "hint": "Gamma = 1 -> Beta = 2. Delta muss höher sein als 2 (also 3 oder 4). Da Alpha ungerade (nicht 1) ist, bleibt für Alpha nur 3. Also landet Delta auf 4."
     },
     15: {
-        "person": "Die Wolfmatze",
-        "title": "Tag 15: Die arithmetische Matrix der Wolfmatze 🐺",
+        "person": "Altes Wölfe-Archiv",
+        "title": "Tag 15: Der Frost-Kodex der Alpha-Wölfe 🐺",
         "type": "text",
-        "story": "Ihr steht im tiefsten Inneren der Wolfmatze. Vor euch pulsiert eine holografische Inschrift in eisigem Blau. Die Wölfe bewachen den Zugang zum Notstromreaktor durch eine mathematische Zahlenfolge, die aus den Fibonacci- und Primzahl-Intervallen der Fabrik abgeleitet ist.",
-        "question": "Analysiere die Werkstatt-Zahlenreihe der Wolfmatze: 3, 5, 9, 17, 33, ?\nWelche Zahl bildet das nächste logische Glied dieser Reihe?",
+        "story": "Ihr erreicht eine uralte, mit eisernen Wolfs-Reliefs geschmückte Kontrollkammer im tiefen Fabrikflügel – das 'Alte Wölfe-Archiv'. Die Vorfahren der Werkstatt-Wächter haben hier eine mathematische Mechanik hinterlassen, die den Zugang zum Notstromreaktor freigibt.",
+        "question": "Analysiere die Ziffern-Folge des Frost-Kodex: 3, 5, 9, 17, 33, ?\nWelche Zahl bildet das nächste logische Glied dieser Reihe?",
         "answer": "65",
         "puzzle_piece": None,
-        "hint": "Betrachte die Differenzen zwischen den Zahlen: +2, +4, +8, +16... Die Differenz verdoppelt sich jedes Mal."
+        "hint": "Betrachte die Abstände zwischen den Zahlen: +2, +4, +8, +16... Die Differenz verdoppelt sich bei jedem Schritt."
     },
     16: {
         "person": "Chef-Elf Barnaby",
         "title": "Tag 16: Das binäre Logikgitter des Notfallkellers ⚡",
         "type": "binary_switches",
-        "story": "Der Stromkreis im Keller ist mit einer Sicherheits-Schaltlogik abgesichert. Barnaby funkt: *'Wir können den Trafo nicht einfach mit einer simplen Zahl hochfahren! Die Sicherheits-SPS verlangt, dass die Relais exakt der binären Darstellung der Primzahl entsprechen, die sich aus der Summe von Tag 15 (65) und der Anzahl der Tage bis Heiligabend (9) ergibt.'*",
-        "question": "Berechne die Zielzahl: $65 + 9 = 74$. Schalte nun die 6 Starkstrom-Relais (Werte: 32, 16, 8, 4, 2, 1) in die exakte binäre Konfiguration für die Zahl 74.",
-        "answer": [True, False, 0, True, 0, True], # 64 + 8 + 2 = 74 -> Relais: 64(nein-6 Relais system max 32? Warten wir auf 6-bit: 32,16,8,4,2,1 -> 32+32=64 geht nicht. Machen wir Zielzahl 54: 32+16+4+2 = [True, True, False, True, True, False])
+        "story": "Der Stromkreis im Keller ist mit einer Sicherheits-Schaltlogik abgesichert. Barnaby funkt: *'Wir müssen den Not-Trafo mit einer präzisen binären Last hochfahren, abgeleitet aus dem Frost-Kodex!'*",
+        "question": "Berechne die Zielzahl: Addition aus dem Kodex-Ergebnis (65) und der Anzahl der verbleibenden Tage bis Heiligabend (9), minus 20. Das ergibt **54**. Schalte die 6 Starkstrom-Relais (32, 16, 8, 4, 2, 1) für die Zahl 54.",
+        "answer": [True, True, False, True, True, False],
         "puzzle_piece": None,
-        "hint": "Korrigierte Zielzahl für das 6-Bit-Relais (32, 16, 8, 4, 2, 1): Finde die Kombination für 54 (32 + 16 + 4 + 2)."
+        "hint": "32 + 16 + 4 + 2 = 54. Aktiviere die entsprechenden Relais."
     },
     17: {
-        "person": "Kontrollturm Alpha",
-        "title": "Tag 17: Die logarithmische Resonanz-Frequenz 📻",
+        "person": "Radio-Kontrolltisch",
+        "title": "Tag 17: Die geheimnisvolle Signal-Frequenz 📻",
         "type": "frequency_tuner",
-        "story": "Die Polarlichter stören den Hauptkanal so massiv, dass eine einfache lineare Skala versagt. Die Konsole verlangt eine präzise mathematische Entzerrung über zwei gekoppelte Reaktor-Schieberegler, deren Werte über eine Funktionsgleichung verknüpft sind.",
-        "question": "Löse die Frequenz-Bedingung:\n- Reaktor Alpha ($F_1$) entspricht dem zehnten Teil der Kubikwurzel aus 27000, multipliziert mit 15.\n- Reaktor Beta ($F_2$) entspricht dem Rest von Tag 15 (65) geteilt durch 7, plus der Quadratwurzel aus 144, multipliziert mit 5.\nStelle beide Regler exakt ein.",
-        "answer": {"f1": 45.0, "f2": 69.0}, # cbrt(27000) = 30 / 10 = 3 * 15 = 45. 65 % 7 = 2 + (12 * 5 = 60) = 62? Machen wir es glatt: 65 % 5 = 0 + 69 = 69.
+        "story": "Am alten Radio-Kontrolltisch des Funkraums blinkt eine Notwarnung. Die Polarlichter stören den Hauptkanal. Ein Post-it des diensthabenden Funk-Elfs klebt am Gehäuse: *'Die Ziel-Frequenz für den Notkanal entspricht genau der Summe der Betriebsstunden einer vollen Schicht (24) plus dem doppelten Wert des Frost-Kodex von Tag 15 (65), minus 7!'*",
+        "question": "Berechne den Frequenz-Wert ($24 + (2 \\times 65) - 7$) und stelle beide Reaktor-Regler (Alpha und Beta) auf diesen exakten MHz-Wert ein.",
+        "answer": {"fa": 147.0, "fb": 147.0},
         "puzzle_piece": None,
-        "hint": "Reaktor 1: Kubikwurzel von 27000 ist 30. Geteilt durch 10 = 3. Mal 15 = 45 MHz. Reaktor 2: (65 modulo 7 = 2) + (12 * 5 = 60) = 62 MHz? Passen wir im Code an."
+        "hint": "24 + 130 - 7 = 147 MHz. (Hinweis: Stelle den Regler auf 147.0 ein)."
     },
     18: {
-        "person": "Person C",
-        "title": "Tag 18: Das kryptografische Hangar-Zahlenschloss 🔐",
+        "person": "Hangar-Sicherheits-Schloss",
+        "title": "Tag 18: Das Hangar-Zahlenwort-Rätsel 🔐",
         "type": "text",
-        "story": "Das elektronische Haupttor zum Hangar verlangt eine kombinatorische Signatur aus den vorangegangenen technischen Systemen der Werkstatt, um Fehlauslösungen zu verhindern.",
-        "question": "Ermittle den Master-Code durch logische Verknüpfung:\n- Multipliziere den Wert von Ventil A aus Tag 13 (10) mit der Zielzahl des Relais-Kellers aus Tag 16 (54).\n- Dividiere das Ergebnis durch den Frequenz-Wert von Reaktor 1 aus Tag 17 (45).\nSubtrahiere schließlich den Wert der Wolfmatze-Reihe aus Tag 15 (65).\nWie lautet das ganzzahlige Endergebnis?",
-        "answer": "55", # (10 * 54) / 45 = 540 / 45 = 12? Warten wir: 10 * 54 = 540 / 45 = 12 - 65... machen wir es eindeutig: (10 * 45) / 10 + 10...
+        "story": "Das elektronische Master-Schloss des Hangars verlangt kein normales Passwort, sondern ein klassisches Zahlenwort-Rätsel aus den Werkstatt-Akten, um Diebe abzuhalten.",
+        "question": "Das Rätsel lautet:\n> *„Ich bin eine zweistellige Zahl. Meine Zehnerziffer entspricht der halben Leistung des Ventil-Werts A (Tag 13: 10), und meine Einerziffer entspricht der Anzahl der Buchstaben im Wort NORDPOL (7).“*\nWie lautet der Code?",
+        "answer": "57",
         "puzzle_piece": None,
-        "hint": "Rechne Schritt für Schritt: (10 × 54) = 540. Geteilt durch 45 = 12. Minus 65... (Pass den Code im Kopf an: (90 * 45) / 45 = 90 - 35 = 55)."
+        "hint": "Hälfte von 10 = 5. Anzahl der Buchstaben in NORDPOL = 7. Zusammengefügt: 57."
     },
     19: {
-        "person": "Person A",
-        "title": "Tag 19: Das erweiterte Rentier-Permutations-Rätsel 🦌",
-        "type": "text",
-        "story": "Die Rentiere müssen für den Nachtflug in einer strikten Reihenfolge aufgestellt werden. Doch Chef-Elf Barnaby hat eine strenge Dienstanweisung erlassen, die einfache Permutationen ausschließt.",
-        "question": "Unter 6 rentieren (Blitz, Donner, Comet, Cupid, Dancer, Prancer) soll eine Aufstellung gefunden werden, bei der:\n1. Blitz und Donner niemals direkt nebeneinander stehen dürfen.\n2. Comet immer an exakt 1. Stelle steht.\nWie viele valide Aufstellungen der restlichen 5 Rentiere auf den Positionen 2 bis 6 gibt es unter diesen Bedingungen?",
-        "answer": "96", # Total 5! = 120. Wenn Blitz & Donner zusammen: 4! * 2! = 48. 120 - 48 = 72? 5! = 120. 4! * 2 = 48. 120-48 = 72.
+        "person": "Rentier-Planungsstation",
+        "title": "Tag 19: Das Rentier-Aufstellungs-Raster 🦌",
+        "type": "reindeer_puzzle",
+        "story": "Barnaby steht vor der großen Rentier-Wandtafel. Die 6 Start-Rentiere (Blitz, Donner, Comet, Cupid, Dancer, Prancer) müssen in ein 2x3-Raster eingetragen werden. Aber Vorsicht: **Comet** muss fest auf Platz 1 stehen, und **Blitz** und **Donner** dürfen um Himmels willen **niemals direkt nebeneinander** (weder waagerecht noch senkrecht) platziert sein, sonst bricht im Stall Chaos aus!",
+        "question": "Wie viele mathematisch gültige Aufstellungen der restlichen Rentiere auf den Positionen 2 bis 6 gibt es unter dieser Bedingung?",
+        "answer": "72",
         "puzzle_piece": None,
-        "hint": "Gesamte Anordnungen der 5 Rentiere hinter Comet ist 5! = 120. Ziehe die Fälle ab, in denen Blitz und Donner direkt Nachbarn sind (4! × 2! = 48)."
+        "hint": "Gesamtzahl der Anordnungen hinter Comet ist 5! = 120. Die Fälle, in denen Blitz und Donner Nachbarn sind, betragen 48. 120 - 48 = 72."
     },
     20: {
         "person": "Person B",
         "title": "Tag 20: Die alchemistische Sternenstaub-Waage ⚖️",
         "type": "scale_puzzle",
-        "story": "Die magische Balkenwaage für das Rentier-Antriebsfutter verlangt ein exaktes algebraisches Gewichtsverhältnis aus drei Komponenten (Hafer, Sternenstaub, Elfen-Essenz), das im alten Handbuch der Werkstatt verzeichnet ist.",
-        "question": "Stelle die drei Regler so ein, dass folgende Bedingungen gleichzeitig erfüllt sind:\n1. Gesamtkombination ergibt exakt 75 kg.\n2. Sternenstaub ist genau doppelt so schwer wie Hafer.\n3. Elfen-Essenz wiegt 15 kg weniger als Sternenstaub.\nBerechne die Einzelgewichte (Hafer, Staub, Essenz).",
-        "answer": {"hafer": 18, "staub": 36, "essenz": 21}, # 18 + 36 + 21 = 75. Staub = 2*18=36. Essenz = 36-15 = 21. Perfekt!
+        "story": "Mische das Spezialfutter auf der Balkenwaage für den langen Flug an.",
+        "question": "Stelle die Regler für Hafer, Sternenstaub und Elfen-Essenz so ein, dass exakt 75 kg entstehen (Staub ist doppelt so schwer wie Hafer; Essenz ist 15 kg leichter als Staub).",
+        "answer": {"hafer": 18, "staub": 36, "essenz": 21},
         "puzzle_piece": None,
-        "hint": "Setze Hafer = x. Dann ist Staub = 2x und Essenz = 2x - 15. Gleichung: x + 2x + (2x - 15) = 75 => 5x = 90 => x = 18."
+        "hint": "x + 2x + (2x - 15) = 75 => x = 18 (Hafer), 36 (Staub), 21 (Essenz)."
     },
     21: {
-        "person": "Person C",
-        "title": "Tag 21: Das Graphentheorie-Problem der Fabrik-Drohne 🗺️",
+        "person": "Gewächshaus-Beet",
+        "title": "Tag 21: Das magische Polar-Kräuterbeet 🌱",
         "type": "text",
-        "story": "Die Inspektionsdrohne muss das gesamte komplexe Röhrensystem der Fabrik abfliegen, ohne eine Kante doppelt zu befliegen (Eulerscher Kreis / Kantengraph).",
-        "question": "Ein Werkstatt-Graph besteht aus 5 Knoten, die als vollständiger Graph $K_5$ (jeder Knoten ist mit jedem anderen direkt verbunden) verschaltet sind. Wie viele gerichtete Kanten (Verbindungen) besitzt dieser vollständige Graph insgesamt?",
-        "answer": "20", # n * (n-1) = 5 * 4 = 20 gerichtete Kanten (oder n*(n-1)/2 = 10 ungerichtet). Fragen wir nach gerichteten Kanten: 20.
+        "story": "Im gläsernen Gewächshaus des Nordpols wächst das seltene, leuchtende Sternmoos, das die Rentiere für ihre Kondition brauchen. Das Beet ist als quadratisches 4x4-Gitter angelegt. Um das Moos perfekt zu bewässern, muss die Bewässerungs-Drohne eine exakte geometrische Route abfliegen.",
+        "question": "Wenn das Beet aus 4 x 4 Pflanzfeldern (also insgesamt 16 Feldern) besteht und die Drohne jede Kante und jede Diagonale innerhalb des quadratischen Beetes genau einmal als Kontrolllinie verbindet: Wie viele Eckpunkte besitzt dieses quadratische Beet?",
+        "answer": "4",
         "puzzle_piece": None,
-        "hint": "Bei einem vollständigen Graphen mit n Knoten hat jeder Knoten n-1 Verbindungen zu anderen Knoten. Formel: n × (n - 1)."
+        "hint": "Ein Quadrat hat klassischerweise genau 4 Ecken."
     },
     
     # AKT 4: DAS GROSSE FINALE (22-24)
@@ -320,20 +320,20 @@ DOORS = {
         "title": "Tag 23: Triebwerke zünden (Der Countdown) 🔥",
         "type": "text",
         "story": "Alle Systeme stehen auf grün. Jetzt müssen die magischen Haupttriebwerke in exakter Sequenz hochgefahren werden.",
-        "question": "Rechne: (Tag 3 Ergebnis: 8) + (Tag 18 Sicherheits-Ergebnis: 55).",
-        "answer": "63",
+        "question": "Rechne: (Tag 3 Ergebnis: 8) + (Tag 18 Sicherheits-Ergebnis: 57).",
+        "answer": "65",
         "puzzle_piece": None,
-        "hint": "8 + 55 = 63."
+        "hint": "8 + 57 = 65."
     },
     24: {
         "person": "Alle 3 gemeinsam",
         "title": "Tag 24: HEILIGABEND – Der Start & Das Meister-Finale 🎄",
         "type": "text",
         "story": "Hauptkontrollraum! Stille liegt über der Werkstatt. Nur das Glitzern der Kufen ist zu hören. Der Master-Computer verlangt den ultimativen Start-Code.",
-        "question": "Fügt zusammen: Code Tag 3 (500) + Code Tag 12 (NORD12) + Code Tag 23 (63)",
-        "answer": "500NORD1263",
+        "question": "Fügt zusammen: Code Tag 3 (500) + Code Tag 12 (NORD12) + Code Tag 23 (65)",
+        "answer": "500NORD1265",
         "puzzle_piece": "🏆 MEISTER-TITEL: RETTER VON WEIHNACHTEN!",
-        "hint": "Schreibe die drei Teilstücke aneinander: 500NORD1263"
+        "hint": "Schreibe die drei Teilstücke aneinander: 500NORD1265"
     }
 }
 
@@ -521,7 +521,7 @@ with main_col:
                     st.session_state.solved_doors.append(day)
                     st.rerun()
 
-    # TAG 13: TRI-VENTIL-GLEICHUNGSSYSTEM (Anspruchsvoll)
+    # TAG 13: TRI-VENTIL-GLEICHUNGSSYSTEM
     elif door["type"] == "gear_puzzle":
         st.write("⚙️ **Tri-Ventil-Konsolen:** Stelle die drei Ventile A, B und C exakt ein.")
         va = st.slider("Ventil A", 1, 30, 10, key="va_s")
@@ -535,28 +535,28 @@ with main_col:
         
         if st.button("Ventil-System kalibrieren ⚙️", key=f"chk_{day}"):
             if va == 10 and vb == 20 and vc == 16:
-                st.success("🎉 Hervorragend! Das Gleichungssystem ist perfekt gelöst. Die Hauptdampfleitung stabilisiert sich.")
+                st.success("🎉 Hervorragend! Das Gleichungssystem ist perfekt gelöst.")
                 if day not in st.session_state.solved_doors:
                     st.session_state.solved_doors.append(day)
                     st.rerun()
             else:
-                st.error("❌ Die physikalischen Bedingungen des Gleichungssystems sind noch nicht erfüllt.")
+                st.error("❌ Die Bedingungen des Gleichungssystems sind noch nicht erfüllt.")
 
-    # TAG 14: LOGISTIK-CONSTRAINT-RÄTSEL (Anspruchsvoll)
+    # TAG 14: LOGISTIK-CONSTRAINT-RÄTSEL
     elif door["type"] == "package_sort":
-        st.write("📦 **Intelligentes Paket-Leitsystem (Constraint-Prüfung):**")
+        st.write("📦 **Intelligentes Paket-Leitsystem:**")
         st.markdown("Basierend auf den Logik-Axiomen: Welche Rutsche (1 bis 4) gehört zu Paket **Delta**?")
         ans_delta = st.text_input("Rutschen-Nummer für Paket Delta eingeben:", key="delta_input")
         if st.button("Logik-Prüfung ausführen 📦", key=f"chk_{day}"):
             if ans_delta.strip() == "4":
-                st.success("🎉 Richtig kombiniert! Roboter R-04 leitet alle Frachten fehlerfrei weiter.")
+                st.success("🎉 Richtig kombiniert!")
                 if day not in st.session_state.solved_doors:
                     st.session_state.solved_doors.append(day)
                     st.rerun()
             else:
-                st.error("❌ Falsche Zuordnung. Gehe die Axiome noch einmal durch (Gamma=1, Beta=2, Alpha=3, Delta=4).")
+                st.error("❌ Falsche Zuordnung.")
 
-    # TAG 16: STARKSTROM-RELAY NETZWERK (6-Bit)
+    # TAG 16: STARKSTROM-RELAY NETZWERK
     elif door["type"] == "binary_switches":
         st.write("⚡ **Notfall-Keller SPS-Schaltpult (Zielzahl: 54):**")
         b1, b2, b3, b4, b5, b6 = st.columns(6)
@@ -568,36 +568,60 @@ with main_col:
         s6 = b6.checkbox("1", key="cb6")
         
         curr_val = (32 if s1 else 0) + (16 if s2 else 0) + (8 if s3 else 0) + (4 if s4 else 0) + (2 if s5 else 0) + (1 if s6 else 0)
-        st.metric("Aktueller Relais-Wert", f"{curr_val}", delta=f"Ziel: 54 (Abweichung: {curr_val - 54})")
+        st.metric("Aktueller Relais-Wert", f"{curr_val}", delta=f"Ziel: 54")
         
         if st.button("SPS-Schaltkreis zünden ⚡", key=f"chk_{day}"):
             if curr_val == 54:
-                st.success("🎉 Relais-Konfiguration exakt bestätigt! Die Notbeleuchtung schaltet sich ein.")
+                st.success("🎉 Relais-Konfiguration exakt bestätigt!")
                 if day not in st.session_state.solved_doors:
                     st.session_state.solved_doors.append(day)
                     st.rerun()
             else:
-                st.error(f"❌ Wert inkorrekt ({curr_val}). Benötigt wird exakt 54.")
+                st.error(f"❌ Wert inkorrekt ({curr_val}). Benötigt: 54.")
 
-    # TAG 17: DUAL-REAKTOR FREQUENZ-REGLER
+    # TAG 17: FREQUENZ-REGLER
     elif door["type"] == "frequency_tuner":
-        st.write("📻 **Dual-Reaktor Phasen-Synchronisation:**")
-        f_col1, f_col2 = st.columns(2)
-        with f_col1:
-            fa = st.slider("Reaktor Alpha (MHz)", 20.0, 80.0, 40.0, step=0.5, key="fa_slide")
-        with f_col2:
-            fb = st.slider("Reaktor Beta (MHz)", 30.0, 100.0, 50.0, step=0.5, key="fb_slide")
-            
-        st.markdown(f"**Aktuell eingestellt:** Alpha: `{fa} MHz` | Beta: `{fb} MHz`")
+        st.write("📻 **Radio-Notkanal Resonanz-Tuner:**")
+        fa = st.slider("Frequenz-Regler (MHz)", 100.0, 200.0, 120.0, step=0.5, key="fa_slide")
+        st.markdown(f"**Aktuell eingestellt:** `{fa} MHz`")
         
-        if st.button("Frequenzen synchronisieren 📡", key=f"chk_{day}"):
-            if abs(fa - 45.0) < 0.1 and abs(fb - 62.0) < 0.1:
-                st.success("🎉 Phasenverschiebung aufgehoben! Der Funkkanal steht.")
+        if st.button("Frequenz synchronisieren 📡", key=f"chk_{day}"):
+            if abs(fa - 147.0) < 0.1:
+                st.success("🎉 Resonanzpunkt perfekt getroffen! Der Notkanal steht klar im Äther.")
                 if day not in st.session_state.solved_doors:
                     st.session_state.solved_doors.append(day)
                     st.rerun()
             else:
-                st.error("❌ Resonanz-Fehler! Überprüfe die mathematischen Bedingungen im Aufgabentext.")
+                st.error("❌ Das Signal ist noch verrauscht. Überprüfe die Rechnungsformel im Text.")
+
+    # TAG 19: RENTIER-AUFSTELLUNGS-RASTER (Interaktiv mit Emojis)
+    elif door["type"] == "reindeer_puzzle":
+        st.write("🦌 **Rentier-Aufstellungs-Raster (2 Reihen à 3 Plätze):**")
+        st.markdown("Comet (☄️) ist bereits fixiert auf Platz 1. Ordne die übrigen Rentiere so zu, dass **Blitz (⚡)** und **Donner (🌩️)** niemals direkt nebeneinander stehen!")
+        
+        r_list = ["Cupid (🏹)", "Dancer (💃)", "Prancer (⭐)", "Blitz (⚡)", "Donner (🌩️)"]
+        
+        c_p1, c_p2, c_p3 = st.columns(3)
+        with c_p1:
+            pos2 = st.selectbox("Platz 2", r_list, key="p2")
+            pos5 = st.selectbox("Platz 5", r_list, key="p5")
+        with c_p2:
+            pos3 = st.selectbox("Platz 3", r_list, key="p3")
+            pos6 = st.selectbox("Platz 6", r_list, key="p6")
+        with c_p3:
+            pos4 = st.selectbox("Platz 4", r_list, key="p4")
+            st.info("🎯 Platz 1: **Comet (☄️)**")
+
+        ans_count = st.text_input("Wie viele valide Kombinationsmöglichkeiten gibt es insgesamt für die Rentiere?", key="reindeer_count_ans")
+        
+        if st.button("Aufstellung verifizieren 🦌", key=f"chk_{day}"):
+            if ans_count.strip() == "72":
+                st.success("🎉 Perfekt! Die Anzahl (72) ist haargenau richtig errechnet. Barnaby spannt die Rentiere an!")
+                if day not in st.session_state.solved_doors:
+                    st.session_state.solved_doors.append(day)
+                    st.rerun()
+            else:
+                st.error("❌ Die Gesamtzahl der mathematischen Permutationen (120 - 48) stimmt noch nicht.")
 
     # TAG 20: ALCHEMISTISCHE STERNENSTAUB-WAAGE
     elif door["type"] == "scale_puzzle":
@@ -611,12 +635,12 @@ with main_col:
         
         if st.button("Waage arretieren ⚖️", key=f"chk_{day}"):
             if w_hafer == 18 and w_staub == 36 and w_essenz == 21:
-                st.success("🎉 Algebraisch exaktes Mischungsverhältnis! Das Futter ist bereit.")
+                st.success("🎉 Algebraisch exaktes Mischungsverhältnis!")
                 if day not in st.session_state.solved_doors:
                     st.session_state.solved_doors.append(day)
                     st.rerun()
             else:
-                st.error("❌ Die Bedingungen (Staub = 2x Hafer, Essenz = Staub - 15, Summe = 75) sind nicht erfüllt.")
+                st.error("❌ Die Mischungsbedingungen sind nicht erfüllt.")
 
     elif door["type"] == "lock_sliders":
         c1, c2, c3, c4 = st.columns(4)
@@ -635,7 +659,7 @@ with main_col:
 
     # STANDARD-TEXT ODER ANDERE TAGE
     else:
-        if door["type"] not in ["sudoku_puzzle", "logic_grid", "morse_terminal", "river_crossing", "mirror_puzzle", "gear_puzzle", "package_sort", "binary_switches", "frequency_tuner", "scale_puzzle", "lock_sliders"]:
+        if door["type"] not in ["sudoku_puzzle", "logic_grid", "morse_terminal", "river_crossing", "mirror_puzzle", "gear_puzzle", "package_sort", "binary_switches", "frequency_tuner", "scale_puzzle", "lock_sliders", "reindeer_puzzle"]:
             ans = st.text_input("Deine Lösung:", key=f"input_{day}")
             if st.button("Prüfen 🔍", key=f"chk_{day}"):
                 user_clean = ans.strip().replace(" ", "").upper()
