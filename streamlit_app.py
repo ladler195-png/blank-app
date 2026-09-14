@@ -29,18 +29,23 @@ st.markdown("""
 # 2. RÄTSEL-DATENBANK (TAGE 1 BIS 5)
 # ==============================================================================
 DOORS = {
+# ==============================================================================
+# RÄTSEL-DATENBANK (TAGE 1 BIS 24)
+# ==============================================================================
+DOORS = {
+    # ------------------ AKT I: DER RUF AUS DEM ELFENREICH ------------------
     1: {
         "person": "Person A",
         "title": "Tag 1: Das geheimnisvolle Päckchen",
-        "story": "Vor der Haustür liegt ein verschneites, unadressiertes Päckchen. Darin befindet sich eine alte Holzschatulle, die mit einem 4-stelligen Zahlenschloss gesichert ist. Auf dem Deckel ist eine geheimnisvolle Rune eingraviert.",
-        "question": "Welcher 4-stellige Code öffnet das Schloss? Löse die Zahlenreihe: 3, 7, 15, 31, __",
+        "story": "Vor der Haustür liegt ein verschneites Päckchen mit einer Holzschatulle und einem 4-stelligen Zahlenschloss.",
+        "question": "Welcher Code öffnet das Schloss? Löse die Zahlenreihe: 3, 7, 15, 31, __",
         "answer": "63",
         "hint": "Die Differenz zwischen den Zahlen verdoppelt sich in jedem Schritt (+4, +8, +16, +32)."
     },
     2: {
         "person": "Person B",
         "title": "Tag 2: Der Hilferuf der Elfen",
-        "story": "Die Schatulle springt auf! Darin liegt ein alt aussehendes Pergament. Die Schrift ist in einer Elfen-Chiffre verfasst.",
+        "story": "In der Schatulle liegt ein alt aussehendes Pergament mit einer Elfen-Chiffre.",
         "question": "Entschlüssele den Notsender-Code (Cäsar-Chiffre, 4 Stellen zurück im Alphabet): 'SIVX'",
         "answer": "NORD",
         "hint": "Ziehe von jedem Buchstaben 4 Stellen im Alphabet ab (S -> N, I -> O, V -> R, X -> D)."
@@ -48,7 +53,7 @@ DOORS = {
     3: {
         "person": "Person C",
         "title": "Tag 3: Der Elfen-Schlitten",
-        "story": "Ein leises Glockenläuten ertönt draußen. Ein magischer, führerloser Elfen-Schlitten ist auf der Straße gelandet! Um die Startkonsole zu aktivieren, müsst ihr die Energiefrequenz kalibrieren.",
+        "story": "Ein führerloser Elfen-Schlitten wartet draußen! Um die Startkonsole zu aktivieren, müsst ihr die Energiefrequenz kalibrieren.",
         "question": "Berechne die Startfrequenz: (Anzahl Rentiere: 8) × (Schatullencode von Tag 1: 63) - 4",
         "answer": "500",
         "hint": "Rechne: 8 * 63 - 4"
@@ -56,7 +61,7 @@ DOORS = {
     4: {
         "person": "Person A",
         "title": "Tag 4: Die Flugkarte zum Nordpol",
-        "story": "Der Schlitten hebt geräuschlos ab und steigt in den Nachthimmel. Im Cockpit klappt eine magische Sternenkarte auf, um den Kurs einzustellen.",
+        "story": "Im Cockpit klappt eine magische Sternenkarte auf, um den Kurs einzustellen.",
         "question": "Welcher Kurs führt durch den Polarhimmel? Berechne die Summe aller Primzahlen zwischen 10 und 25.",
         "answer": "60",
         "hint": "Die Primzahlen in diesem Bereich sind 11, 13, 17, 19. Addiere diese vier Zahlen."
@@ -64,16 +69,17 @@ DOORS = {
     5: {
         "person": "Person B",
         "title": "Tag 5: Die Landung im Eisnebel",
-        "story": "Der Schlitten sinkt herab. Vor euch liegt nicht die Werkstatt, sondern eine undurchdringliche, eisige Nebelwand – das Tor zum Nebel-Labyrinth. Ein magisches Siegel verlangt das Losungswort.",
-        "question": "Setze das Losungswort zusammen: Das Lösungswort von Tag 2 + das Ergebnis von Tag 4 (z. B. HALO10).",
+        "story": "Der Schlitten sinkt herab. Vor euch liegt die undurchdringliche Nebelwand – das Tor zum Nebel-Labyrinth.",
+        "question": "Setze das Losungswort zusammen: Lösung von Tag 2 + Ergebnis von Tag 4 (z. B. HALO10).",
         "answer": "NORD60",
         "hint": "Kombiniere den Begriff von Tag 2 (NORD) direkt mit der Zahl von Tag 4 (60)."
     },
+
     # ------------------ AKT II: DAS NEBEL-LABYRINTH ------------------
     6: {
         "person": "Person C",
-        "title": "Tag 6: Nikolaus im Eisnebel (Spezial)",
-        "story": "Im dichten Nebel findet ihr eine goldene Nikolaus-Statuette im Schnee. Auf dem Sockel befindet sich ein 3x3 Zahlen-Raster. Nur wenn die Zeilen- und Spaltensummen magisch überall 15 ergeben, leuchtet der Nikolaus-Kompass auf!",
+        "title": "Tag 6: Nikolaus im Eisnebel",
+        "story": "Im dichten Nebel findet ihr eine goldene Nikolaus-Statuette im Schnee.",
         "question": "Welche Zahl gehört in die Mitte (Feld X) des magischen 3x3-Quadrats (Zahlen 1-9)?",
         "answer": "5",
         "hint": "In jedem magischen 3x3-Quadrat mit den Zahlen 1 bis 9 liegt die Zahl 5 immer genau in der Mitte."
@@ -81,7 +87,7 @@ DOORS = {
     7: {
         "person": "Person A",
         "title": "Tag 7: Die Weggabelung der Eiszapfen",
-        "story": "Das Labyrinth teilt sich in vier Pfade (N, O, S, W). Ein Wegweiser zeigt kryptische Zahlen an: 'N=12, O=24, S=36'. Die Eiszapfen am Weg W folgen einer mathematischen Gesetzmäßigkeit.",
+        "story": "Das Labyrinth teilt sich in vier Pfade. Die Eiszapfen am Weg W folgen einer mathematischen Gesetzmäßigkeit.",
         "question": "Welche Zahl hat der Weg W, wenn die Folge 3, 6, 11, 18, 27, __ lautet?",
         "answer": "38",
         "hint": "Schau dir die Abstände an: +3, +5, +7, +9... Wie viel musst du zu 27 addieren?"
@@ -89,7 +95,7 @@ DOORS = {
     8: {
         "person": "Person B",
         "title": "Tag 8: Das Echo im Gletscher",
-        "story": "Ihr hört ein lautes Dröhnen. Das Nebelhorn der Elfen schallt durch die Spalten. Es wirft ein Echo zurück, das sich in seiner Frequenz verdoppelt.",
+        "story": "Das Nebelhorn der Elfen schallt durch die Spalten. Es wirft ein Echo zurück, das sich in seiner Frequenz verdoppelt.",
         "question": "Ein Ton von 440 Hz wird 3-mal im Echo gedoppelt. Wie hoch ist die Endfrequenz in Hz?",
         "answer": "3520",
         "hint": "Rechne: 440 * 2 * 2 * 2 (oder 440 * 8)."
@@ -97,15 +103,15 @@ DOORS = {
     9: {
         "person": "Person C",
         "title": "Tag 9: Die Eisspiegel-Grotte",
-        "story": "Eine Sackgasse! Um die Nebeltür aufzubrennen, muss der Lichtstrahl einer Laterne über Spiegel umgelenkt werden. Jeder Spiegel dreht den Lichtstrahl um 90 Grad.",
-        "question": "Der Strahl startet nach Osten. Er trifft nacheinander auf 3 Spiegel: Links, Rechts, Links. In welche Himmelsrichtung schlägt der Strahl am Ende ein? (NORD, OST, SUED oder WEST)",
+        "story": "Um die Nebeltür aufzubrennen, muss der Lichtstrahl einer Laterne über Spiegel umgelenkt werden.",
+        "question": "Der Strahl startet nach Osten. Er trifft nacheinander auf 3 Spiegel: Links, Rechts, Links. In welche Himmelsrichtung schlägt der Strahl am Ende ein?",
         "answer": "NORD",
-        "hint": "Start: Ost -> Links abbiegen = Nord -> Rechts abbiegen = Ost -> Links abbiegen = Nord."
+        "hint": "Start: Ost -> Links = Nord -> Rechts = Ost -> Links = Nord."
     },
     10: {
         "person": "Person A",
         "title": "Tag 10: Der gefrorene Kompass",
-        "story": "Ihr findet einen Kompass im Schnee. Die Nadel ist durch Eis blockiert. Auf dem Gehäuse stehen 4 Zahlen, die zusammen den korrekten Grad-Winkel (0-360°) ergeben.",
+        "story": "Die Kompassnadel ist durch Eis blockiert.",
         "question": "Welcher Winkel führt aus dem Nebel? Löse: (Höhe des Watzmanns: 2713) Modulo 360",
         "answer": "193",
         "hint": "Teile 2713 durch 360. Der Rest dieser Division (2713 - 7 * 360) ist das Ergebnis."
@@ -113,7 +119,7 @@ DOORS = {
     11: {
         "person": "Person B",
         "title": "Tag 11: Die brüchige Eisbrücke",
-        "story": "Vor euch liegt eine tief schimmernde Gletscherspalte. Die Steinbrücke ist nur passierbar, wenn ihr die Trittsteine nach der Logik der Primfaktoren wählt.",
+        "story": "Die Steinbrücke ist nur passierbar, wenn ihr die Trittsteine nach der Logik der Primfaktoren wählt.",
         "question": "Wie lautet die Summe aller Primfaktoren der Zahl 42? (42 = 2 × 3 × 7)",
         "answer": "12",
         "hint": "Addiere die drei Primzahlen 2, 3 und 7."
@@ -121,10 +127,110 @@ DOORS = {
     12: {
         "person": "Person C",
         "title": "Tag 12: Der Durchbruch am Nordpol",
-        "story": "Der Nebel lichtet sich schlagartig! Vor euch erstrahlen die Lichter der Nordpol-Werkstatt. Um das große Holztor zu öffnen, müsst ihr den Code aus den Hinweisen des Labyrinths eingeben.",
+        "story": "Der Nebel lichtet sich! Vor euch erstrahlen die Lichter der Werkstatt.",
         "question": "Setzt das Tor-Passwort zusammen: Wort von Tag 9 + Ergebnis von Tag 11 (z. B. WEST15).",
         "answer": "NORD12",
         "hint": "Kombiniere die Himmelsrichtung von Tag 9 (NORD) direkt mit der Zahl von Tag 11 (12)."
+    },
+
+    # ------------------ AKT III: DIE RETTUNG DER WERKSTATT ------------------
+    13: {
+        "person": "Person A",
+        "title": "Tag 13: Der vereiste Maschinensaal",
+        "story": "Die Hauptgetriebe der Geschenkmaschine stecken fest. Drei Zahnräder mit 12, 18 und 24 Zähnen greifen ineinander.",
+        "question": "Nach wie vielen Umdrehungen des ersten Rads (12 Zähne) stehen alle drei Räder wieder in ihrer Startposition? (Kleinstes gemeinsames Vielfaches durch 12)",
+        "answer": "6",
+        "hint": "Das kgV von 12, 18 und 24 ist 72. Teile 72 durch 12 Zähne."
+    },
+    14: {
+        "person": "Person B",
+        "title": "Tag 14: Das Durcheinander in der Packstation",
+        "story": "Ein Kobold hat die Geschenkaufkleber vertauscht! Auf 4 Paketen kleben falsche Namen: A ist nicht B, B ist nicht C. Nur ein Anagramm enthüllt den echten Namen des Oberelfs.",
+        "question": "Welches Wort ergibt sich aus den Buchstaben 'E-L-F-E-N-M-A-G-I-E', wenn man das Wort 'MAGIE' entfernt?",
+        "answer": "ELFEN",
+        "hint": "Streich die Buchstaben M-A-G-I-E aus dem Wort heraus."
+    },
+    15: {
+        "person": "Person C",
+        "title": "Tag 15: Das Rentier-Futter-Rezept",
+        "story": "Rudolph und seine Freunde brauchen Stärkung! Das magische Kraftfutter besteht aus Hafer, Sternenstaub und Äpfeln im Verhältnis 5 : 2 : 3.",
+        "question": "Ihr wollt insgesamt 50 kg Futter herstellen. Wie viele kg Sternenstaub benötigt ihr?",
+        "answer": "10",
+        "hint": "Gesamtteile: 5 + 2 + 3 = 10 Teile. 50 kg / 10 Teile = 5 kg pro Teil. Sternenstaub hat 2 Teile (2 * 5 kg)."
+    },
+    16: {
+        "person": "Person A",
+        "title": "Tag 16: Die Sternenstaub-Batterie",
+        "story": "Die Energiegeneratoren der Werkstatt sind schwach. Ein Schieberegler verlangt die binäre Eingabe der Zahl 25.",
+        "question": "Wandle die Dezimalzahl 25 in eine 5-stellige Binärzahl um (bestehend aus 0 und 1).",
+        "answer": "11001",
+        "hint": "25 = 16 + 8 + 0 + 0 + 1. Setze für vorhandene Werte eine 1, sonst eine 0."
+    },
+    17: {
+        "person": "Person B",
+        "title": "Tag 17: Die Wunschzettel-Sortiermaschine",
+        "story": "Millionen Briefe fliegen durch die Luft! Der Sortieralgorithmus fragt nach dem Median einer Datenreihe von Wünschen pro Minute.",
+        "question": "Wie lautet der Median der Folgenden Werte: 12, 45, 7, 23, 89, 34, 19? (Sortieren und die Mitte finden)",
+        "answer": "23",
+        "hint": "Sortiere die 7 Zahlen aufsteigend: 7, 12, 19, 23, 34, 45, 89. Nimm genau die vierte (mittlere) Zahl."
+    },
+    18: {
+        "person": "Person C",
+        "title": "Tag 18: Das Sicherheitssystem der Werkstatt",
+        "story": "Die Schalttafel der Werkstatt verlangt den Werkstatt-Schlüsselcode. Dieser wird aus euren vorherigen Erfolgen generiert.",
+        "question": "Berechne den Werkstatt-Code: (Lösung Tag 13: 6) × (Lösung Tag 15: 10) + (Lösung Tag 17: 23)",
+        "answer": "83",
+        "hint": "Rechne: 6 * 10 + 23"
+    },
+
+    # ------------------ AKT IV: DAS FINALE ------------------
+    19: {
+        "person": "Person A",
+        "title": "Tag 19: Der Flugrouten-Optimierer",
+        "story": "Der Weihnachtsmann muss 4 Städte anfliegen (A, B, C, D). Die Distanzen bilden ein Quadrat mit Seitenlänge 100 km und Diagonale 141 km.",
+        "question": "Was ist die kürzeste Strecke (in km), um alle 4 Ecken eines 100x100km Quadrats einmal abzufliegen?",
+        "answer": "300",
+        "hint": "Du musst 3 Kanten des Quadrats entlangfliegen: 100 km + 100 km + 100 km."
+    },
+    20: {
+        "person": "Person B",
+        "title": "Tag 20: Der Polarlichter-Sender",
+        "story": "Damit der Schlitten im Dunkeln navigieren kann, müsst ihr die Frequenz der Polarlichter auf Morseschrift abstimmen.",
+        "question": "Übersetze den Morsecode in Wortform: ••• / --- / •••",
+        "answer": "SOS",
+        "hint": "Drei kurze Töne stehen für S, drei lange für O."
+    },
+    21: {
+        "person": "Person C",
+        "title": "Tag 21: Die magische Rentiere-Aufstellung",
+        "story": "Die 8 Rentiere müssen vor den Schlitten gespannt werden. Das Leitrüstzeug hat 8 Positionen.",
+        "question": "Wenn Das Rudolph immer ganz vorne stehen muss, wie viele Möglichkeiten gibt es dann noch, die restlichen 7 Rentiere anzuordnen? (Fakultät von 7)",
+        "answer": "5040",
+        "hint": "Berechne 7! = 7 × 6 × 5 × 4 × 3 × 2 × 1."
+    },
+    22: {
+        "person": "Person A",
+        "title": "Tag 22: Die Puffer-Reserve",
+        "story": "Der Schlitten belädt sich automatisch. Ihr müsst ein Zielgewicht im Frachtraum einstellen.",
+        "question": "Welches Gewicht (in kg) fehlt noch? Ziel = 1000 kg. Geladen: 3 Kisten zu je 150 kg und 4 Kisten zu je 110 kg.",
+        "answer": "110",
+        "hint": "3 * 150 = 450. 4 * 110 = 440. Summe bisher: 890 kg. Berechne 1000 - 890."
+    },
+    23: {
+        "person": "Person B",
+        "title": "Tag 23: Die finale Startbereitschaft",
+        "story": "Alle Systeme stehen auf Grün! Nur noch der Freigabe-Schlüssel fehlt. Er verbindet den Schlitten-Code mit dem Werkstatt-Code.",
+        "question": "Addiere den Schlitten-Code von Tag 3 (500) und den Werkstatt-Code von Tag 18 (83).",
+        "answer": "583",
+        "hint": "Rechne: 500 + 83"
+    },
+    24: {
+        "person": "Alle 3 gemeinsam",
+        "title": "Tag 24: HEILIGABEND – Die Rettung von Weihnachten!",
+        "story": "Ihr steht gemeinsam im Kontrollraum. Um Punkt 24:00 Uhr muss der Master-Code eingegeben werden. Jede Person muss dazu ihren persönlichen Schlüssel-Code aus den vergangenen Tagen mitbringen!",
+        "question": "Kombiniert den Schlitten-Code (Tag 3: 500) + Tor-Code (Tag 12: NORD12) + Freigabe-Code (Tag 23: 583) ohne Leerzeichen!",
+        "answer": "500NORD12583",
+        "hint": "Setze die drei Ergebnisse direkt hintereinander zusammen: 500 + NORD12 + 583"
     }
 }
 # ==============================================================================
@@ -156,12 +262,17 @@ st.divider()
 # 5. TÜRCHEN-GRID
 # ==============================================================================
 st.write("### 📅 Wähle dein Türchen")
+
+# Erzeugt 4 Zeilen à 6 Spalten
 cols = st.columns(6)
-for i in range(1, 13):
+for i in range(1, 25):
     col = cols[(i - 1) % 6]
     
+    # Aussehen je nach Status
     if i in st.session_state.solved_doors:
         label = f"✅ Tag {i}"
+    elif i == 24:
+        label = f"⭐ Tag {i}"
     else:
         label = f"🔒 Tag {i}"
         
