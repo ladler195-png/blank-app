@@ -551,7 +551,7 @@ with puzzle_col:
             
     st.write("---")
     st.metric("Gefundene Labyrinth-Teile", f"{len(lab_pieces)} / 6")
-
+ #hinweise
 # Sidebar für die Übersicht & Puzzleteile-Sammlung
 st.sidebar.header("🧭 Abenteuer-Fortschritt")
 st.sidebar.write(Gefundene Fragmente: {len(st.session_state.puzzle_pieces)} / 7)
