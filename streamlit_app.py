@@ -607,4 +607,3 @@ if show_sidebar_content:
         st.caption("Sammle hier die Buchstaben (Tag 5 bis 12):")
         lab_pieces = [d for d in st.session_state.solved_doors if 5 <= d <= 12 and DOORS[d]["puzzle_piece"]]
         if not lab_pieces:
-        ...
