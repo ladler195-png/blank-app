@@ -74,7 +74,7 @@ components.html("""
 """, height=0)
 
 # ==============================================================================
-# 2. RÄTSEL- DATENBANK (Puzzleteile nur im Labyrinth: Tage 5, 7, 8, 9, 10, 11)
+# 2. RÄTSEL-DATENBANK
 # ==============================================================================
 DOORS = {
     1: {
@@ -121,11 +121,11 @@ DOORS = {
         "puzzle_piece": None,
         "hint": "Rechne den Breitengrad (90 - 10) und den Längengrad (Quersumme von 2026 mal 10) getrennt aus und setze sie nahtlos aneinander."
     },
-    # --- START NEBEL-LABYRINTH (Tage 5 - 11 sammeln 6 Puzzleteile) ---
     5: {
         "person": "Person B",
         "title": "Tag 5: Das Nebel-Tor & Fragment 1",
         "type": "text",
+        "image": None,
         "story": "Der Schlitten stoppt vor einer massiven, nebelverhangenen Wand aus blauem Eis. Das ist der Eingang zum Labyrinth. Auf einem alten Steinsockel liegt eine lederne Tasche für magische Fragmente.",
         "question": "Um das erste Siegel des Nebeltors zu brechen, beantworte: Welcher Zustand nimmt Wasser an, wenn es bei klarem Frost zu eisigen Kristallen gefriert?\n\n**Eingabe:** Tippe das Wort als Lösung ein (FEST / EIS / GEFROREN). *Tipp: Nimm den Begriff 'EIS'*.",
         "answer": "EIS",
@@ -136,6 +136,7 @@ DOORS = {
         "person": "Person C",
         "title": "Tag 6: Der eiserne Sudoku-Monolith",
         "type": "text",
+        "image": None,
         "story": "Ihr tretet tiefer in den Nebel und findet einen riesigen, gefrorenen Monolithen mit einer Logik-Zahlenmatrix.",
         "question": "In einem magischen 3x3-Gitter mit den Zahlen 1 bis 9 hat jede Reihe und Spalte die Summe 15.\nWelche Zahl befindet sich exakt im **Zentrum (Mitte)** des Quadrats?\n\n**Eingabe:** Tippe die einstellige Zahl ein.",
         "answer": "5",
@@ -146,6 +147,7 @@ DOORS = {
         "person": "Person A",
         "title": "Tag 7: Die tückische Eisspalte",
         "type": "text",
+        "image": None,
         "story": "Der Pfad spaltet sich vor einer tiefen Schlucht. Ein Logik-Hinweis verrät, welcher Pfad stabil ist.",
         "question": "Drei Elfen wollen über die Schlucht. Elf A war schneller als Elf B, aber langsamer als Elf C.\nWer ist als Erster (und damit an der Spitze) über die Schlucht gegangen?\n\n**Eingabe:** Schreibe den Buchstaben des schnellsten Elfen (A, B oder C).",
         "answer": "C",
@@ -156,16 +158,18 @@ DOORS = {
         "person": "Person B",
         "title": "Tag 8: Das interaktive Morse-Echo",
         "type": "morse",
+        "image": None,
         "story": "Ein lautes Echosignal hallt durch die Nebelwände. Das Funkgerät knackt. Sendet das universelle Notsignal per Morse-Code, um den Nebel zu lichten!",
-        "question": "Klicke die Morse-Zeichen in der korrekten Reihenfolge für **SOS** (... --- ...).\n(Kurz = ., Lang = -)\nDrücke danach auf Prüfen.",
+        "question": "Trage das universelle Notsignal **SOS** ein.\n(Kurz = ., Lang = -)",
         "answer": "...---...",
         "puzzle_piece": "🧩 Fragment 4: Rahmenteil Mitte-Links",
-        "hint": "SOS besteht aus drei kurzen, drei langen und drei kurzen Signalen."
+        "hint": "SOS besteht aus drei kurzen, drei langen und drei kurzen Signalen (...---...)."
     },
     9: {
         "person": "Person C",
         "title": "Tag 9: Der Lichtstrahl-Spiegelpfad",
-        "type": "text",
+        "type": "mirror_puzzle",
+        "image": None,
         "story": "Ein Laserstrahl bricht durch den Nebel. Ihr müsst den Spiegel-Code eingeben, um den Sensor zu treffen.",
         "question": "Der Spiegel steht auf Position Nord-Ost ('NO'). Welcher Buchstabe codiert diese Ausrichtung im Steuerungssystem?\n\n**Eingabe:** Tippe den 2-stelligen Großbuchstaben-Code ein.",
         "answer": "NO",
@@ -176,8 +180,9 @@ DOORS = {
         "person": "Person A",
         "title": "Tag 10: Der Fluss-Übergang",
         "type": "text",
+        "image": None,
         "story": "Ihr steht vor einem unterirdischen, eiskalten Gletscherfluss. Ein kleiner Yeti verlangt das klassische Transport-Logikrätsel.",
-        "question": "Du hast einen Wolf, eine Ziege und einen Kohlkopf am Fluss. Du kannst nur eines davon im Boot mitnehmen. Wer darf niemals unbeaufsichtigt allein gelassen werden? (Wer frisst wen?)\n\n**Eingabe:** Antworte mit dem Tier, das die Ziege frisst.",
+        "question": "Du hast einen Wolf, eine Ziege und einen Kohlkopf am Fluss. Du kannst nur eines davon im Boot mitnehmen. Wer frisst wen, wenn man nicht aufpasst?\n\n**Eingabe:** Antworte mit dem Tier, das die Ziege frisst.",
         "answer": "WOLF",
         "puzzle_piece": "🧩 Fragment 6: Rahmenteil Unten-Links",
         "hint": "Der Wolf frisst die Ziege, wenn du nicht aufpasst."
@@ -186,8 +191,9 @@ DOORS = {
         "person": "Person B",
         "title": "Tag 11: Die finale Gletscher-Schlucht",
         "type": "text",
+        "image": None,
         "story": "Das letzte Hindernis vor dem Ausgang des Labyrinths. Eine versiegelte Steintür verlangt die Summe aller bisher gesammelten Fragmente.",
-        "question": "Wie viele magische Fragmente müsst ihr insgesamt gesammelt haben, um das große Puzzle zu vervollständigen?\n\n**Eingabe:** Tippe die Zahl ein.",
+        "question": "Wie viele magische Fragmente müsst ihr insgesamt gesammelt haben (Tage 5 bis 10), um das große Puzzle zu vervollständigen?\n\n**Eingabe:** Tippe die Zahl ein.",
         "answer": "6",
         "puzzle_piece": "🧩 Fragment 7: Rahmenteil Unten-Mitte",
         "hint": "Zähle die Fragmente von Tag 5 bis Tag 10 zusammen."
@@ -196,8 +202,9 @@ DOORS = {
         "person": "Person C",
         "title": "Tag 12: Das Haupttor der Werkstatt",
         "type": "text",
+        "image": "https://images.unsplash.com/photo-1512389142860-9c449e58a543?w=600&q=80",
         "story": "Ihr habt alle Teile beisammen! Das große Puzzlesichtfenster am Haupttor setzt sich zusammen. Löse das finale Lösungswort, um die Werkstatt zu öffnen.",
-        "question": "Setze das Master-Wort aus dem allerersten Hinweis (Tag 2: NORD) und dem Ausgang zusammen.\n\n**Eingabe:** Tippe das finale Codewort ein (z.B. WORT12).",
+        "question": "Setze das Master-Wort aus dem allerersten Hinweis (Tag 2: NORD) und der Zahl 12 zusammen.\n\n**Eingabe:** Tippe das finale Codewort ein.",
         "answer": "NORD12",
         "puzzle_piece": "🏆 GEWONNEN: Die Werkstatt ist geöffnet!",
         "hint": "Verbinde das Wort aus Tag 2 nahtlos mit der Zahl 12."
@@ -218,7 +225,7 @@ DOORS = {
         "title": "Tag 14: Chaos in der Packstation",
         "type": "text",
         "image": None,
-        "story": "Sortiere die Durcheinander geworfenen Buchstaben.",
+        "story": "Sortiere die durcheinandergeratenen Buchstaben.",
         "question": "Entferne alle Buchstaben von 'MAGIE' aus 'ELFENMAGIE'. Welcher Name bleibt übrig?",
         "answer": "ELFEN",
         "puzzle_piece": None,
@@ -318,10 +325,10 @@ DOORS = {
         "type": "text",
         "image": None,
         "story": "Der Weihnachts-Countdown läuft!",
-        "question": "Rechne: (Tag 3: 500) + (Tag 18: 83)",
-        "answer": "583",
+        "question": "Rechne: (Tag 3 Ergebnis: 8) + (Tag 18 Ergebnis: 83) + Tippe die Basiszahl ein.",
+        "answer": "91",
         "puzzle_piece": None,
-        "hint": "500 + 83 = 583."
+        "hint": "8 + 83 = 91."
     },
     24: {
         "person": "Alle 3 gemeinsam",
@@ -337,7 +344,7 @@ DOORS = {
 }
 
 # ==============================================================================
-# 3. SESSION STATE
+# 3. SESSION STATE INITIALISIERUNG
 # ==============================================================================
 if "solved_doors" not in st.session_state:
     st.session_state.solved_doors = []
@@ -370,16 +377,8 @@ cols = st.columns(6)
 for i in range(1, 25):
     col = cols[(i - 1) % 6]
     
-    # Optische Markierung für Labyrinth-Tage (5-11)
-    if 5 <= i <= 11:
-        prefix = "🌀 "
-    else:
-        prefix = ""
-        
-    if i in st.session_state.solved_doors:
-        label = f"🎁 {prefix}Tag {i}"
-    else:
-        label = f"{prefix}Tag {i}"
+    prefix = "🌀 " if 5 <= i <= 11 else ""
+    label = f"🎁 {prefix}Tag {i}" if i in st.session_state.solved_doors else f"{prefix}Tag {i}"
         
     if col.button(label, key=f"btn_{i}"):
         st.session_state.active_day = i
@@ -404,9 +403,7 @@ with main_col:
     st.info(f"📖 {door['story']}")
     st.markdown(f"**Aufgabe:** {door['question']}")
 
-    # --- RÄTSEL-WIDGETS ---
-
-    # A) WIDGET TAG 9: Interaktiver 2D-Lichtstrahl & Spiegelpfad
+    # --- WIDGETS ---
     if door["type"] == "mirror_puzzle":
         st.write("🔦 **Laser-Spiegel-Ausrichtung:** Klicke auf die Spiegel, um die Ausrichtung zu ändern.")
         m_col1, m_col2, m_col3 = st.columns(3)
@@ -423,35 +420,30 @@ with main_col:
             st.session_state.mirror_state[2] = "/" if st.session_state.mirror_state[2] == "\\" else "\\"
             st.rerun()
 
-        # Visuelle Feedback-Vorschau des Strahls
         if st.session_state.mirror_state == ["/", "\\", "/"]:
-            st.success("🟢 Strahlenverlauf: Ost ➔ Nord ➔ Ost ➔ Nord (Ziel getroffen!)")
+            st.success("🟢 Strahlenverlauf korrekt!")
             if st.button("Lichtstrahl aktivieren 🔦", key=f"chk_{day}"):
                 if day not in st.session_state.solved_doors:
                     st.session_state.solved_doors.append(day)
                     st.rerun()
         else:
-            st.warning("🔴 Strahl wird noch an den Nebelwänden reflektiert.")
+            st.warning("🔴 Strahl wird noch reflektiert.")
 
-    # B) WIDGET TAG 13: Interaktive Zahnrad-Simulation
     elif door["type"] == "gear_puzzle":
         rot = st.slider("⚙️ Umdrehungen des 12er-Rads:", 1, 12, 1, key="rot_slider")
         st.write(f"Rad 1 (12 Zähne): **{rot}** Umdrehungen")
-        st.write(f"Rad 2 (18 Zähne): **{rot * 12 / 18:.2f}** Umdrehungen")
-        st.write(f"Rad 3 (24 Zähne): **{rot * 12 / 24:.2f}** Umdrehungen")
         
         if st.button("Zahnräder einrasten ⚙️", key=f"chk_{day}"):
             if rot == door["answer"]:
-                st.success("🎉 Alle Zahnräder stehen synchron auf Startposition!")
+                st.success("🎉 Synchronisiert!")
                 if day not in st.session_state.solved_doors:
                     st.session_state.solved_doors.append(day)
                     st.rerun()
             else:
-                st.error("❌ Die Zähne stehen nicht auf der Markierung.")
+                st.error("❌ Noch nicht synchron.")
 
-    # C) WIDGET TAG 15: Interaktive Balkenwaage & Mischstation
     elif door["type"] == "scale_puzzle":
-        st.write("⚖️ **Mischungs-Waage (Gesamtgewicht muss exakt 50 kg sein):**")
+        st.write("⚖️ **Mischungs-Waage (Gesamtgewicht = 50 kg):**")
         w_hafer = st.slider("🌾 Hafer (kg)", 0, 50, 20, key="w_h")
         w_staub = st.slider("✨ Sternenstaub (kg)", 0, 50, 5, key="w_s")
         w_aepfel = st.slider("🍎 Äpfel (kg)", 0, 50, 10, key="w_a")
@@ -461,14 +453,13 @@ with main_col:
         
         if st.button("Futter-Mischung wiegen ⚖️", key=f"chk_{day}"):
             if w_hafer == 25 and w_staub == 10 and w_aepfel == 15:
-                st.success("🎉 Perfektes Mischungsverhältnis! Die Rentiere sind begeistert.")
+                st.success("🎉 Perfektes Verhältnis!")
                 if day not in st.session_state.solved_doors:
                     st.session_state.solved_doors.append(day)
                     st.rerun()
             else:
-                st.error("❌ Das Mischungsverhältnis oder Gesamtgewicht stimmt noch nicht.")
+                st.error("❌ Falsches Mischungsverhältnis.")
 
-    # D) Zahlen-Sliders (Tag 1)
     elif door["type"] == "lock_sliders":
         c1, c2, c3, c4 = st.columns(4)
         v1 = c1.number_input("Stelle 1", 0, 9, 0, key=f"n1_{day}")
@@ -478,34 +469,32 @@ with main_col:
         
         if st.button("Schloss prüfen 🗝️", key=f"chk_{day}"):
             if [int(v1), int(v2), int(v3), int(v4)] == door["answer"]:
-                st.success("🎉 Das Schloss springt auf!")
+                st.success("🎉 Schloss geöffnet!")
                 if day not in st.session_state.solved_doors:
                     st.session_state.solved_doors.append(day)
                     st.rerun()
             else:
-                st.error("❌ Das Schloss bleibt blockiert.")
+                st.error("❌ Falscher Code.")
 
-    # E) Binär-Kippschalter (Tag 16)
     elif door["type"] == "binary_switches":
         b1, b2, b3, b4, b5 = st.columns(5)
-        s1 = b1.checkbox("Schalter 1 (Wert 16)", key="cb1")
-        s2 = b2.checkbox("Schalter 2 (Wert 8)", key="cb2")
-        s3 = b3.checkbox("Schalter 3 (Wert 4)", key="cb3")
-        s4 = b4.checkbox("Schalter 4 (Wert 2)", key="cb4")
-        s5 = b5.checkbox("Schalter 5 (Wert 1)", key="cb5")
+        s1 = b1.checkbox("Schalter 1 (16)", key="cb1")
+        s2 = b2.checkbox("Schalter 2 (8)", key="cb2")
+        s3 = b3.checkbox("Schalter 3 (4)", key="cb3")
+        s4 = b4.checkbox("Schalter 4 (2)", key="cb4")
+        s5 = b5.checkbox("Schalter 5 (1)", key="cb5")
         
         if st.button("Schaltkreis aktivieren ⚡", key=f"chk_{day}"):
             if [s1, s2, s3, s4, s5] == door["answer"]:
-                st.success("🎉 Schaltung korrekt!")
+                st.success("🎉 Stromkreis aktiv!")
                 if day not in st.session_state.solved_doors:
                     st.session_state.solved_doors.append(day)
                     st.rerun()
             else:
-                st.error("❌ Falsche Schaltkombination.")
+                st.error("❌ Falsche Schaltung.")
 
-    # F) Interaktives Frequenz-Widget (Tag 20)
     elif door["type"] == "frequency_tuner":
-        freq = st.slider("📻 Polarlichter-Empfänger (MHz):", 80.0, 100.0, 92.0, step=0.5, key="freq_slider")
+        freq = st.slider("📻 Empfänger (MHz):", 80.0, 100.0, 92.0, step=0.5, key="freq_slider")
         if st.button("Signal-Frequenz feststellen 📡", key=f"chk_{day}"):
             if abs(freq - door["answer"]) < 0.1:
                 st.success("🎉 Glasklarer Empfang!")
@@ -513,9 +502,8 @@ with main_col:
                     st.session_state.solved_doors.append(day)
                     st.rerun()
             else:
-                st.error("❌ Nur Rauschen zu hören.")
+                st.error("❌ Nur Rauschen.")
 
-    # G) Standard-Text-Eingabe
     else:
         ans = st.text_input("Deine Lösung:", key=f"input_{day}")
         if st.button("Prüfen 🔍", key=f"chk_{day}"):
@@ -528,90 +516,25 @@ with main_col:
                     st.session_state.solved_doors.append(day)
                     st.rerun()
             else:
-                st.error("❌ Das ist leider nicht korrekt.")
+                st.error("❌ Leider nicht korrekt.")
 
     with st.expander("💡 Hinweis anzeigen"):
         st.write(door["hint"])
 
-# ------------------------------------------------------------------------------
-# LABYRINTH-PUZZLE-SAMMLUNG (RECHTE SEITENLEISTE)
-# ------------------------------------------------------------------------------
+# ==============================================================================
+# SEITENLEISTE (FRAGMENT-SAMMLUNG)
+# ==============================================================================
 with puzzle_col:
     st.subheader("🌀 Labyrinth-Puzzleteile")
-    st.caption("Sammlertasche für das Haupttor (Tag 12):")
+    st.caption("Sammlertasche für das Haupttor:")
     
-    # Filtere alle gelösten Labyrinth-Puzzleteile
     lab_pieces = [d for d in st.session_state.solved_doors if DOORS[d]["puzzle_piece"]]
     
     if not lab_pieces:
-        st.write("*Noch keine Puzzleteile im Nebel-Labyrinth gefunden.*")
+        st.write("*Noch keine Puzzleteile gefunden.*")
     else:
         for d in sorted(lab_pieces):
             st.markdown(f"<div class='puzzle-card'><b>Tag {d}:</b><br>{DOORS[d]['puzzle_piece']}</div>", unsafe_allow_html=True)
             
     st.write("---")
-    st.metric("Gefundene Labyrinth-Teile", f"{len(lab_pieces)} / 6")
- #hinweise
-# Sidebar für die Übersicht & Puzzleteile-Sammlung
-st.sidebar.header("🧭 Abenteuer-Fortschritt")
-st.sidebar.write(Gefundene Fragmente: {len(st.session_state.puzzle_pieces)} / 7)
-for piece in st.session_state.puzzle_pieces:
-    st.sidebar.success(piece)
-
-# Hauptbereich: Anzeige der Tage
-for day_num, door in DOORS.items():
-    is_unlocked = day_num in st.session_state.unlocked_days
-    
-    with st.expander(f"{door['title']} ({door['person']})", expanded=(day_num == max(st.session_state.unlocked_days))):
-        if not is_unlocked:
-            st.warning("🔒 Dieser Tag ist noch gesperrt. Löse erst die vorherigen Aufgaben!")
-            continue
-            
-        st.write(door["story"])
-        st.markdown("---")
-        st.write(door["question"])
-        
-        # Eingabe je nach Rätsel-Typ
-        user_input = None
-        if door["type"] == "lock_sliders":
-            col1, col2, col3, col4 = st.columns(4)
-            d1 = col1.number_input("Ziffer 1", 0, 9, 0, key=f"d1_{day_num}")
-            d2 = col2.number_input("Ziffer 2", 0, 9, 0, key=f"d2_{day_num}")
-            d3 = col3.number_input("Ziffer 3", 0, 9, 0, key=f"d3_{day_num}")
-            d4 = col4.number_input("Ziffer 4", 0, 9, 0, key=f"d4_{day_num}")
-            user_input = [d1, d2, d3, d4]
-            
-        elif door["type"] == "morse":
-            morse_input = st.text_input("Morse-Eingabe (nutze . und -):", key=f"morse_{day_num}")
-            user_input = morse_input.strip()
-            
-        else:
-            user_input = st.text_input("Deine Antwort:", key=f"text_{day_num}").strip()
-            
-        # Prüfen-Button
-        if st.button("Antwort prüfen", key=f"btn_{day_num}"):
-            is_correct = False
-            if door["type"] == "lock_sliders":
-                if user_input == door["answer"]:
-                    is_correct = True
-            else:
-                if str(user_input).upper() == str(door["answer"]).upper():
-                    is_correct = True
-                    
-            if is_correct:
-                st.success("Richtig gelöst! 🎉")
-                # Puzzleteil hinzufügen falls vorhanden
-                if door["puzzle_piece"] and door["puzzle_piece"] not in st.session_state.puzzle_pieces:
-                    st.session_state.puzzle_pieces.append(door["puzzle_piece"])
-                
-                # Nächsten Tag freischalten
-                next_day = day_num + 1
-                if next_day not in st.session_state.unlocked_days and next_day <= len(DOORS):
-                    st.session_state.unlocked_days.append(next_day)
-                    st.rerun()
-            else:
-                st.error("Das war leider falsch. Probiere es noch einmal oder nutze den Hinweis!")
-                
-        # Hinweis-Expander (Verrät niemals die Lösung direkt)
-        with st.expander("💡 Einen Hinweis anzeigen"):
-            st.info(door["hint"])
+    st.metric("Gefundene Fragmente", f"{len(lab_pieces)} / 7")
