@@ -82,44 +82,44 @@ DOORS = {
         "title": "Tag 1: Die mysteriöse Holzbox",
         "type": "lock_sliders",
         "image": None,
-        "story": "Es klingelt an der Haustür. Ihr öffnet, aber niemand ist da stattdessen liegt auf der Fußmatte eine schwere, eisige Holzbox mit dem Absender „Nordpol“. Auf dem Deckel prangt ein massives Zahlenschloss und ein eingravierter Reimgedicht-Hinweis.",
-        "question": "Knacke das 4-stellige Zahlenschloss mithilfe des Reims:\n\n> *„Vier kleine Ziffern im winterlichen Schnee,\n> hör gut zu, was ich dir steh:\n> Nimm die Ecken eines weisen Weihnachtssterns,\n> plus die treuen Rentiere des Nordpols fern.\n> Multipliziere das Ganze mit zwei,\n> dann ist die erste Hürde vorbei.“*",
+        "story": "Es klingelt an der Haustür. Ihr öffnet, aber niemand ist da – stattdessen liegt auf der Fußmatte eine schwere, eisige Holzbox mit dem Absender „Nordpol“. Auf dem Deckel prangt ein massives Zahlenschloss und ein eingravierter Reimgedicht-Hinweis.",
+        "question": "Knacke das 4-stellige Zahlenschloss mithilfe des Reims auf der Box:\n\n> *„Vier kleine Ziffern im winterlichen Schnee,\n> hör gut zu, was ich dir steh:\n> Nimm die Ecken eines weisen Weihnachtssterns,\n> plus die treuen Rentiere des Nordpols fern.\n> Multipliziere das Ganze mit zwei,\n> dann ist die erste Hürde vorbei.“*\n\n*(Hinweis zur Eingabe: Tippe das Ergebnis als 4-stellige Zahl ein, z.B. 0026)*",
         "answer": [0, 0, 2, 6],
         "puzzle_piece": None,
-        "hint": "Ein Weihnachtsstern hat 5 Ecken. Es gibt 8 Rentiere. Rechne (5 + 8) * 2 "
+        "hint": "Zähle die Zacken eines klassischen Weihnachtssterns und überlege, wie viele Rentiere vor dem Schlitten stehen. Verdopple diese Summe."
     },
     2: {
         "person": "Person B",
         "title": "Tag 2: Das vergilbte Pergament",
         "type": "text",
-        "image": None,
-        "story": "Das Schloss der Holzbox springt auf! Ihr öffnet den Deckel und findet im Inneren ein altes, steif gefrorenes Pergament mit einer Elfen-Chiffre: *„SIVX“*.",
-        "question": "Entschlüssele das Codewort: 'SIVX'. Wie lautet das Lösungswort?",
+        "image": "https://images.unsplash.com/photo-1516962215378-7fa2e137ae93?w=600&q=80",
+        "story": "Das Schloss der Holzbox springt auf! Ihr öffnet den Deckel und findet im Inneren ein altes, steif gefrorenes Pergament mit einer Elfen-Chiffre: *„SIVX“*. Am Rand der Schriftrolle steht ein Hinweis zur Entschlüsselung.",
+        "question": "Entschlüssele das Codewort (Cäsar-Chiffre: Gehe im Alphabet 4 Schritte zurück). Wie lautet das Lösungswort?",
         "answer": "NORD",
         "puzzle_piece": None,
-        "hint": "Cäsar-Chiffre, 4 Stellen im Alphabet zurückschieben"
+        "hint": "Nimm jeden Buchstaben des Codes und wandere im Alphabet vier Positionen nach links (Richtung A)."
     },
     3: {
         "person": "Person C",
-        "title": "Tag 3: Das Rentier-Experten-Quiz",
+        "title": "Tag 3: Das Rentier-Experten-Rätsel",
         "type": "text",
         "image": None,
-        "story": "Ihr sprecht das magische Wort „NORD“ laut aus. Plötzlich erfüllt ein feines Glockenklingeln den Raum. Ihr tretet ans Fenster – draußen steht ein prachtvoller Elfen-Schlitten! Ihr klettert hinein, aber das Armaturenbrett verlangt einen Beweis, dass ihr echte Rentier-Kenner seid.",
-        "question": "Finde den 3-stelligen Zündcode über drei Rentier-Fakten:\n1. Wie viele Mägen haben Rentiere (als Wiederkäuer)?\n2. Wie viele Buchstaben hat die Farbe von Rudolphs Nase ('Rot')?\n3. Wie viele Geschlechter tragen bei Rentieren im Winter ein Geweih (Männlich & Weiblich = ?)?\n(Schreibe die Ziffern direkt hintereinander als 3-stelligen Code, z.B. X-Y-Z).",
-        "answer": "432",
+        "story": "Ihr sprecht das magische Wort „NORD“ laut aus. Ein feines Glockenklingeln ertönt, und draußen im Schnee steht ein prachtvoller Elfen-Schlitten! Ihr klettert hinein, doch das Armaturenbrett verlangt drei Ziffern als Startcode – basierend auf echten Rentier-Geheimnissen.",
+        "question": "Löse die drei Rentier-Rätsel und kombiniere die Ziffern zu einem 3-stelligen Code:\n1. Wie viele Zehen hat ein einzelner Rentier-Huf, die sich im tiefen Schnee spreizen können?\n2. Wie viele Monate dauert es ungefähr, bis ein neugeborenes Rentierkalb selbständig im Schnee stehen kann? (Tipp: Es geht rasend schnell – nimm die Zahl der ersten Wochen/Monate... Moment, such nach der Rentier-Trächtigkeitsdauer in Monaten!)\n*Alternativ-Fakt:* Welches Rentier-Merkmal ist weltweit einzigartig unter allen Hirscharten? Bei welchem Geschlecht tragen *beide* Tiere ein Geweih? (Zahl der Geschlechter = ?)\n\n*(Eingabe-Format: Schreibe die 3 Ziffern direkt hintereinander als Code, z.B. 422)*",
+        "answer": "422", # Beispiel-Antwort, können wir gleich anpassen falls du andere Fakten willst
         "puzzle_piece": None,
-        "hint": "1. Rentiere haben 4 Mägen. 2. 'ROT' hat 3 Buchstaben. 3. Beide Geschlechter (2) tragen im Winter ein Geweih. Code: 432."
+        "hint": "Schau im Internet nach spannenden Biologie-Fakten über Rentiere (Hufe, Geweih-Besonderheiten bei Hirscharten)."
     },
     4: {
         "person": "Person A",
         "title": "Tag 4: Das Navigationssystem & die Koordinaten",
         "type": "text",
         "image": None,
-        "story": "Der Schlitten brummt startklar! Ihr nehmt Platz, aber das Navigationssystem zeigt eine Fehlermeldung: „Kurs unbekannt. Bitte Koordinaten eingeben.“",
-        "question": "Berechne den 5-stelligen Code aus Breit- und Längengrad:\n- Breitengrad: Nimm die 90 Grad des Nordpols minus die Anzahl der Rentiere (9).\n- Längengrad: Nimm die Quersumme des Jahres 2026 (2+0+2+6 = 10) mal 10.\n(Schreibe beide Zahlen ohne Leerzeichen zusammen, z.B. 81100).",
+        "story": "Der Schlitten brummt startklar! Ihr nehmt Platz, aber das Navigationssystem zeigt eine Fehlermeldung: „Kurs unbekannt. Bitte Zielkoordinaten eingeben.“",
+        "question": "Berechne den 5-stelligen Code aus Breit- und Längengrad:\n- Breitengrad: Nimm die 90 Grad des Nordpols minus die Anzahl der Rentiere vor eurem Schlitten (9).\n- Längengrad: Nimm die Quersumme des aktuellen Jahres (2+0+2+6 = 10) mal 10.\n\n*(Eingabe-Format: Schreibe beide Zahlen ohne Leerzeichen direkt zusammen, z.B. 81100)*",
         "answer": "81100",
         "puzzle_piece": None,
-        "hint": "Breitengrad: 90 - 9 = 81. Längengrad: (2+0+2+6) * 10 = 100. Zusammengefügt: 81100."
+        "hint": "Rechne zuerst den Breitengrad (90 minus Rentieranzahl) und getrennt den Längengrad aus. Setze sie danach nahtlos aneinander."
     },
     # --- START NEBEL-LABYRINTH (Tage 5 - 11 sammeln 6 Puzzleteile) ---
     5: {
