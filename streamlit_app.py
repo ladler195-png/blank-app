@@ -81,7 +81,7 @@ DOORS = {
         "person": "Person A",
         "title": "Tag 1: Die mysteriöse Holzbox",
         "type": "lock_sliders",
-        "image": "https://images.unsplash.com/photo-1543257580-7269da773bf5?w=600&q=80",
+        "image": None,
         "story": "Es klingelt an der Haustür. Ihr öffnet, aber niemand ist da – stattdessen liegt auf der Fußmatte eine schwere, eisige Holzbox mit dem Absender „Nordpol“. Auf dem Deckel prangt ein massives Zahlenschloss und ein eingravierter Reimgedicht-Hinweis.",
         "question": "Knacke das 4-stellige Zahlenschloss mithilfe des Reims:\n\n> *„Vier kleine Ziffern im winterlichen Schnee,\n> hör gut zu, was ich dir steh:\n> Nimm die Ecken eines weisen Weihnachtssterns,\n> plus die treuen Rentiere des Nordpols fern.\n> Multipliziere das Ganze mit zwei,\n> dann ist die erste Hürde vorbei.“*",
         "answer": [0, 0, 2, 6],
@@ -93,11 +93,11 @@ DOORS = {
         "title": "Tag 2: Das vergilbte Pergament",
         "type": "text",
         "image": "https://images.unsplash.com/photo-1516962215378-7fa2e137ae93?w=600&q=80",
-        "story": "In der Kiste liegt eine alte Elfen-Chiffre.",
-        "question": "Entschlüssele das Codewort (Cäsar-Chiffre, 4 Stellen zurück im Alphabet): 'SIVX'",
+        "story": "Das Schloss der Holzbox springt auf! Ihr öffnet den Deckel und findet im Inneren ein altes, steif gefrorenes Pergament mit einer Elfen-Chiffre: *„SIVX“*. Am Rand der Schriftrolle steht ein Hinweis zur Entschlüsselung.",
+        "question": "Entschlüssele das Codewort (Cäsar-Chiffre, 4 Stellen im Alphabet zurückschieben): 'SIVX'. Wie lautet das Lösungswort?",
         "answer": "NORD",
         "puzzle_piece": None,
-        "hint": "S-4=N, I-4=O, V-4=R, X-4=D."
+        "hint": "S - 4 = N, I - 4 = O, V - 4 = R, X - 4 = D."
     },
     3: {
         "person": "Person C",
