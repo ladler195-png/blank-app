@@ -86,18 +86,18 @@ DOORS = {
         "question": "Knacke das 4-stellige Zahlenschloss mithilfe des Reims:\n\n> *„Vier kleine Ziffern im winterlichen Schnee,\n> hör gut zu, was ich dir steh:\n> Nimm die Ecken eines weisen Weihnachtssterns,\n> plus die treuen Rentiere des Nordpols fern.\n> Multipliziere das Ganze mit zwei,\n> dann ist die erste Hürde vorbei.“*",
         "answer": [0, 0, 2, 6],
         "puzzle_piece": None,
-        "hint": "Ein Weihnachtsstern hat 5 Ecken. Es gibt 8 Rentiere. Rechne (5 + 8) * 2 = 26. Da das Schloss vierstellig ist, lautet der Code 0026."
+        "hint": "Ein Weihnachtsstern hat 5 Ecken. Es gibt 8 Rentiere. Rechne (5 + 8) * 2 "
     },
     2: {
         "person": "Person B",
         "title": "Tag 2: Das vergilbte Pergament",
         "type": "text",
-        "image": "https://images.unsplash.com/photo-1516962215378-7fa2e137ae93?w=600&q=80",
-        "story": "Das Schloss der Holzbox springt auf! Ihr öffnet den Deckel und findet im Inneren ein altes, steif gefrorenes Pergament mit einer Elfen-Chiffre: *„SIVX“*. Am Rand der Schriftrolle steht ein Hinweis zur Entschlüsselung.",
-        "question": "Entschlüssele das Codewort (Cäsar-Chiffre, 4 Stellen im Alphabet zurückschieben): 'SIVX'. Wie lautet das Lösungswort?",
+        "image": None,
+        "story": "Das Schloss der Holzbox springt auf! Ihr öffnet den Deckel und findet im Inneren ein altes, steif gefrorenes Pergament mit einer Elfen-Chiffre: *„SIVX“*.",
+        "question": "Entschlüssele das Codewort: 'SIVX'. Wie lautet das Lösungswort?",
         "answer": "NORD",
         "puzzle_piece": None,
-        "hint": "S - 4 = N, I - 4 = O, V - 4 = R, X - 4 = D."
+        "hint": "Cäsar-Chiffre, 4 Stellen im Alphabet zurückschieben"
     },
     3: {
         "person": "Person C",
