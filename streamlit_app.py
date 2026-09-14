@@ -1,6 +1,5 @@
 import streamlit as st
 import streamlit.components.v1 as components
-import base64
 
 # ==============================================================================
 # 1. SEITEN-KONFIGURATION & DUNKELGRÜNES DESIGN (CSS)
@@ -11,7 +10,6 @@ st.set_page_config(
     layout="wide"
 )
 
-# [EASTER EGG - SYSTEM OVERRIDE: BASE64: T1ZFUlJJREU5OSE= (Decodiert: OVERRIDE99!)]
 st.markdown("""
     <style>
     .stApp {
@@ -87,7 +85,7 @@ components.html("""
 """, height=0)
 
 # ==============================================================================
-# 2. RÄTSEL-DATENBANK (AKT 1 BIS 4 - HARDCORE EDITION)
+# 2. RÄTSEL-DATENBANK (AKT 1 BIS 4 - UPDATED HARDCORE EDITION)
 # ==============================================================================
 DOORS = {
     # AKT 1: ZUHAUSE & AUFTAKT (1-4)
@@ -205,9 +203,9 @@ DOORS = {
     },
     12: {
         "person": "Person C",
-        "title": "Tag 12: Das geheime Lösungswort 🧩",
+        "title": "Tag 12: Das geheime Lösungswort & Notiz 🧩",
         "type": "text",
-        "story": "Ihr habt alle Fragmente von Tag 5 bis 11 gesammelt. Unten links auf jedem Fragment stand ein Buchstabe!",
+        "story": "Ihr habt alle Fragmente von Tag 5 bis 11 gesammelt. Unten links auf jedem Fragment stand ein Buchstabe! (Zusatz-Notiz im System-Speicher: *'Override-Token für Notfälle entdeckt: OVERRIDE99!'*)",
         "question": "Setzt die gesammelten Buchstaben von Tag 5 bis 11 in der richtigen Reihenfolge zu einem 7-stelligen Lösungswort zusammen und tippt es ein.",
         "answer": "EXPEDIT",
         "puzzle_piece": "🏆 GEWONNEN: Das Tor zur Werkstatt ist geöffnet!",
@@ -309,23 +307,23 @@ DOORS = {
     # AKT 4: DAS HARDCORE-FINALE (22-24)
     22: {
         "person": "System-Administrator R-01",
-        "title": "Tag 22: Das Quelltext-Easter-Egg (OSINT-Hack) 🕵️‍♂️",
+        "title": "Tag 22: Das verdeckte Easter-Egg (System-Override) 🕵️‍♂️",
         "type": "text",
-        "story": "Das Haupt-Terminal blockiert den Systemstart mit einer Firewall. Ein alter Entwickler-Kommentar im Quelltext der Web-App verrät den verdeckten Base64-Override-String. Ohne diesen Code bleibt die Tür verrammelt!",
-        "question": "Inspiziere den Quelltext der Python-Applikation (im HTML/CSS-Kopfbereich) nach dem Base64-Easter-Egg-String, dekodiere ihn und gib den Klartext ein.",
+        "story": "Das Haupt-Terminal blockiert den Systemstart mit einer Firewall. Der Code, den ihr damals bei Tag 12 im System-Speicher entdeckt habt, wird jetzt als Master-Override verlangt!",
+        "question": "Gib den bei Tag 12 gefundenen Override-Token ein.",
         "answer": "OVERRIDE99!",
         "puzzle_piece": None,
-        "hint": "Schau ganz oben in den Code-Kommentaren nach dem Base64-String (T1ZFUlJJREU5OSE=) und dekodiere ihn."
+        "hint": "Erinnere dich an die Zusatz-Notiz im Speicher von Tag 12 (OVERRIDE99!)."
     },
     23: {
-        "person": "Krypto-Prozessor",
-        "title": "Tag 23: Die RSA-Primzahlen-Faktorisierung 🧮",
-        "type": "text",
-        "story": "Die Hauptschotten verlangen die Entschlüsselung des RSA-Modulus für den Hangar-Sicherheits-Token.",
-        "question": "Gegeben ist das RSA-Modulus $N = 323$. Finde die zwei Primfaktoren $p$ und $q$ ($p < q$). Berechne daraus den privaten Schlüsselwert mittels Eulers Phi-Funktion $\\phi(N) = (p-1) \\times (q-1)$. Welches Ergebnis liefert $\\phi(323)$?",
-        "answer": "288",
+        "person": "Chef-Elf Barnaby",
+        "title": "Tag 23: Das mechanische Zahnrad-Gleichgewicht ⚙️",
+        "type": "gear_ratio_puzzle",
+        "story": "Die Hauptschotten verriegeln sich durch ein mechanisches Vier-Zahnrad-System. Die Umdrehungen müssen exakt abgestimmt werden.",
+        "question": "Stelle die Zahnrad-Übersetzung so ein, dass am Hauptausgang exakt 144 Umdrehungen pro Minute (RPM) ankommen (Eingabe-RPM = 36, Übersetzungsfaktor = ?).",
+        "answer": "4",
         "puzzle_piece": None,
-        "hint": "Die Primfaktoren von 323 sind 17 und 19. Also: (17-1) * (19-1) = 16 * 18 = 288."
+        "hint": "36 mal welcher Faktor ergibt 144? (144 / 36 = ?)"
     },
     24: {
         "person": "Turing-Master-KI",
@@ -544,7 +542,7 @@ with main_col:
     # TAG 14: LOGISTIK-CONSTRAINT-RÄTSEL
     elif door["type"] == "package_sort":
         st.write("📦 **Intelligentes Paket-Leitsystem:**")
-        st.markdown("Basierend on den Logik-Axiomen: Welche Rutsche (1 bis 4) gehört zu Paket **Delta**?")
+        st.markdown("Basierend auf den Logik-Axiomen: Welche Rutsche (1 bis 4) gehört zu Paket **Delta**?")
         ans_delta = st.text_input("Rutschen-Nummer für Paket Delta eingeben:", key="delta_input")
         if st.button("Logik-Prüfung ausführen 📦", key=f"chk_{day}"):
             if ans_delta.strip() == "4":
@@ -650,6 +648,21 @@ with main_col:
             else:
                 st.error("❌ Die Mischungsbedingungen sind nicht erfüllt.")
 
+    # TAG 23: ZAHNRAD-GLEICHGEWICHT
+    elif door["type"] == "gear_ratio_puzzle":
+        st.write("⚙️ **Zahnrad-Übersetzungs-Konsole:**")
+        factor = st.slider("Wähle den Übersetzungsfaktor", 1, 10, 1, key="gear_factor")
+        output_rpm = 36 * factor
+        st.metric("Ausgangs-Umdrehungen (RPM)", f"{output_rpm}", delta="Ziel: 144 RPM")
+        if st.button("Zahnrad-System einkuppeln ⚙️", key=f"chk_{day}"):
+            if output_rpm == 144:
+                st.success("🎉 Perfekt! Das Zahnrad-System läuft exakt mit 144 RPM.")
+                if day not in st.session_state.solved_doors:
+                    st.session_state.solved_doors.append(day)
+                    st.rerun()
+            else:
+                st.error(f"❌ Aktuell {output_rpm} RPM. Benötigt werden exakt 144 RPM.")
+
     elif door["type"] == "lock_sliders":
         c1, c2, c3, c4 = st.columns(4)
         v1 = c1.number_input("Stelle 1", 0, 9, 0, key=f"n1_{day}")
@@ -665,9 +678,9 @@ with main_col:
             else:
                 st.error("❌ Falsch.")
 
-    # STANDARD-TEXT ODER ANDERE TAGE (INKLUSIVE HARDCORE FINALE 22-24)
+    # STANDARD-TEXT ODER ANDERE TAGE
     else:
-        if door["type"] not in ["sudoku_puzzle", "logic_grid", "morse_terminal", "river_crossing", "mirror_puzzle", "gear_puzzle", "package_sort", "binary_switches", "frequency_tuner", "scale_puzzle", "lock_sliders", "reindeer_puzzle"]:
+        if door["type"] not in ["sudoku_puzzle", "logic_grid", "morse_terminal", "river_crossing", "mirror_puzzle", "gear_puzzle", "package_sort", "binary_switches", "frequency_tuner", "scale_puzzle", "lock_sliders", "reindeer_puzzle", "gear_ratio_puzzle"]:
             ans = st.text_input("Deine Lösung:", key=f"input_{day}")
             if st.button("Prüfen 🔍", key=f"chk_{day}"):
                 user_clean = ans.strip().replace(" ", "").upper()
@@ -703,4 +716,3 @@ if show_sidebar:
                 
         st.write("---")
         st.metric("Gefundene Fragmente", f"{len(lab_pieces)} / 8")
-        
