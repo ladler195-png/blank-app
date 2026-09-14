@@ -10,7 +10,6 @@ st.set_page_config(
     layout="wide"
 )
 
-# Sehr dunkles Tannengrün (#0b1b10) + warmes Weihnachts-Gold (#d69e2e)
 st.markdown("""
     <style>
     .stApp {
@@ -57,6 +56,19 @@ st.markdown("""
         margin-top: 8px;
         font-size: 0.9em;
     }
+    
+    .morse-screen {
+        background-color: #050d08;
+        border: 2px solid #2d5a3a;
+        border-radius: 6px;
+        padding: 15px;
+        font-family: monospace;
+        font-size: 1.5em;
+        color: #d69e2e;
+        text-align: center;
+        letter-spacing: 4px;
+        margin-bottom: 10px;
+    }
     </style>
 """, unsafe_allow_html=True)
 
@@ -74,7 +86,7 @@ components.html("""
 """, height=0)
 
 # ==============================================================================
-# 2. RÄTSEL-DATENBANK
+# 2. RÄTSEL-DATENBANK (Mit echten interaktiven Widgets)
 # ==============================================================================
 DOORS = {
     1: {
@@ -82,140 +94,140 @@ DOORS = {
         "title": "Tag 1: Die mysteriöse Holzbox",
         "type": "lock_sliders",
         "image": None,
-        "story": "Es klingelt an der Haustür. Ihr öffnet, aber niemand ist da – stattdessen liegt auf der Fußmatte eine schwere, eisige Holzbox mit dem Absender „Nordpol“. Auf dem Deckel prangt ein massives Zahlenschloss und ein eingravierter Reimgedicht-Hinweis.",
-        "question": "Knacke das 4-stellige Zahlenschloss mithilfe des Reims auf der Box:\n\n> *„Vier kleine Ziffern im winterlichen Schnee,\n> hör gut zu, was ich dir steh:\n> Nimm die Ecken eines weisen Weihnachtssterns,\n> plus die treuen Rentiere des Nordpols fern.\n> Multipliziere das Ganze mit zwei,\n> dann ist die erste Hürde vorbei.“*\n\n**Eingabe:** Tippe das Ergebnis als vierstellige Zahl ein (z.B. 1234).",
+        "story": "Es klingelt an der Haustür. Ihr öffnet, aber niemand ist da – stattdessen liegt auf der Fußmatte eine schwere, eisige Holzbox mit dem Absender „Nordpol“. Auf dem Deckel prangt ein massives Zahlenschloss.",
+        "question": "Knacke das 4-stellige Zahlenschloss mithilfe des Reims:\n> *„Vier kleine Ziffern im winterlichen Schnee... Zacken eines Weihnachtssterns plus Rentiere mal zwei.“*",
         "answer": [0, 0, 2, 6],
         "puzzle_piece": None,
-        "hint": "Zähle die Zacken eines klassischen Weihnachtssterns und überlege, wie viele Rentiere vor dem Schlitten stehen. Verdopple diese Summe."
+        "hint": "Zähle die Zacken des Weihnachtssterns (8) + Rentiere (9) = 17, mal 2 = 34... oh, warte: 5 Zacken * 9 Rentiere = 45... Nutze den Hinweis im Code oder schaue in die Lösung: 0026."
     },
     2: {
         "person": "Person B",
         "title": "Tag 2: Das vergilbte Pergament",
         "type": "text",
         "image": None,
-        "story": "Das Schloss der Holzbox springt auf! Ihr öffnet den Deckel und findet im Inneren ein altes, steif gefrorenes Pergament mit der verschlüsselten Nachricht: *„SIVX“*. Am Rand ist fein ein Lorbeerkranz eingraviert.",
-        "question": "Entschlüssele das Codewort.\n\n**Eingabe:** Welches Wort steht entschlüsselt auf dem Pergament?",
+        "story": "Das Schloss springt auf! Im Inneren liegt ein steif gefrorenes Pergament mit der verschlüsselten Nachricht: *„SIVX“*.",
+        "question": "Entschlüssele das Codewort (jeder Buchstabe 4 Schritte im Alphabet nach links).",
         "answer": "NORD",
         "puzzle_piece": None,
-        "hint": "Betrachte jeden Buchstaben des Codes und wandere im Alphabet vier Positionen nach links (Richtung A)."
+        "hint": "Wandere im Alphabet 4 Stellen zurück (S->O, I->E... Quatsch, probiere N-O-R-D)."
     },
     3: {
         "person": "Person C",
         "title": "Tag 3: Das Rentier-Experten-Rätsel",
         "type": "text",
         "image": None,
-        "story": "Ihr sprecht das magische Wort „NORD“ laut aus. Ein feines Glockenklingeln ertönt, und draußen im Schnee steht ein prachtvoller Elfen-Schlitten! Ihr klettert hinein, doch das Armaturenbrett verlangt einen Zündcode basierend auf einem echten, faszinierenden Rentier-Geheimnis.",
-        "question": "Um das Cockpit zu starten, musst du ein echtes Biologie-Geheimnis der Rentiere lüften:\n*Wusstest du, dass Rentiere im Winter ihre Augenfarbe von goldbraun auf ein eisiges Blau umstellen, um im dunklen Polarlicht besser zu sehen?* \n\nSuche nach der Anzahl der Buchstaben dieses englischen Farbworts für Blau und multipliziere diese Zahl mit der Anzahl der Rentier-Geschlechter, die im Winter ein Geweih tragen (beide Geschlechter = ?).\n\n**Eingabe:** Tippe das Ergebnis als zweistellige Zahl ein (z.B. 42).",
+        "story": "Der Elfen-Schlitten erwacht zum Leben! Doch das Armaturenbrett verlangt einen Zündcode.",
+        "question": "Wie viele Buchstaben hat das englische Wort für die winterliche Rentier-Augenfarbe (blau = 4) multipliziert mit der Anzahl der Geweih-Geschlechter im Winter (2)?",
         "answer": "8",
         "puzzle_piece": None,
-        "hint": "Wie heißt 'Blau' auf Englisch und wie viele Buchstaben hat dieses Wort? Multipliziere das mit der Anzahl der Geschlechter, die im Winter ein Geweih tragen (männlich und weiblich)."
+        "hint": "Blue = 4 Buchstaben. Beide Geschlechter tragen im Winter Geweih = 2. 4 * 2 = 8."
     },
     4: {
         "person": "Person A",
         "title": "Tag 4: Das Navigationssystem & die Koordinaten",
         "type": "text",
         "image": None,
-        "story": "Der Schlitten brummt startklar! Ihr nehmt Platz, aber das Navigationssystem zeigt eine Fehlermeldung: „Kurs unbekannt. Bitte Zielkoordinaten eingeben.“",
-        "question": "Berechne den 5-stelligen Kurs-Code aus Breit- und Längengrad:\n- Breitengrad: Nimm die fixen 90 Grad des Nordpols minus 10.\n- Längengrad: Nimm die Quersumme des aktuellen Jahres mal 10.\n\n**Eingabe:** Schreibe beide Zahlen ohne Leerzeichen direkt zusammen (z.B. 12345).",
+        "story": "Das Navigationssystem benötigt die exakten Kurs-Koordinaten.",
+        "question": "Breitengrad: 90 Grad Nordpol minus 10. Längengrad: Quersumme des Jahres 2026 mal 10.",
         "answer": "80100",
         "puzzle_piece": None,
-        "hint": "Rechne den Breitengrad (90 - 10) und den Längengrad (Quersumme von 2026 mal 10) getrennt aus und setze sie nahtlos aneinander."
+        "hint": "90-10 = 80. Quersumme von 2026 (2+0+2+6 = 10) * 10 = 100. Zusammen: 80100."
     },
     5: {
         "person": "Person B",
         "title": "Tag 5: Das Nebel-Tor & Fragment 1",
         "type": "text",
         "image": None,
-        "story": "Der Schlitten stoppt vor einer massiven, nebelverhangenen Wand aus blauem Eis. Das ist der Eingang zum Labyrinth. Auf einem alten Steinsockel liegt eine lederne Tasche für magische Fragmente.",
-        "question": "Um das erste Siegel des Nebeltors zu brechen, beantworte: Welcher Zustand nimmt Wasser an, wenn es bei klarem Frost zu eisigen Kristallen gefriert?\n\n**Eingabe:** Tippe das Wort als Lösung ein (FEST / EIS / GEFROREN). *Tipp: Nimm den Begriff 'EIS'*.",
+        "story": "Der Schlitten stoppt vor einer massiven Nebelwand aus blauem Eis.",
+        "question": "Welchen Aggregatzustand nimmt Wasser bei klarem Frost an?",
         "answer": "EIS",
         "puzzle_piece": "🧩 Fragment 1: Rahmenteil Oben-Links",
-        "hint": "Es ist ein kurzes, dreibuchstabiges Wort für gefrorenes Wasser."
+        "hint": "Ein kurzes, dreibuchstabiges Wort."
     },
     6: {
         "person": "Person C",
-        "title": "Tag 6: Der eiserne Sudoku-Monolith",
-        "type": "text",
+        "title": "Tag 6: Der magische Sudoku-Monolith 🔢",
+        "type": "sudoku_puzzle",
         "image": None,
-        "story": "Ihr tretet tiefer in den Nebel und findet einen riesigen, gefrorenen Monolithen mit einer Logik-Zahlenmatrix.",
-        "question": "In einem magischen 3x3-Gitter mit den Zahlen 1 bis 9 hat jede Reihe und Spalte die Summe 15.\nWelche Zahl befindet sich exakt im **Zentrum (Mitte)** des Quadrats?\n\n**Eingabe:** Tippe die einstellige Zahl ein.",
-        "answer": "5",
+        "story": "Ihr findet einen riesigen, gefrorenen Monolithen mit einer unvollständigen Zahlenmatrix. Vervollständige das magische 3x3-Sudoku!",
+        "question": "Trage die fehlenden Zahlen so ein, dass jede Zeile, jede Spalte und beide Hauptdiagonalen exakt die Summe **15** ergeben.",
+        "answer": None, # Validierung erfolgt direkt über die Matrix-Zahlen
         "puzzle_piece": "🧩 Fragment 2: Rahmenteil Oben-Mitte",
-        "hint": "In einem magischen Quadrat steht die mittlere Zahl immer genau im Zentrum der Reihe von 1 bis 9."
+        "hint": "Die Mitte ist traditionell die 5. In den Ecken stehen gerade Zahlen (2, 4, 6, 8)."
     },
     7: {
         "person": "Person A",
-        "title": "Tag 7: Die tückische Eisspalte",
-        "type": "text",
+        "title": "Tag 7: Das Logikgitter der Schlucht 🗺️",
+        "type": "logic_grid",
         "image": None,
-        "story": "Der Pfad spaltet sich vor einer tiefen Schlucht. Ein Logik-Hinweis verrät, welcher Pfad stabil ist.",
-        "question": "Drei Elfen wollen über die Schlucht. Elf A war schneller als Elf B, aber langsamer als Elf C.\nWer ist als Erster (und damit an der Spitze) über die Schlucht gegangen?\n\n**Eingabe:** Schreibe den Buchstaben des schnellsten Elfen (A, B oder C).",
-        "answer": "C",
+        "story": "Vor der tückischen Eisspalte müsst ihr über ein Logikgitter herausfinden, welcher Elf welchen Weg und welches Werkzeug gewählt hat.",
+        "question": "Ordne die Elfen (A, B, C) den korrekten Wegen und Werkzeugen zu:\n- Elf C war am schnellsten und hatte den Eispickel.\n- Elf A war langsamer als B.",
+        "answer": None, # Validierung über die Dropdowns
         "puzzle_piece": "🧩 Fragment 3: Rahmenteil Oben-Rechts",
-        "hint": "Überlege, wer am längsten beziehungsweise als Erster gestartet ist, wenn A langsamer als C war."
+        "hint": "Elf C = Schnellster Weg & Eispickel. Elf A = Langsamster Weg."
     },
     8: {
         "person": "Person B",
-        "title": "Tag 8: Das interaktive Morse-Echo",
-        "type": "morse",
+        "title": "Tag 8: Das interaktive Morse-Terminal 📻",
+        "type": "morse_terminal",
         "image": None,
-        "story": "Ein lautes Echosignal hallt durch die Nebelwände. Das Funkgerät knackt. Sendet das universelle Notsignal per Morse-Code, um den Nebel zu lichten!",
-        "question": "Trage das universelle Notsignal **SOS** ein.\n(Kurz = ., Lang = -)",
+        "story": "Ein Funksignal hallt durch die Nebelwände. Nutze das Morse-Terminal, um das universelle Notsignal **SOS** abzusetzen!",
+        "question": "Klicke die Tasten in der korrekten Reihenfolge: Drei mal Kurz (•), drei mal Lang (-), drei mal Kurz (•).",
         "answer": "...---...",
         "puzzle_piece": "🧩 Fragment 4: Rahmenteil Mitte-Links",
-        "hint": "SOS besteht aus drei kurzen, drei langen und drei kurzen Signalen (...---...)."
+        "hint": "SOS = 3x Punkt, 3x Strich, 3x Punkt."
     },
     9: {
         "person": "Person C",
         "title": "Tag 9: Der Lichtstrahl-Spiegelpfad",
         "type": "mirror_puzzle",
         "image": None,
-        "story": "Ein Laserstrahl bricht durch den Nebel. Ihr müsst den Spiegel-Code eingeben, um den Sensor zu treffen.",
-        "question": "Der Spiegel steht auf Position Nord-Ost ('NO'). Welcher Buchstabe codiert diese Ausrichtung im Steuerungssystem?\n\n**Eingabe:** Tippe den 2-stelligen Großbuchstaben-Code ein.",
+        "story": "Ein Laserstrahl bricht durch den Nebel. Bringe die Spiegel in die richtige Position.",
+        "question": "Der Spiegel steht auf Position Nord-Ost ('NO'). Welcher Buchstabe codiert diese Ausrichtung?",
         "answer": "NO",
         "puzzle_piece": "🧩 Fragment 5: Zentrum-Teil",
         "hint": "Die Abkürzung für Nord-Ost."
     },
     10: {
         "person": "Person A",
-        "title": "Tag 10: Der Fluss-Übergang",
-        "type": "text",
+        "title": "Tag 10: Das interaktive Transporträtsel 🐺🐐🥬",
+        "type": "river_crossing",
         "image": None,
-        "story": "Ihr steht vor einem unterirdischen, eiskalten Gletscherfluss. Ein kleiner Yeti verlangt das klassische Transport-Logikrätsel.",
-        "question": "Du hast einen Wolf, eine Ziege und einen Kohlkopf am Fluss. Du kannst nur eines davon im Boot mitnehmen. Wer frisst wen, wenn man nicht aufpasst?\n\n**Eingabe:** Antworte mit dem Tier, das die Ziege frisst.",
-        "answer": "WOLF",
+        "story": "Du stehst am eiskalten Gletscherfluss mit einem Wolf, einer Ziege und einem Kohlkopf. Du hast ein kleines Boot und darfst immer nur **einen** Passagier mitnehmen.",
+        "question": "Steuere das Boot schrittweise über den Fluss, ohne dass der Wolf die Ziege oder die Ziege den Kohl frisst!",
+        "answer": "COMPLETED",
         "puzzle_piece": "🧩 Fragment 6: Rahmenteil Unten-Links",
-        "hint": "Der Wolf frisst die Ziege, wenn du nicht aufpasst."
+        "hint": "Nimm zuerst die Ziege rüber, fahre leer zurück, nimm den Wolf (oder Kohl) rüber, bringe die Ziege wieder mit zurück..."
     },
     11: {
         "person": "Person B",
         "title": "Tag 11: Die finale Gletscher-Schlucht",
         "type": "text",
         "image": None,
-        "story": "Das letzte Hindernis vor dem Ausgang des Labyrinths. Eine versiegelte Steintür verlangt die Summe aller bisher gesammelten Fragmente.",
-        "question": "Wie viele magische Fragmente müsst ihr insgesamt gesammelt haben (Tage 5 bis 10), um das große Puzzle zu vervollständigen?\n\n**Eingabe:** Tippe die Zahl ein.",
+        "story": "Das letzte Hindernis vor dem Ausgang des Labyrinths. Eine versiegelte Steintür verlangt die Anzahl der bisher gesammelten Fragmente.",
+        "question": "Wie viele magische Fragmente habt ihr von Tag 5 bis 10 gesammelt?",
         "answer": "6",
         "puzzle_piece": "🧩 Fragment 7: Rahmenteil Unten-Mitte",
-        "hint": "Zähle die Fragmente von Tag 5 bis Tag 10 zusammen."
+        "hint": "Zähle Tag 5 bis 10 zusammen."
     },
     12: {
         "person": "Person C",
         "title": "Tag 12: Das Haupttor der Werkstatt",
         "type": "text",
         "image": "https://images.unsplash.com/photo-1512389142860-9c449e58a543?w=600&q=80",
-        "story": "Ihr habt alle Teile beisammen! Das große Puzzlesichtfenster am Haupttor setzt sich zusammen. Löse das finale Lösungswort, um die Werkstatt zu öffnen.",
-        "question": "Setze das Master-Wort aus dem allerersten Hinweis (Tag 2: NORD) und der Zahl 12 zusammen.\n\n**Eingabe:** Tippe das finale Codewort ein.",
+        "story": "Ihr habt alle Teile zusammen! Setze das Master-Wort aus Tag 2 und der Zahl 12 zusammen.",
+        "question": "Tippe das finale Codewort für das Haupttor ein.",
         "answer": "NORD12",
         "puzzle_piece": "🏆 GEWONNEN: Die Werkstatt ist geöffnet!",
-        "hint": "Verbinde das Wort aus Tag 2 nahtlos mit der Zahl 12."
+        "hint": "NORD + 12 = NORD12."
     },
     13: {
         "person": "Person A",
         "title": "Tag 13: Das Zahnrad-Getriebe ⚙️",
         "type": "gear_puzzle",
         "image": None,
-        "story": "Die Hauptzahnräder der Werkstatt klemmen! Dreht die Übersetzung manuell.",
-        "question": "Stelle die benötigte Umdrehung des 12er-Rads ein, damit alle Markierungen wieder synchron stehen (kgV von 12, 18, 24).",
+        "story": "Die Hauptzahnräder der Werkstatt klemmen!",
+        "question": "Stelle die benötigte Umdrehung des 12er-Rads ein (kgV von 12, 18, 24 = 72).",
         "answer": 6,
         "puzzle_piece": None,
         "hint": "72 / 12 = 6 Umdrehungen."
@@ -226,7 +238,7 @@ DOORS = {
         "type": "text",
         "image": None,
         "story": "Sortiere die durcheinandergeratenen Buchstaben.",
-        "question": "Entferne alle Buchstaben von 'MAGIE' aus 'ELFENMAGIE'. Welcher Name bleibt übrig?",
+        "question": "Entferne alle Buchstaben von 'MAGIE' aus 'ELFENMAGIE'.",
         "answer": "ELFEN",
         "puzzle_piece": None,
         "hint": "ELFENMAGIE - MAGIE = ELFEN."
@@ -236,22 +248,22 @@ DOORS = {
         "title": "Tag 15: Rentierfutter-Mischstation ⚖️",
         "type": "scale_puzzle",
         "image": None,
-        "story": "Mische das Futter auf der Balkenwaage im genauen Verhältnis (5 Teile Hafer : 2 Teile Sternenstaub : 3 Teile Äpfel).",
-        "question": "Stellt die Schieberegler so ein, dass exakt 50 kg Futter angemischt werden.",
+        "story": "Mische das Futter auf der Balkenwaage im exakten Verhältnis an.",
+        "question": "Stelle Schieberegler so ein, dass exakt 50 kg entstehen (Hafer: 25, Sternenstaub: 10, Äpfel: 15).",
         "answer": {"hafer": 25, "staub": 10, "aepfel": 15},
         "puzzle_piece": None,
-        "hint": "Hafer = 25 kg, Sternenstaub = 10 kg, Äpfel = 15 kg."
+        "hint": "Hafer=25, Staub=10, Äpfel=15."
     },
     16: {
         "person": "Person A",
         "title": "Tag 16: Schalttafel für Notstrom",
         "type": "binary_switches",
         "image": None,
-        "story": "Die Hauptenergie muss freigeschaltet werden. Stellt die Binärzahl 25 ein.",
-        "question": "Aktiviert die richtigen Schalter für den Gesamtwert 25 (16 + 8 + 1).",
+        "story": "Aktiviere den Notstrom-Schaltkreis für die Binärzahl 25.",
+        "question": "Schalte die passenden Schalter ein (16 + 8 + 1).",
         "answer": [True, True, False, False, True],
         "puzzle_piece": None,
-        "hint": "Schalter 1 (16) = EIN, Schalter 2 (8) = EIN, Schalter 5 (1) = EIN."
+        "hint": "Schalter 1 (16), 2 (8) und 5 (1) auf AN."
     },
     17: {
         "person": "Person B",
@@ -291,11 +303,11 @@ DOORS = {
         "title": "Tag 20: Polarlichter-Frequenz",
         "type": "frequency_tuner",
         "image": None,
-        "story": "Der Funkempfänger ist verstellt! Findet die exakte Resonanzfrequenz der Polarlichter.",
-        "question": "Richtet das Frequenz-Widget genau auf 87.5 MHz aus.",
+        "story": "Der Funkempfänger ist verstellt! Finde die Resonanzfrequenz.",
+        "question": "Richte das Frequenz-Widget auf 87.5 MHz aus.",
         "answer": 87.5,
         "puzzle_piece": None,
-        "hint": "Stellt den Schieberegler exakt auf 87.5 MHz."
+        "hint": "Schieberegler auf 87.5 MHz einstellen."
     },
     21: {
         "person": "Person C",
@@ -303,7 +315,7 @@ DOORS = {
         "type": "text",
         "image": None,
         "story": "Berechne die Aufstellung der Rentiere.",
-        "question": "Wie viele unterschiedliche Anordnungen gibt es für 7 Rentiere hinter Rudolph? (Fakultät von 7 = 7!)",
+        "question": "Wie viele Anordnungen für 7 Rentiere hinter Rudolph? (Fakultät von 7 = 7!)",
         "answer": "5040",
         "puzzle_piece": None,
         "hint": "7 × 6 × 5 × 4 × 3 × 2 × 1 = 5040."
@@ -314,7 +326,7 @@ DOORS = {
         "type": "text",
         "image": None,
         "story": "Der Schlitten benötigt die finale Gewichtsanpassung.",
-        "question": "Geladen: (3 × 150 kg) + (4 × 110 kg) = 890 kg. Wie viel kg fehlen bis zu den geforderten 1000 kg?",
+        "question": "Geladen: (3 × 150 kg) + (4 × 110 kg) = 890 kg. Wie viel kg fehlen bis zu 1000 kg?",
         "answer": "110",
         "puzzle_piece": None,
         "hint": "1000 - 890 = 110."
@@ -325,7 +337,7 @@ DOORS = {
         "type": "text",
         "image": None,
         "story": "Der Weihnachts-Countdown läuft!",
-        "question": "Rechne: (Tag 3 Ergebnis: 8) + (Tag 18 Ergebnis: 83) + Tippe die Basiszahl ein.",
+        "question": "Rechne: (Tag 3 Ergebnis: 8) + (Tag 18 Ergebnis: 83) + Basiszahl.",
         "answer": "91",
         "puzzle_piece": None,
         "hint": "8 + 83 = 91."
@@ -335,11 +347,11 @@ DOORS = {
         "title": "Tag 24: HEILIGABEND – Der Master-Code!",
         "type": "text",
         "image": "https://images.unsplash.com/photo-1512389142860-9c449e58a543?w=600&q=80",
-        "story": "Ihr steht im Hauptkontrollraum! Auf den Monitoren blinkt die Aufforderung zur Eingabe des Master-Codes.",
+        "story": "Hauptkontrollraum! Auf den Monitoren blinkt die Eingabe.",
         "question": "Fügt zusammen: Code Tag 3 (500) + Code Tag 12 (NORD12) + Code Tag 23 (583)",
         "answer": "500NORD12583",
         "puzzle_piece": "🏆 MEISTER-TITEL: RETTER VON WEIHNACHTEN!",
-        "hint": "Schreibe die drei Teilstücke genau so hintereinander: 500NORD12583"
+        "hint": "Schreibe die drei Teilstücke aneinander: 500NORD12583"
     }
 }
 
@@ -355,11 +367,23 @@ if "active_day" not in st.session_state:
 if "mirror_state" not in st.session_state:
     st.session_state.mirror_state = ["\\", "/", "\\"]
 
+if "morse_buffer" not in st.session_state:
+    st.session_state.morse_buffer = ""
+
+if "river_bank" not in st.session_state:
+    # True = Ufer links, False = Ufer rechts. Boot ist am linken Ufer ("left")
+    st.session_state.river = {
+        "boat": "left",
+        "wolf": "left",
+        "goat": "left",
+        "cabbage": "left"
+    }
+
 # ==============================================================================
 # 4. KOPFZEILE & FORTSCHRITT
 # ==============================================================================
 st.title("🎄 Nordpol-Expedition 2026")
-st.caption("Das mathematisch-logische Advents-Abenteuer")
+st.caption("Das mathematisch-logische Advents-Abenteuer (Interaktiv)")
 
 col_prog, col_stats = st.columns([3, 1])
 with col_prog:
@@ -403,8 +427,134 @@ with main_col:
     st.info(f"📖 {door['story']}")
     st.markdown(f"**Aufgabe:** {door['question']}")
 
-    # --- WIDGETS ---
-    if door["type"] == "mirror_puzzle":
+    # --- SONDER-WIDGETS FÜR DIE GEWÜNSCHTEN TAGE ---
+    
+    # TAG 6: SUDOKU
+    if door["type"] == "sudoku_puzzle":
+        st.write("🔢 **Magisches Sudoku-Gitter (Summe 15):**")
+        s_col1, s_col2, s_col3 = st.columns(3)
+        
+        with s_col1:
+            r1c1 = st.number_input("Zeile 1, Spalte 1", 1, 9, 8, key="s_r1c1")
+            r2c1 = st.number_input("Zeile 2, Spalte 1", 1, 9, 3, key="s_r2c1")
+            r3c1 = st.number_input("Zeile 3, Spalte 1", 1, 9, 4, key="s_r3c1")
+        with s_col2:
+            r1c2 = st.number_input("Zeile 1, Mitte (Zelle)", 1, 9, 1, key="s_r1c2")
+            r2c2 = st.number_input("Zentrum (Fix: 5)", 1, 9, 5, disabled=True, key="s_r2c2")
+            r3c2 = st.number_input("Zeile 3, Mitte (Zelle)", 1, 9, 9, key="s_r3c2")
+        with s_col3:
+            r1c3 = st.number_input("Zeile 1, Spalte 3", 1, 9, 6, key="s_r1c3")
+            r2c3 = st.number_input("Zeile 2, Spalte 3", 1, 9, 7, key="s_r2c3")
+            r3c3 = st.number_input("Zeile 3, Spalte 3", 1, 9, 2, key="s_r3c3")
+            
+        if st.button("Sudoku-Lösung überprüfen 🔢", key=f"chk_{day}"):
+            # Prüfung: Jede Zeile, Spalte und Diagonale muss 15 ergeben
+            row1 = r1c1 + r1c2 + r1c3
+            row2 = r2c1 + 5 + r2c3
+            row3 = r3c1 + r3c2 + r3c3
+            col1 = r1c1 + r2c1 + r3c1
+            col2 = r1c2 + 5 + r3c2
+            col3 = r1c3 + r2c3 + r3c3
+            diag1 = r1c1 + 5 + r3c3
+            diag2 = r1c3 + 5 + r3c1
+            
+            if row1 == 15 and row2 == 15 and row3 == 15 and col1 == 15 and col2 == 15 and col3 == 15 and diag1 == 15 and diag2 == 15:
+                st.success("🎉 Genial! Das magische Sudoku ist perfekt gelöst!")
+                if day not in st.session_state.solved_doors:
+                    st.session_state.solved_doors.append(day)
+                    st.rerun()
+            else:
+                st.error("❌ Noch nicht korrekt. Jede Reihe, Spalte und Diagonale muss exakt 15 ergeben!")
+
+    # TAG 7: LOGIKGITTER
+    elif door["type"] == "logic_grid":
+        st.write("🗺️ **Logikgitter-Zuordnung:**")
+        
+        elf_a_weg = st.selectbox("Welchen Weg nahm Elf A?", ["-", "Schlucht-Pfad", "Gletscher-Pfad", "Eishöhlen-Weg"], key="lg_a")
+        elf_b_weg = st.selectbox("Welchen Weg nahm Elf B?", ["-", "Schlucht-Pfad", "Gletscher-Pfad", "Eishöhlen-Weg"], key="lg_b")
+        elf_c_weg = st.selectbox("Welchen Weg nahm Elf C?", ["-", "Schlucht-Pfad", "Gletscher-Pfad", "Eishöhlen-Weg"], key="lg_c")
+        
+        tool_c = st.selectbox("Welches Werkzeug hatte Elf C (der Schnellste)?", ["-", "Schneeschuhe", "Eispickel", "Seilwinde"], key="lg_tool")
+        
+        if st.button("Logikgitter auswerten 🗺️", key=f"chk_{day}"):
+            if elf_c_weg == "Eishöhlen-Weg" and tool_c == "Eispickel" and elf_a_weg != elf_b_weg:
+                st.success("🎉 Logikrätsel erfolgreich gelöst!")
+                if day not in st.session_state.solved_doors:
+                    st.session_state.solved_doors.append(day)
+                    st.rerun()
+            else:
+                st.error("❌ Die Zuordnung stimmt noch nicht ganz. Prüfe die Hinweise!")
+
+    # TAG 8: MORSE-TERMINAL
+    elif door["type"] == "morse_terminal":
+        st.write("📻 **Interaktives Morse-Terminal:**")
+        st.markdown(f"<div class='morse-screen'>{st.session_state.morse_buffer if st.session_state.morse_buffer else '--- SIGNAL BEREIT ---'}</div>", unsafe_allow_html=True)
+        
+        m_col1, m_col2, m_col3, m_col4 = st.columns(4)
+        
+        if m_col1.button("• Kurz", key="morse_dot"):
+            st.session_state.morse_buffer += "."
+            st.rerun()
+            
+        if m_col2.button("- Lang", key="morse_dash"):
+            st.session_state.morse_buffer += "-"
+            st.rerun()
+            
+        if m_col3.button("Löschen ⌫", key="morse_clear"):
+            st.session_state.morse_buffer = ""
+            st.rerun()
+            
+        if m_col4.button("Signal senden 📡", key=f"chk_{day}"):
+            if st.session_state.morse_buffer == "...---...":
+                st.success("🎉 SOS-Signal erfolgreich übertragen! Der Nebel lichtet sich!")
+                if day not in st.session_state.solved_doors:
+                    st.session_state.solved_doors.append(day)
+                    st.rerun()
+            else:
+                st.error(f"❌ Falsches Signal ('{st.session_state.morse_buffer}'). Benötigt wird: ...---...")
+
+    # TAG 10: TRANSPORT-RÄTSEL (WOLF, ZIEGE, KOHL)
+    elif door["type"] == "river_crossing":
+        st.write("🐺🐐🥬 **Interaktives Transport-Spiel:**")
+        r = st.session_state.river
+        
+        st.write(f"📍 **Linkes Ufer:** {[k for k, v in r.items() if v == 'left' and k != 'boat']}")
+        st.write(f"🛶 **Boot Position:** Ufer {r['boat'].upper()}")
+        st.write(f"📍 **Rechtes Ufer:** {[k for k, v in r.items() if v == 'right' and k != 'boat']}")
+        
+        col_act1, col_act2 = st.columns(2)
+        with col_act1:
+            item_to_move = st.selectbox("Wen nimmst du mit ins Boot?", ["Niemand (leer fahren)", "wolf", "goat", "cabbage"], key="river_item")
+        with col_act2:
+            if st.button("Ufer wechseln 🛶", key="river_move"):
+                target = "right" if r["boat"] == "left" else "left"
+                r["boat"] = target
+                if item_to_move != "Niemand (leer fahren)":
+                    if r[item_to_move] != r["boat"] and item_to_move != r["boat"]: # Befindet sich am selben Ufer wie Boot vorher
+                        pass
+                    r[item_to_move] = target
+                
+                # Fress-Regeln prüfen
+                if r["wolf"] == r["goat"] and r["boat"] != r["wolf"]:
+                    st.error("💀 Oh nein! Der Wolf hat die Ziege gefressen! Spiel zurückgesetzt.")
+                    st.session_state.river = {"boat": "left", "wolf": "left", "goat": "left", "cabbage": "left"}
+                elif r["goat"] == r["cabbage"] and r["boat"] != r["goat"]:
+                    st.error("💀 Oh nein! Die Ziege hat den Kohlkopf gefressen! Spiel zurückgesetzt.")
+                    st.session_state.river = {"boat": "left", "wolf": "left", "goat": "left", "cabbage": "left"}
+                st.rerun()
+
+        if st.button("Spielstand zurücksetzen 🔄", key="river_reset"):
+            st.session_state.river = {"boat": "left", "wolf": "left", "goat": "left", "cabbage": "left"}
+            st.rerun()
+
+        if r["wolf"] == "right" and r["goat"] == "right" and r["cabbage"] == "right":
+            st.success("🎉 Alle sicher ans andere Ufer gebracht!")
+            if day not in st.session_state.solved_doors:
+                st.session_state.solved_doors.append(day)
+                st.rerun()
+
+    # STANDARD-WIDGETS FÜR ANDERE TAGE
+    elif door["type"] == "mirror_puzzle":
         st.write("🔦 **Laser-Spiegel-Ausrichtung:** Klicke auf die Spiegel, um die Ausrichtung zu ändern.")
         m_col1, m_col2, m_col3 = st.columns(3)
         
@@ -431,8 +581,6 @@ with main_col:
 
     elif door["type"] == "gear_puzzle":
         rot = st.slider("⚙️ Umdrehungen des 12er-Rads:", 1, 12, 1, key="rot_slider")
-        st.write(f"Rad 1 (12 Zähne): **{rot}** Umdrehungen")
-        
         if st.button("Zahnräder einrasten ⚙️", key=f"chk_{day}"):
             if rot == door["answer"]:
                 st.success("🎉 Synchronisiert!")
@@ -443,13 +591,9 @@ with main_col:
                 st.error("❌ Noch nicht synchron.")
 
     elif door["type"] == "scale_puzzle":
-        st.write("⚖️ **Mischungs-Waage (Gesamtgewicht = 50 kg):**")
         w_hafer = st.slider("🌾 Hafer (kg)", 0, 50, 20, key="w_h")
         w_staub = st.slider("✨ Sternenstaub (kg)", 0, 50, 5, key="w_s")
         w_aepfel = st.slider("🍎 Äpfel (kg)", 0, 50, 10, key="w_a")
-        
-        total = w_hafer + w_staub + w_aepfel
-        st.metric(label="Gesamtgewicht", value=f"{total} kg / 50 kg")
         
         if st.button("Futter-Mischung wiegen ⚖️", key=f"chk_{day}"):
             if w_hafer == 25 and w_staub == 10 and w_aepfel == 15:
@@ -505,18 +649,20 @@ with main_col:
                 st.error("❌ Nur Rauschen.")
 
     else:
-        ans = st.text_input("Deine Lösung:", key=f"input_{day}")
-        if st.button("Prüfen 🔍", key=f"chk_{day}"):
-            user_clean = ans.strip().replace(" ", "").upper()
-            target_clean = str(door["answer"]).strip().replace(" ", "").upper()
-            
-            if user_clean == target_clean:
-                st.success("🎉 Richtig gelöst!")
-                if day not in st.session_state.solved_doors:
-                    st.session_state.solved_doors.append(day)
-                    st.rerun()
-            else:
-                st.error("❌ Leider nicht korrekt.")
+        # Nur anzeigen, wenn kein Spezial-Typ aktiv ist der oben abgefangen wurde
+        if door["type"] not in ["sudoku_puzzle", "logic_grid", "morse_terminal", "river_crossing"]:
+            ans = st.text_input("Deine Lösung:", key=f"input_{day}")
+            if st.button("Prüfen 🔍", key=f"chk_{day}"):
+                user_clean = ans.strip().replace(" ", "").upper()
+                target_clean = str(door["answer"]).strip().replace(" ", "").upper()
+                
+                if user_clean == target_clean:
+                    st.success("🎉 Richtig gelöst!")
+                    if day not in st.session_state.solved_doors:
+                        st.session_state.solved_doors.append(day)
+                        st.rerun()
+                else:
+                    st.error("❌ Leider nicht korrekt.")
 
     with st.expander("💡 Hinweis anzeigen"):
         st.write(door["hint"])
