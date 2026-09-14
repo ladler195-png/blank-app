@@ -93,41 +93,45 @@ DOORS = {
         "person": "Person A",
         "title": "Tag 1: Die mysteriöse Holzbox",
         "type": "lock_sliders",
-        "story": "Es klingelt an der Haustür. Ihr öffnet, aber niemand ist da – stattdessen liegt auf der Fußmatte eine schwere, eisige Holzbox mit dem Absender „Nordpol“.",
-        "question": "Knacke das 4-stellige Zahlenschloss mithilfe des Reims:\n> *„Vier kleine Ziffern im winterlichen Schnee... Zacken eines Weihnachtssterns plus Rentiere mal zwei.“*",
+        "image": None,
+        "story": "Es klingelt an der Haustür. Ihr öffnet, aber niemand steht davor. Ihr guckt euch um und auf einmal seht ihr da eine Box auf der Fußmatte, eine schwere, holzige Eisenbox. Auf dem Absender steht Nordpol. Ihr nehmt die Box mit zu euch rein und findet an der Seite einen Reim und da drunter ein Zahlenschloss.",
+        "question": "Knacke das vierstellige Zahlenschloss mithilfe des Reimes:\n\n> *„Vier kleine Ziffern im winterlichen Schnee,\n> hör gut zu, was ich dir steh:\n> Nimm die Ecken eines weisen Weihnachtssterns,\n> plus die treuen Rentiere des Nordpols fern.\n> Multipliziere das Ganze mit zwei,\n> dann ist die erste Hürde vorbei.“*\n\n**Eingabe:** Tippe das Ergebnis als vierstellige Zahl ein (z.B. 1234).",
         "answer": [0, 0, 2, 6],
         "puzzle_piece": None,
-        "hint": "Zähle die Zacken des Weihnachtssterns und addiere die Rentiere, dann multipliziere mit zwei."
+        "hint": "Es gibt fünf Zacken beim Stern und acht Rentiere multipliziert mit zwei."
     },
     2: {
         "person": "Person B",
-        "title": "Tag 2: Das vergilbte Pergament",
+        "title": "Tag 2: Das Pergament",
         "type": "text",
-        "story": "Das Schloss springt auf! Im Inneren liegt ein steif gefrorenes Pergament mit der verschlüsselten Nachricht: *„SIVX“*.",
-        "question": "Entschlüssele das Codewort (jeder Buchstabe 4 Schritte im Alphabet nach links).",
+        "image": None,
+        "story": "Das Schloss springt mit einem lauten Klick auf. In der Kiste liegt keine Schokolade, sondern ein steif gefrorenes, vergilbtes Pergament. Darauf steht eine kryptische Elfenbotschaft, S I V X. Am Rand der Schriftrolle ist ein kleiner Lorbeerkranz zu sehen.",
+        "question": "Entschlüssele das Codewort. Der Lorbeerkranz flüstert euch beim Lösen zu: *'Gehe im Alphabet, benutze den Caesar-Code.'*\n\n**Eingabe:** Welches Wort steht entschlüsselt auf dem Pergament?",
         "answer": "NORD",
         "puzzle_piece": None,
-        "hint": "Gehe im Alphabet jeden Buchstaben 4 Schritte zurück."
+        "hint": "Gehe im Alphabet jeden Buchstaben 4 Schritte zurück (Caesar-Code)."
     },
     3: {
         "person": "Person C",
-        "title": "Tag 3: Das Rentier-Experten-Rätsel",
+        "title": "Tag 3: Der Rentier-Experte",
         "type": "text",
-        "story": "Der Elfen-Schlitten erwacht zum Leben! Doch das Armaturenbrett verlangt einen Zündcode.",
-        "question": "Wie viele Buchstaben hat das englische Wort für die winterliche Rentier-Augenfarbe (blau = 4) multipliziert mit der Anzahl der Geweih-Geschlechter im Winter (2)?",
+        "image": None,
+        "story": "Nachdem ihr das Codewort gesagt habt, hört ihr von weitem einmal ein immer näher kommendes magisches Glockenklingeln. Ihr guckt aus dem Fenster und staunt nicht schlecht, direkt vor eurer Haustür steht ein prachtvoller Elfenschlitten. Angespannt sind eure Rentiere, die mit den Hufen scharren. Ihr klettert nun rein, doch das Armaturenbrett ist dunkel. Die Rentiere fangen an zu sprechen und stellen euch eine Quizfrage.",
+        "question": "Um die Rentiere zum Losfahren zu bringen, müsst ihr folgende Quizfrage lösen: Woraus ziehen Rentiere im winterlichen Polarlicht ihren biologischen Vorteil und wie viele Buchstaben hat das englische Farbwort für ihre eisblauen Augen multipliziert mit der Anzahl der Geschlechter, die im Winter ein Geweih tragen?\n\n**Eingabe:** Tippe die richtige Antwort ein.",
         "answer": "8",
         "puzzle_piece": None,
-        "hint": "Blue = 4 Buchstaben. Beide Geschlechter tragen im Winter Geweih = 2. 4 * 2 = 8."
+        "hint": "Das englische Wort für Blau hat 4 Buchstaben, und beide Geschlechter tragen im Winter ein Geweih (2). 4 mal 2."
     },
     4: {
         "person": "Person A",
         "title": "Tag 4: Das Navigationssystem & die Koordinaten",
         "type": "text",
-        "story": "Das Navigationssystem benötigt die exakten Kurs-Koordinaten.",
-        "question": "Breitengrad: 90 Grad Nordpol minus 10. Längengrad: Quersumme des Jahres 2026 mal 10.",
+        "image": None,
+        "story": "Der Schlitten brummt startklar! Ihr nehmt Platz, aber das Navigationssystem zeigt eine Fehlermeldung: „Kurs unbekannt. Bitte Zielkoordinaten eingeben.“",
+        "question": "Berechne den 5-stelligen Kurs-Code aus Breit- und Längengrad:\n- Breitengrad: Nimm die fixen 90 Grad des Nordpols minus 10.\n- Längengrad: Nimm die Quersumme des aktuellen Jahres (2+0+2+6 = 10) mal 10.\n\n**Eingabe:** Schreibe beide Zahlen ohne Leerzeichen direkt zusammen (z.B. 12345).",
         "answer": "80100",
         "puzzle_piece": None,
-        "hint": "90-10 = 80. Quersumme von 2026 (2+0+2+6 = 10) * 10 = 100. Zusammen: 80100."
+        "hint": "Rechne den Breitengrad (90 - 10 = 80) und den Längengrad (Quersumme von 2026 mal 10 = 100) getrennt aus und setze sie nahtlos aneinander."
     },
     
     # AKT 2: DAS LABYRINTH (5-12)
