@@ -360,7 +360,7 @@ else:
             b0 = st.checkbox("Bit 1er-Stelle (Wert 1)")
             
             calculated_val = (8 if b3 else 0) + (4 if b2 else 0) + (2 if b1 else 0) + (1 if b0 else 0)
-            st.write (Aktueller Wert: **{calculated_val}** (Gesucht: 13))
+            st.write (f"Aktueller Wert: **{calculated_val}** (Gesucht: 13)")
 
             if st.button("Aggregat starten ⚡"):
                 if calculated_val == 13:
