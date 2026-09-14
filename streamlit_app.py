@@ -360,7 +360,8 @@ if "river" not in st.session_state:
         "goat": "left",
         "cabbage": "left"
     }
-
+if "package_sort_step" not in st.session_state:
+    st.session_state.package_sort_step = 0
 # ==============================================================================
 # 4. KOPFZEILE & FORTSCHRITT
 # ==============================================================================
