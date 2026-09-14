@@ -84,7 +84,7 @@ DOORS = {
         "image": "https://images.unsplash.com/photo-1543257580-7269da773bf5?w=600&q=80",
         "story": "Es klingelt an der Haustür. Ihr öffnet, aber niemand ist da – stattdessen liegt auf der Fußmatte eine schwere, eisige Holzbox mit dem Absender „Nordpol“. Auf dem Deckel prangt ein massives Zahlenschloss und ein eingravierter Reimgedicht-Hinweis.",
         "question": "Knacke das 4-stellige Zahlenschloss mithilfe des Reims:\n\n> *„Vier kleine Ziffern im winterlichen Schnee,\n> hör gut zu, was ich dir steh:\n> Nimm die Ecken eines weisen Weihnachtssterns,\n> plus die treuen Rentiere des Nordpols fern.\n> Multipliziere das Ganze mit zwei,\n> dann ist die erste Hürde vorbei.“*",
-        "answer": [5, 8, 2, 3],
+        "answer": [0, 0, 2, 6],
         "puzzle_piece": None,
         "hint": "Ein Weihnachtsstern hat 5 Ecken. Es gibt 8 Rentiere. Rechne (5 + 8) * 2 = 26. Da das Schloss vierstellig ist, lautet der Code 0026."
     },
