@@ -96,20 +96,22 @@ def text_door(day: int, check, label="Eure Lösung"):
 
 
 # ---------------------------------------------------------------- Türchen
+KISTENCODE = "3289"
+
+
 def door1(day):
     st.code(
-        "Seitlich ins Holz geritzt:\n\n"
-        "  Vier Wörter, jedes kürzer als zehn Buchstaben.\n\n"
-        "  I.   Mein Licht ist keine Lampe, mein Rot kein Lack.\n"
-        "       Ich führe an, obwohl ich erst später dazukam.\n"
-        "  II.  Um mich herum ist überall Süden.\n"
-        "  III. Ein Stern, den man essen kann. Zimt ist mein Geheimnis.\n"
-        "  IV.  Kein Anfang, kein Ende, ich hänge an der Tür.\n"
-        "       Im Dezember trage ich vier Lichter nacheinander.\n\n"
-        "  Das Schloss ist ordentlich: Es liest die Wörter, wie sie im\n"
-        "  Lexikon stehen, nicht wie sie hier stehen. Ziffer = Länge.",
-        language=None)
-    text_door(day, lambda a: norm(a) == "5769", "Vierstelliger Code")
+        "Der Wind reißt mir fast den Brief aus der Hand.\n"
+        "Ich nehme die Kiste aus Holz, weil sie den Frost aushält.\n"
+        "Danach trägt mich der Schlitten bis zu eurer Straße.\n"
+        "Eine unserer Glocken habe ich mit Stoff umwickelt.",
+        language=None,
+    )
+    st.markdown(
+        "*Die Kiste öffnet sich mit vier Ziffern. In jeder Zeile steckt eine davon. "
+        "Achtet auf die Übergänge.*"
+    )
+    text_door(day, lambda a: norm(a) == KISTENCODE, "Vierstelliger Code")
 
 
 PLAIN = "HELFT UNS! JEMAND SABOTIERT DIE WERKSTATT. SPRECHT DREIMAL DAS WORT LATERNE."
@@ -442,10 +444,10 @@ DOORS = {
             story="Es klingelt an der Haustür. Ihr öffnet, aber niemand steht davor. Stattdessen liegt ein schweres, "
                   "eisiges Päckchen vor der Tür mit dem Absender Nordpol. Im Wohnzimmer öffnet ihr es, und eine "
                   "Holzbox mit Zahlenschloss kommt zum Vorschein. Ihr untersucht die Box: Seitlich ist eine Gravur eingeritzt.",
-            render=door1, akte="Absender der Kiste: NORDPOL. Kistencode: 5769.",
+            render=door1, akte=f"Absender der Kiste: NORDPOL. Kistencode: {KISTENCODE}.",
             after="Das Schloss klackt. Die Kiste springt auf, Kälte strömt heraus. Obenauf liegt ein Brief.",
-            hints=["Jede Zeile ergibt ein Wort. Die Ziffer ist seine Länge.",
-                   "Rudolf, Nordpol, Zimtstern, Kranz. Und nun in alphabetische Reihenfolge bringen."]),
+            hints=["Gesucht sind ausgeschriebene Zahlen, zum Beispiel EINS.",
+                   "Lest über die Lücke zwischen zwei Wörtern hinweg. Auch ein Komma darf dabei verschwinden."]),
     2: dict(title="Türchen 2: Der Brief",
             story="Die Kiste springt auf, und darin liegt ein Brief. Aber ihr könnt ihn nicht lesen, denn er ist verschlüsselt.",
             render=door2, sound="glocken.mp3", akte="Hilferuf des Weihnachtsmanns: Jemand sabotiert die Werkstatt. Passwort für die Rentiere: LATERNE.",
