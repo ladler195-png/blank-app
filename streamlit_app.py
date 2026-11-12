@@ -730,34 +730,26 @@ def set_map_selection(piece):
 
 
 # ---- 13: Generator (Lights Out)
-def _lo(i):
-    b = st.session_state.lo
-    r, c = divmod(i, 3)
-    for dr, dc in ((0, 0), (1, 0), (-1, 0), (0, 1), (0, -1)):
-        if 0 <= r + dr < 3 and 0 <= c + dc < 3:
-            b[(r + dr) * 3 + c + dc] ^= 1
-
 
 def door13(day):
-    if "lo" not in st.session_state:
-        st.session_state.lo = [1] * 9
-        for i in (0, 5, 7):
-            _lo(i)
-    lamps = st.session_state.lo
-    if all(lamps):
-        solve(day)
-    st.write("**Bringt alle neun Lampen zum Leuchten.**")
-    st.caption("Ein Klick schaltet die gewählte Lampe und ihre direkten Nachbarn um: oben, unten, links und rechts.")
-    with st.container(width=340):
-        for r in range(3):
-            cols = st.columns(3)
-            for c in range(3):
-                index = r * 3 + c
-                lit = bool(lamps[index])
-                cols[c].button("💡" if lit else "○", key=f"lo{r}{c}", on_click=_lo, args=(index,),
-                               help=f"Zeile {r+1}, Spalte {c+1} · {'an' if lit else 'aus'}", width="stretch")
-    st.write(f"{sum(lamps)} von 9 Lampen leuchten.")
-    st.button("Schaltfeld zurücksetzen", on_click=reset_fields, args=("lo",))
+    circuits = {"Flurlicht": 2, "Steuerung": 3, "Förderband": 3, "Aufzug": 4, "Backofen": 5}
+    selected = st.session_state.setdefault("backup_circuits", set())
+    st.write("Volts Notiz: „Wir brauchen Licht im Flur. Zum Prüfen muss das Förderband laufen. "
+             "Das Band braucht seine Steuerung. Der Aufzug bleibt vorerst aus.“")
+    for name, power in circuits.items():
+        active = name in selected
+        if st.button(f"{'●' if active else '○'} {name} · {power} Einheiten", key=f"power_{name}",
+                     type="primary" if active else "secondary", width="stretch"):
+            selected.symmetric_difference_update({name})
+            st.rerun()
+    used = sum(circuits[name] for name in selected)
+    st.progress(min(used / 8, 1.0), text=f"{used} von 8 Einheiten belegt")
+    if used > 8:
+        st.warning("Zu viel für den Notstrom. Schaltet einen Stromkreis wieder aus.")
+    if st.button("Notstrom starten", disabled=used > 8, type="primary"):
+        if selected == {"Flurlicht", "Steuerung", "Förderband"}:
+            solve(day)
+        st.error("Mit dieser Auswahl fehlen noch Stromkreise für Volts Auftrag.")
 
 
 def order_cards(day, cards, answer, action, heading):
@@ -794,37 +786,78 @@ def door14(day):
     order_cards(day, packages, tuple("DBECA"), "Band starten", "Förderband")
 
 
+
+LIFT_CARTS = {
+    "A": ("Geschenkpapier", 0, 1),
+    "B": ("Geschenke", 0, 2),
+    "C": ("Breiter Wagen", 0, 2),
+    "D": ("Leere Kisten", 1, 0),
+}
+FLOORS = ("Packhalle", "Materiallager", "Verladung")
+
+
 def door15(day):
-    st.markdown("**A (12 Zähne) ⚙ B (36 Zähne) ═ C (10 Zähne) ⚙ D (25 Zähne)**")
-    st.caption("⚙ Die Räder greifen ineinander. · ═ Beide Räder sitzen fest auf derselben Achse.")
-    st.write("Dreht Rad A gedanklich **15-mal im Uhrzeigersinn**. Stellt ein, wie oft und in welche Richtung sich D drehen muss.")
-    with st.form("gears"):
-        count = st.number_input("Umdrehungen von D", min_value=0, value=0, step=1)
-        direction = st.radio("Drehrichtung von D", ("Im Uhrzeigersinn", "Gegen den Uhrzeigersinn"), index=None)
-        if st.form_submit_button("Getriebe prüfen"):
-            if (count, direction) == (2, "Im Uhrzeigersinn"):
-                solve(day)
-            st.error("Das Getriebe läuft noch nicht rund. Prüft Zähnezahl und Drehrichtung.")
+    state = st.session_state
+    floor, locations, load = state.setdefault(
+        "lift", (0, {cart: start for cart, (_, start, _) in LIFT_CARTS.items()}, set())
+    )
+    st.caption("Klickt einen Wagen auf der aktuellen Ebene an, um ihn einzuladen oder auszuladen. "
+               "In die Kabine passen zwei normale Wagen. Der breite Wagen fährt allein.")
+    for level, col in enumerate(st.columns(3)):
+        col.markdown(f"**{level} · {FLOORS[level]}**")
+        for cart, (name, _, destination) in LIFT_CARTS.items():
+            if locations[cart] != level and not (cart in load and level == floor):
+                continue
+            aboard = cart in load
+            if col.button(f"{'🛗' if aboard else '📦'} {name} → {destination}",
+                          key=f"lift_cart_{cart}", disabled=floor != level,
+                          help="Ausladen" if aboard else "Einladen", width="stretch"):
+                if aboard:
+                    load.remove(cart)
+                    locations[cart] = floor
+                    if all(locations[k] == dest for k, (_, _, dest) in LIFT_CARTS.items()) and not load:
+                        solve(day)
+                elif len(load) == 2 or ("C" in load or cart == "C") and load:
+                    st.warning("Der Wagen passt mit dieser Ladung nicht in die Kabine.")
+                    continue
+                else:
+                    load.add(cart)
+                    locations[cart] = -1
+                st.rerun()
+        if col.button("🛗 Aufzug hier" if level == floor else "Hierher fahren",
+                      key=f"lift_floor_{level}", disabled=level == floor, width="stretch"):
+            state.lift = (level, locations, load)
+            st.rerun()
+    st.write(f"**Kabine auf Ebene {floor}** · " + (", ".join(LIFT_CARTS[k][0] for k in LIFT_CARTS if k in load) or "leer"))
+    st.button("Aufzug zurücksetzen", on_click=reset_fields, args=("lift",))
+
 
 
 def door16(day):
     state = st.session_state
     stacks = state.setdefault("stacks", [[4, 3, 2, 1], [], []])
     source = state.get("stack_source")
-    st.caption("Klickt zuerst auf den Stapel, von dem ihr das oberste Paket nehmen wollt, dann auf den Zielstapel. Ein größeres Paket darf nie auf einem kleineren liegen.")
-    cols = st.columns(3)
-    for i, col in enumerate(cols):
+    st.caption("Klickt das oberste Paket und dann den Zielplatz an. Ein größeres Paket darf nie auf einem kleineren liegen.")
+    for i, col in enumerate(st.columns(3)):
         stack = stacks[i]
         col.markdown(f"**Platz {i+1}**")
-        col.write(" / ".join(f"📦 {size}" for size in reversed(stack)) if stack else "Frei")
-        if col.button(f"Platz {i+1} wählen", key=f"stack{i}", disabled=source is None and not stack,
-                      type="primary" if i == source else "secondary"):
+        boxes = "".join(
+            f'<div style="background:#d8ac72;color:#392317;border:1px solid #684624;width:{32+size*16}%;'
+            f'text-align:center;margin:2px auto">📦 {size}</div>' for size in reversed(stack)
+        )
+        col.markdown(f'<div style="height:115px;display:flex;flex-direction:column;justify-content:flex-end">'
+                     f'{boxes}</div>', unsafe_allow_html=True)
+        label = "Hier ablegen" if source is not None and source != i else (
+            "Auswahl lösen" if source == i else f"Paket {stack[-1]} nehmen" if stack else "Platz frei"
+        )
+        if col.button(label, key=f"stack{i}", disabled=source is None and not stack,
+                      type="primary" if i == source else "secondary", width="stretch"):
             if source is None:
                 state.stack_source = i
             elif source == i:
                 state.stack_source = None
             elif stack and stack[-1] < stacks[source][-1]:
-                st.warning("Das größere Paket passt nicht auf das kleinere. Wählt einen anderen Zielstapel.")
+                st.warning("Das größere Paket passt nicht auf das kleinere.")
                 continue
             else:
                 stack.append(stacks[source].pop())
@@ -833,43 +866,45 @@ def door16(day):
                 if stacks[2] == [4, 3, 2, 1]:
                     solve(day)
             st.rerun()
-    st.caption(f"Züge: {state.get('stack_moves', 0)} · Paket 1 ist das kleinste, Paket 4 das größte.")
+    st.caption(f"Züge: {state.get('stack_moves', 0)}")
     st.button("Stapel zurücksetzen", on_click=reset_fields, args=("stacks", "stack_source", "stack_moves"))
 
 
-JUG_CAPACITY = (7, 4)
-
-
-def jug_action(volumes, action, jug):
-    updated = list(volumes)
-    other = 1 - jug
-    if action == "fill":
-        updated[jug] = JUG_CAPACITY[jug]
-    elif action == "empty":
-        updated[jug] = 0
-    else:
-        transfer = min(volumes[jug], JUG_CAPACITY[other] - volumes[other])
-        updated[jug] -= transfer
-        updated[other] += transfer
-    return tuple(updated)
-
-
 def door17(day):
-    state = st.session_state
-    volumes = state.setdefault("jugs", (0, 0))
-    st.caption("Beim Umgießen fließt Saft, bis der erste Krug leer oder der andere voll ist.")
-    for jug, col in enumerate(st.columns(2)):
-        capacity = JUG_CAPACITY[jug]
-        col.markdown(f"**{capacity}-Liter-Krug**")
-        col.progress(volumes[jug] / capacity, text=f"{volumes[jug]} von {capacity} Litern")
-        for action, label in (("fill", "Füllen"), ("empty", "Leeren"), ("pour", "In den anderen Krug gießen")):
-            updated = jug_action(volumes, action, jug)
-            if col.button(label, key=f"jug_{action}_{jug}", disabled=updated == volumes):
-                state.jugs = updated
-                st.rerun()
-    if st.button("Fünf Liter abgeben", disabled=5 not in volumes, type="primary"):
-        solve(day)
-    st.button("Krüge zurücksetzen", on_click=reset_fields, args=("jugs",))
+    recipe = (3, 2, 1)
+    troughs = {"Kufe": 12, "Mohn": 18}
+    st.write("**Gustavs Rezeptkarte** · 3 Teile Heu, 2 Teile Hafer, 1 Teil Karotten.")
+    with st.form("feed"):
+        mixtures = {}
+        for name, total in troughs.items():
+            st.markdown(f"**{name} · {total} Portionen**")
+            mixtures[name] = tuple(
+                col.number_input(ingredient, min_value=0, max_value=total, step=1, key=f"feed_{name}_{i}")
+                for i, (col, ingredient) in enumerate(zip(st.columns(3), ("Heu", "Hafer", "Karotten")))
+            )
+        if st.form_submit_button("Futtertröge prüfen"):
+            if all(mixtures[name] == tuple(total * part // sum(recipe) for part in recipe)
+                   for name, total in troughs.items()):
+                solve(day)
+            for name, mixture in mixtures.items():
+                total = troughs[name]
+                if sum(mixture) != total:
+                    st.warning(f"{name}: Im Trog sind {sum(mixture)} von {total} Portionen.")
+                elif mixture != tuple(total * part // sum(recipe) for part in recipe):
+                    st.warning(f"{name}: Die Gesamtmenge stimmt. Prüft noch die Mischung.")
+
+
+def scale_html(left, right, result):
+    angle = 10 if result == "Links leichter" else -10 if result == "Rechts leichter" else 0
+    return (
+        f'<svg viewBox="0 0 400 145" style="width:100%;max-width:370px" role="img" '
+        f'aria-label="{result or "Waage bereit"}"><path d="M200 45L165 130H235Z" fill="#c39966"/>'
+        f'<g transform="rotate({angle} 200 45)" stroke="#ffd68c" stroke-width="4" fill="none">'
+        '<path d="M85 45H315M85 45L50 101H120Z M315 45L280 101H350Z"/>'
+        f'<text x="85" y="125" stroke="none" fill="#fff5db" text-anchor="middle">{", ".join(map(str,left)) or "–"}</text>'
+        f'<text x="315" y="125" stroke="none" fill="#fff5db" text-anchor="middle">{", ".join(map(str,right)) or "–"}</text>'
+        '</g></svg>'
+    )
 
 
 def door18(day):
@@ -878,102 +913,166 @@ def door18(day):
         state.light_dose = random.randint(1, 9)
     light = state.light_dose
     rounds = state.setdefault("weighings", [])
-    numbers = list(range(1, 10))
-    st.caption("Legt gleich viele Dosen auf beide Waagschalen. Eine der neun Dosen ist leichter.")
+    numbers = tuple(range(1, 10))
     candidates = set(numbers)
     for i, (left, right, outcome) in enumerate(rounds, 1):
-        st.write(f"**Wägung {i}** · {left} gegen {right} → **{outcome}**")
+        with st.expander(f"Wägung {i} · {outcome}", expanded=True):
+            st.markdown(scale_html(left, right, outcome), unsafe_allow_html=True)
         if outcome == "Links leichter":
             candidates.intersection_update(left)
         elif outcome == "Rechts leichter":
             candidates.intersection_update(right)
         else:
             candidates.difference_update(left + right)
-    if len(rounds) < 2:
-        left, right = st.columns(2)
-        left_pick = left.multiselect("Linke Waagschale", numbers, key=f"weigh_l_{len(rounds)}")
-        right_pick = right.multiselect("Rechte Waagschale", numbers, key=f"weigh_r_{len(rounds)}")
-        if st.button("Wiegen"):
-            if not left_pick or len(left_pick) != len(right_pick) or set(left_pick) & set(right_pick):
-                st.warning("Wählt gleich viele verschiedene Dosen für beide Schalen.")
-            else:
-                result = "Links leichter" if light in left_pick else "Rechts leichter" if light in right_pick else "Gleich schwer"
-                rounds.append((left_pick, right_pick, result))
-                st.rerun()
-    if len(rounds) == 2 and len(candidates) != 1:
-        st.warning("Mit diesen beiden Wägungen bleiben mehrere Dosen möglich. Setzt die Waage zurück und probiert eine andere Aufteilung.")
-    with st.form("dose_guess"):
-        suspect = st.selectbox("Welche Dose ist leichter?", numbers, index=None)
-        if st.form_submit_button("Dose prüfen", disabled=len(candidates) != 1):
-            if suspect == light:
+    if len(rounds) < 2 and len(candidates) > 1:
+        picks = state.setdefault("scale_picks", {})
+        side = st.radio("Dose auf diese Schale setzen", ("Links", "Rechts"), horizontal=True)
+        st.caption("Klickt eine Dose erneut für dieselbe Schale an, um sie herunterzunehmen.")
+        for row in range(3):
+            for col, number in zip(st.columns(3), numbers[row*3:row*3+3]):
+                mark = {"Links": " · L", "Rechts": " · R"}.get(picks.get(number), "")
+                if col.button(f"🥫 {number}{mark}", key=f"dose_{number}", width="stretch"):
+                    if picks.get(number) == side:
+                        picks.pop(number)
+                    else:
+                        picks[number] = side
+                    st.rerun()
+        left = sorted(n for n in picks if picks[n] == "Links")
+        right = sorted(n for n in picks if picks[n] == "Rechts")
+        st.markdown(scale_html(left, right, ""), unsafe_allow_html=True)
+        if st.button("Wiegen", disabled=not left or len(left) != len(right)):
+            result = "Links leichter" if light in left else "Rechts leichter" if light in right else "Gleich schwer"
+            rounds.append((left, right, result))
+            state.scale_picks = {}
+            st.rerun()
+    if len(rounds) == 2 and len(candidates) > 1:
+        st.warning("Mehrere Dosen kommen noch infrage. Setzt die Waage zurück und probiert es erneut.")
+    if len(candidates) == 1:
+        with st.form("dose_guess"):
+            suspect = st.selectbox("Welche Dose ist leichter?", numbers, index=None)
+            if st.form_submit_button("Dose prüfen"):
+                if suspect == light:
+                    solve(day)
+                st.warning("Schaut euch die Ergebnisse der Waage noch einmal an.")
+    st.button("Waage zurücksetzen", on_click=reset_fields, args=("weighings", "scale_picks"))
+
+
+def door19(day):
+    code = st.session_state.setdefault("safe_code", [])
+    st.caption("Vier verschiedene Ziffern. Die Rückmeldungen auf dem Zettel beziehen sich auf den geheimen Code.")
+    panel, note = st.columns([1, 1.2])
+    with panel:
+        windows = "".join(
+            f'<span style="display:inline-grid;place-items:center;width:21%;height:48px;border:2px solid #b58b54;'
+            f'background:#211a17;color:#fff0b9;font-size:1.4rem">{code[i] if i < len(code) else "–"}</span>'
+            for i in range(4)
+        )
+        st.markdown(f'<div style="display:flex;justify-content:space-between;background:#3d4449;padding:12px">{windows}</div>',
+                    unsafe_allow_html=True)
+        for digits in ("123", "456", "789", "0"):
+            for col, digit in zip(st.columns(3), digits):
+                if col.button(digit, key=f"safe_{digit}", disabled=len(code) == 4 or digit in code, width="stretch"):
+                    code.append(digit)
+                    st.rerun()
+        undo, check = st.columns(2)
+        if undo.button("⌫ Löschen", disabled=not code):
+            code.pop()
+            st.rerun()
+        if check.button("Öffnen", disabled=len(code) != 4, type="primary"):
+            if "".join(code) == "4817":
                 solve(day)
-            st.warning("Vergleicht eure Antwort mit dem Ergebnis der Waage.")
-    st.button("Waage zurücksetzen", on_click=reset_fields, args=("weighings",))
-
-
-
-def door20(day):
-    message = "EIN ELF WUENSCHT SICH NUR EINES: EINMAL MITFLIEGEN."
-    alphabet = string.ascii_uppercase
-    st.code(message.translate(str.maketrans(alphabet, alphabet[::-1])), language=None)
-    with st.expander("Umgedrehtes Alphabet ansehen"):
-        st.code(f"{alphabet}\n{alphabet[::-1]}", language=None)
-    text_door(day, eq("MITFLIEGEN", "EINMAL MITFLIEGEN"), "Was wünscht sich der Elf?")
-
-
-# Anschlussnummern gelten jeweils zwischen zwei benachbarten Verteilern.
-CIRCUIT = {
-    "Lichtkreis": (None, 4),
-    "A": (4, 7), "B": (2, 5),
-    "C": (5, 9), "D": (7, 3),
-    "E": (3, 8), "F": (9, 6),
-    "Büro": (6, None), "Generatorraum": (8, None),
-}
-CIRCUIT_ROWS = (("A", "B"), ("C", "D"), ("E", "F"), ("Büro", "Generatorraum"))
+            st.error("Der Tresor bleibt verschlossen.")
+    with note:
+        st.markdown(
+            '<div style="background:#f5dfb2;color:#302317;padding:12px;border-radius:4px">'
+            '<strong>Frühere Versuche</strong><table style="width:100%;margin-top:8px">'
+            '<tr><th>Code</th><th>Richtige Stelle</th><th>Falsche Stelle</th></tr>'
+            + "".join(f"<tr><td>{guess}</td><td>{right}</td><td>{wrong}</td></tr>"
+                      for guess, right, wrong in (("6370",0,1),("5431",0,2),("4017",3,0),("5179",0,2),("2073",0,1)))
+            + "</table></div>", unsafe_allow_html=True
+        )
 
 
 def door21(day):
-    key = "circuit_path"
-    path = st.session_state.setdefault(key, ["Lichtkreis"])
-    st.caption("Beginnt beim ausgefallenen Lichtkreis. Verbindet den Ausgang mit dem gleich nummerierten Eingang der nächsten Stufe.")
-    st.write("**Lichtkreis · Ausgang 4**")
-    for i, row in enumerate(CIRCUIT_ROWS, 1):
-        cols = st.columns(2)
-        for col, name in zip(cols, row):
-            inlet, outlet = CIRCUIT[name]
-            label = f"{name} · Eingang {inlet}" + (f" → Ausgang {outlet}" if outlet else "")
-            if col.button(label, key=f"wire_{name}", disabled=i != len(path), width="stretch",
-                          type="primary" if name in path else "secondary"):
-                if CIRCUIT[path[-1]][1] != inlet:
-                    st.warning("Die Anschlussnummern passen nicht zusammen.")
-                else:
-                    path.append(name)
-                    if len(path) == len(CIRCUIT_ROWS) + 1:
-                        solve(day)
-                    st.rerun()
-    st.write(" → ".join(path))
-    st.button("Leitung neu verfolgen", on_click=reset_fields, args=(key,))
+    st.write("**Testauftrag von Fussel** · Prüft nur den Wagen, auf dem das Probepaket für Schneedorf liegt.")
+    left, right = st.columns(2)
+    left.markdown("**Wagenliste**  \n5 · Eisfeld  \n7 · Schneedorf  \n9 · Winterau")
+    right.markdown("**Ausgangsplan**  \nKlappe A · Ost: Eisfeld, Sternbrück  \n"
+                   "Klappe B · Nord: Schneedorf, Tannenwinkel  \nKlappe C · West: Winterau, Flockental")
+    with st.form("sort_test"):
+        mode = st.radio("Umfang", ("Ganze Anlage", "Einzelner Wagen"), horizontal=True, index=None)
+        cart = st.radio("Wagen", (5, 7, 9), horizontal=True, index=None)
+        route = st.radio("Route", ("Ost", "Nord", "West"), horizontal=True, index=None)
+        exit_gate = st.radio("Ausgang", ("A", "B", "C"), horizontal=True, index=None)
+        if st.form_submit_button("Probepaket losschicken"):
+            if None in (mode, cart, route, exit_gate):
+                st.warning("Stellt alle vier Regler ein.")
+            elif mode != "Einzelner Wagen":
+                st.warning("Die Anlage hält den Versuch an. Es ist wieder die ganze Halle ausgewählt.")
+            elif (cart, route) != (7, "Nord"):
+                st.warning("Das Probepaket erreicht den Prüfplatz, aber Wagen oder Route stimmen noch nicht.")
+            elif exit_gate != "B":
+                st.warning(f"Das Probepaket landet an Klappe {exit_gate}. Schneedorf gehört zu Klappe B.")
+            else:
+                solve(day)
+
+
+DELIVERY_ROUTES = {
+    "Nord": ("Schneedorf", "Tannenwinkel"),
+    "Ost": ("Sternbrück", "Eisfeld"),
+    "West": ("Flockental", "Winterau"),
+}
+DELIVERY_CARTS = {"7": "Schneedorf", "5": "Eisfeld", "9": "Winterau", "3": "Tannenwinkel"}
 
 
 def door22(day):
-    cards = {"P": "Pakete vertauscht", "L": "Plätzchen verschwunden", "S": "22:47 · Stromausfall",
-             "F": "Futter vertauscht", "N": "Funkgerät ausgefallen"}
-    st.markdown(
-        "- Die Pakete wurden zuerst vertauscht.\n"
-        "- Die Plätzchen verschwanden vor dem Stromausfall.\n"
-        "- Das Futter wurde direkt nach dem Stromausfall vertauscht.\n"
-        "- Das Funkgerät fiel zuletzt aus."
-    )
-    order_cards(day, dict(reversed(tuple(cards.items()))), tuple(cards), "Zeitleiste prüfen", "Früh → spät")
+    st.caption("Ordnet jedem Wagen die Route zu, die seinen Zielort anfährt.")
+    for col, (route, stops) in zip(st.columns(3), DELIVERY_ROUTES.items()):
+        col.markdown(f"**{route}**")
+        col.markdown("🛷 Werkstatt" + "".join(f"  \n↓  \n📍 {stop}" for stop in stops))
+    with st.form("route_loading"):
+        assignments = {cart: st.selectbox(f"Wagen {cart} · {town}", tuple(DELIVERY_ROUTES), index=None)
+                       for cart, town in DELIVERY_CARTS.items()}
+        if st.form_submit_button("Verladung prüfen"):
+            if all(route and DELIVERY_CARTS[cart] in DELIVERY_ROUTES[route] for cart, route in assignments.items()):
+                solve(day)
+            st.warning("Mindestens ein Wagen fehlt auf seiner Route oder ist falsch zugeordnet.")
 
 
 def door23(day):
-    st.markdown(
-        "- Mohn steht direkt vor Flocke.\n- Kufe steht vor Glut.\n"
-        "- Flocke steht nicht an zweiter Stelle.\n- Glut steht ebenfalls nicht an zweiter Stelle."
-    )
-    order_cards(day, {name: name for name in ("Mohn", "Glut", "Flocke", "Kufe")},
-                ("Kufe", "Mohn", "Flocke", "Glut"), "Gespann prüfen", "Vorn → direkt vor dem Schlitten")
+    state = st.session_state
+    lineup = state.setdefault("reindeer_slots", [None] * 4)
+    selected = state.get("reindeer_selected")
+    st.markdown("- Mohn steht direkt vor Flocke.\n- Kufe steht vor Glut.\n"
+                "- Flocke und Glut stehen beide nicht an zweiter Stelle.")
+    st.caption("Wählt ein Rentier und klickt auf seinen Platz. Ein dort stehendes Rentier kommt zurück in die Auswahl.")
+    for col, name in zip(st.columns(4), ("Mohn", "Glut", "Flocke", "Kufe")):
+        if col.button(name, key=f"deer_{name}", type="primary" if selected == name else "secondary", width="stretch"):
+            state.reindeer_selected = name
+            st.rerun()
+    st.write("**Vorn → direkt vor dem Schlitten 🛷**")
+    for i, col in enumerate(st.columns(4)):
+        if col.button(f"{i+1} · {lineup[i] or 'frei'}", key=f"harness_{i}",
+                      disabled=selected is None, width="stretch"):
+            if selected in lineup:
+                lineup[lineup.index(selected)] = None
+            lineup[i] = selected
+            state.reindeer_selected = None
+            st.rerun()
+    if st.button("Gespann prüfen", disabled=None in lineup, type="primary"):
+        if lineup == ["Kufe", "Mohn", "Flocke", "Glut"]:
+            solve(day)
+        st.warning("Die Reihenfolge passt noch nicht zu allen Hinweisen.")
+    st.button("Gespann zurücksetzen", on_click=reset_fields, args=("reindeer_slots", "reindeer_selected"))
+
+
+def door24(day):
+    st.write("**Erster Halt: Schneedorf · Laternenweg 7**")
+    for address in ("Tannenwinkel · Laternenweg 7", "Schneedorf · Glockenweg 7", "Schneedorf · Laternenweg 7"):
+        if st.button(f"📦 {address}", key=f"first_delivery_{address}", width="stretch"):
+            if address == "Schneedorf · Laternenweg 7":
+                solve(day)
+            st.warning("Vergleicht Ort, Straße und Hausnummer mit Hollys Liste.")
 
 
 PLAN = ["BBBMMM", "BBPMMM", "KKPPGG", "KKPSGG", "KSSSSG", "KKSSSG"]
@@ -1000,27 +1099,61 @@ def plan_html(positions=None):
     return h + "</table>"
 
 
-def door24(day):
-    st.markdown("Setzt je einen Elf in jede Zeile und jede Spalte. Um 22:47 stand genau ein Elf im Generatorraum.")
-    if TEST:
-        missing = [n for n in (13, 14, 15, 16, 17, 18, 19, 21) if n not in game["solved"]]
-        if missing:
-            with st.expander("Fehlende Aktenhinweise für den Direkt-Test lesen"):
-                for n in missing:
-                    st.write(DOORS[n]["akte"])
-    cells = [f"{r}{c}" for r in range(1, 7) for c in "ABCDEF"]
-    cols = st.columns(3)
-    picks = {name: cols[i % 3].selectbox(name, cells, index=None, key=f"mu_{name}")
-             for i, name in enumerate(SOLUTION)}
-    st.markdown(plan_html(picks), unsafe_allow_html=True)
-    who = st.selectbox("Wer war allein im Generatorraum?", list(SOLUTION), index=None, key="mu_who")
-    if st.button("Fall lösen", type="primary"):
-        if picks != SOLUTION:
+def door20(day):
+    state = st.session_state
+    placements = state.setdefault("elf_positions", {})
+    crosses = state.setdefault("elf_crosses", {})
+    st.write("Um 22:47 stand genau ein Elf im Generatorraum. Setzt je einen Elf in jede Zeile und jede Spalte.")
+    with st.expander("Aussagen und Protokoll lesen", expanded=True):
+        for n in (13, 14, 15, 16, 17, 18, 19):
+            if n in game["solved"]:
+                st.write(game["akte"][str(n)])
+            elif TEST:
+                st.write(DOORS[n]["akte"])
+        if TEST and any(n not in game["solved"] for n in range(13, 20)):
+            st.caption("Im Direkt-Test stehen hier auch Hinweise aus übersprungenen Türchen.")
+    elf = st.selectbox("Elf auswählen", tuple(SOLUTION))
+    mode = st.radio("Was möchtet ihr markieren?", ("× Ausschließen", "✓ Platzieren"), horizontal=True)
+    marks = crosses.setdefault(elf, set())
+    taken = {cell: name for name, cell in placements.items() if name != elf}
+    st.caption("Ein Kreuz gilt nur für den gewählten Elf. Erneut klicken entfernt es. "
+               "Beim Platzieren sind Zeilen und Spalten mit einem anderen Elf gesperrt.")
+    for row, rooms in enumerate(PLAN, 1):
+        cols = st.columns(6, gap="small")
+        for column, room, col in zip("ABCDEF", rooms, cols):
+            cell = f"{row}{column}"
+            selected = placements.get(elf) == cell
+            blocked = any(other[0] == cell[0] or other[1] == cell[1] for other in taken)
+            occupant = taken.get(cell)
+            icon = f"✓ {elf}" if selected else f"× · {occupant}" if occupant and cell in marks else (
+                occupant or ("×" if cell in marks else "·" if blocked else "")
+            )
+            name, color = ROOMS[room]
+            col.markdown(
+                f'<div style="background:{color};color:#222;text-align:center;padding:3px;font-size:.8rem">'
+                f'{name}</div>', unsafe_allow_html=True,
+            )
+            if col.button(f"{column}{row} {icon}".strip(), key=f"murdoku_{cell}",
+                          disabled=(mode == "✓ Platzieren" and blocked) or (mode == "× Ausschließen" and selected),
+                          type="primary" if selected else "secondary", width="stretch"):
+                if mode == "× Ausschließen":
+                    marks.symmetric_difference_update({cell})
+                elif selected:
+                    placements.pop(elf)
+                else:
+                    placements[elf] = cell
+                    marks.discard(cell)
+                st.rerun()
+    st.write(f"**{len(placements)}/6 Elfen platziert**")
+    who = st.selectbox("Wer war im Generatorraum?", tuple(SOLUTION), index=None)
+    if st.button("Fall lösen", type="primary", disabled=len(placements) != 6 or who is None):
+        if placements != SOLUTION:
             st.error("Mindestens eine Position passt noch nicht zu den Aussagen.")
         elif who != "Fussel":
-            st.error("Die Positionen stimmen. Schaut nach, wer im Generatorraum steht.")
+            st.error("Die Plätze stimmen. Schaut nach, wer im Generatorraum steht.")
         else:
             solve(day)
+    st.button("Plan und Kreuze leeren", on_click=reset_fields, args=("elf_positions", "elf_crosses"))
 
 
 def D(title, story, render, akte, after, *hints):
@@ -1112,100 +1245,79 @@ DOORS.update({
           "Die Linie führt von der Fahne zu einer Markierung an der Außenkante."),
 })
 
-DOORS[13] = D(
-    "Türchen 13 · Das Notstrom-Schaltfeld",
-    "Hinter der Schwelle ist es so dunkel, dass ihr kaum etwas erkennt. „Hier drüben“, ruft jemand. "
-    "Im Schein eurer Laterne seht ihr Volt vor einem Schaltfeld. „Um 22:47 ging das Licht aus. "
-    "Wenn ihr alle neun Kontrolllampen zum Leuchten bringt, springt der Notstrom an.“",
-    door13,
-    "Volt · 22:47 · Ich stand in Spalte C, weder im Büro noch in der Maschinenhalle.",
-    "Der Notstrom springt an. Im Flur leuchtet eine Reihe Lampen auf. Volt atmet auf. "
-    "„Als der Strom ausfiel, stand ich in Spalte C. Im Büro oder in der Maschinenhalle war ich zu der Zeit nicht.“ "
-    "Ihr nehmt eure Akte heraus und schreibt seine Aussage auf.",
-    "Achtet darauf, welche Lampen sich bei einem Klick ändern. Diagonale Nachbarn bleiben gleich.",
-    "Zweimal auf dieselbe Lampe zu drücken hebt den ersten Klick auf.",
-    "Probiert zuerst die Lampe oben links. Danach braucht ihr noch zwei Klicks.",
-)
-
 DOORS.update({
+    13: D("Türchen 13 · Die Notstromtafel",
+          "Hinter dem Tor ist es dunkel. Volt winkt euch mit seiner Laterne zu einer kleinen Notstromtafel. "
+          "Seit 22:47 steht die Werkstatt still. Jetzt braucht er Licht und Strom für den ersten Check am Förderband.",
+          door13, "Volt · 22:47 · Ich stand in Spalte C, weder im Büro noch in der Maschinenhalle.",
+          "Die Lampen im Flur springen an. Volt bittet euch, beim Aufräumen die Elfen zu fragen, wo sie beim Stromausfall waren.",
+          "Die Notiz nennt drei Stromkreise. Zusammen brauchen sie genau acht Einheiten."),
     14: D("Türchen 14 · Das Förderband",
-          "In der Packhalle wartet Fussel auf euch. „Seit dem Stromausfall steht das Förderband still. "
-          "Jetzt können wir wieder los, aber die Pakete müssen zuerst in die richtige Reihenfolge.“",
+          "In der Packhalle warten fünf Pakete darauf, auf dem Prüfband von Hand sortiert zu werden. Fussel reicht euch die Sortierregeln.",
           door14,
-          "Fussel: Ich war weder im Büro noch in der Maschinenhalle. Ich stand oberhalb von Zimta.",
-          "Das Band läuft wieder. Fussel wischt sich den Papierstaub von den Händen und erzählt euch, wo er beim Stromausfall stand.",
-          "Nur zwei Pakete sind Express. Sortiert diese zuerst nach Land.",
+          "Fussel: Ich war weder im Büro noch in der Maschinenhalle. Ich stand oberhalb von Zimta. Fund: Ein falsches Ziel-Etikett trägt den Zeitstempel 22:45.",
+          "Das erste Band ist wieder frei. Unter einem Paket findet ihr ein falsches Ziel-Etikett von 22:45. Da war der Strom noch an.",
+          "Nur zwei Pakete sind Express. Sortiert sie zuerst nach Land.",
           "Die beiden normalen Pakete nach Spanien kommen hinter das normale Paket nach Italien."),
-    15: D("Türchen 15 · Die Zahnräder",
-          "In der Maschinenhalle hat Schraub das Getriebe des Aufzugs geöffnet. Er will wissen, wie sich das letzte Rad drehen muss.",
+    15: D("Türchen 15 · Der Lastenaufzug",
+          "Schraub hat den Aufzug wieder betriebsbereit gemacht. Vier Wagen stehen zwischen Packhalle, Materiallager und Verladung fest. Bringt sie zu ihren Zielen.",
           door15,
           "Schraub: Ich stand in Spalte E, weder im Generatorraum noch in der Packhalle. Meine Zeile grenzte direkt an Volts Zeile.",
-          "Der Aufzug fährt wieder an. Während Schraub die Abdeckung festschraubt, erzählt er euch, wo er um 22:47 stand.",
-          "Zwei ineinandergreifende Zahnräder drehen sich in entgegengesetzte Richtungen.",
-          "Aus 15 Umdrehungen von A werden 5 bei B. C sitzt auf derselben Achse wie B."),
+          "Der letzte Wagen rollt auf seine Ebene. Schraub erzählt euch, wo er um 22:47 stand.",
+          "Ihr könnt auf einer Ebene Wagen ausladen und andere einladen, bevor ihr weiterfahrt."),
     16: D("Türchen 16 · Die Paketstapel",
-          "Holly will die Ladefläche freimachen. Vier Pakete auf Platz 1 müssen als Stapel auf Platz 3. Platz 2 dürft ihr zum Zwischenlagern nutzen.",
+          "Holly braucht Platz auf der Ladefläche. Setzt den Stapel mit vier Paketen von Platz 1 auf Platz 3 um.",
           door16,
           "Holly: Ich stand in Spalte B, weder im Generatorraum noch im Stall.",
-          "Der neue Stapel steht. Holly rollt den Wagen zur Seite und gibt euch ihre Aussage für die Akte.",
-          "Bewegt jeweils nur das oberste Paket. Größere Pakete dürfen nur auf leere Plätze oder auf größere Pakete.",
+          "Der Stapel steht am Ziel. Holly kann den nächsten Wagen hereinrollen und gibt euch ihre Aussage für die Akte.",
           "Räumt die drei kleineren Pakete zuerst auf Platz 2. Dann kann das größte direkt auf Platz 3."),
-    17: D("Türchen 17 · Im Rentierstall",
-          "Gustav braucht genau fünf Liter Karottensaft für die Rentiere. Zur Hand sind nur ein 7-Liter- und ein 4-Liter-Krug ohne Markierungen.",
-          door17,
-          "Gustav: Ich war beim Stromausfall im Stall bei den Rentieren.",
-          "Gustav teilt den Saft aus. Während die Rentiere trinken, erzählt er euch, wo er beim Ausfall war.",
-          "In den 4-Liter-Krug passen die fünf Liter nicht. Am Ende müssen sie im großen Krug sein.",
-          "Füllt zuerst den großen Krug. Gießt daraus den kleinen voll. Im großen bleiben drei Liter zurück."),
+    17: D("Türchen 17 · Futter für die Rentiere",
+          "Im Stall bereitet Gustav die Tröge für den Abflug vor. Kufe und Mohn brauchen unterschiedlich viel Futter, aber dieselbe Mischung.",
+          door17, "Gustav: Ich war beim Stromausfall im Stall bei den Rentieren.",
+          "Gustav stellt die fertigen Tröge hin. Während die Rentiere fressen, erzählt er euch, wo er beim Ausfall war.",
+          "Eine vollständige Mischung besteht aus sechs Teilen. Überlegt, wie oft sie in jeden Trog passt."),
     18: D("Türchen 18 · Die Plätzchendosen",
-          "Zimta hat neun gleich aussehende Plätzchendosen. Eine ist leichter als die anderen. Ihr habt zwei Wägungen, um sie zu finden.",
-          door18,
-          "Zimta: Ich war in der Backstube in Zeile 5. Volt stand zwei Zeilen unter Holly.",
-          "In der leichten Dose fehlen die Plätzchen. Zimta holt eine Ersatzdose und erzählt euch, wo sie um 22:47 war.",
-          "Teilt die neun Dosen in drei Gruppen mit je drei Dosen. Wiegt zwei Gruppen gegeneinander.",
-          "Bei Gleichstand liegt die leichte Dose in der dritten Gruppe. Vergleicht zwei Dosen aus der verdächtigen Gruppe."),
+          "Zimta hat neun gleich aussehende Dosen für die Reiseverpflegung. Eine ist leichter. Findet sie mit höchstens zwei Wägungen.",
+          door18, "Zimta: Ich war in der Backstube in Zeile 5. Volt stand zwei Zeilen unter Holly.",
+          "In der leichten Dose fehlen Plätzchen. Zimta tauscht sie aus und erzählt euch, wo sie um 22:47 stand.",
+          "Teilt die Dosen in drei Gruppen mit je drei Dosen und wiegt zwei Gruppen gegeneinander.",
+          "Bei Gleichstand liegt die leichte Dose in der dritten Gruppe. Wiegt anschließend zwei Dosen aus der verdächtigen Gruppe gegeneinander."),
     19: D("Türchen 19 · Der Tresor",
-          "Im Büro klebt ein Zettel mit früheren Versuchen am Tresor. Knackt den Code, um an die Unterlagen zu kommen.",
-          txt("Vierstelliger Code. Jede Ziffer kommt höchstens einmal vor.\n"
-              "⚫ richtige Ziffer am richtigen Platz · ⚪ richtige Ziffer am falschen Platz\n\n"
-              "6370: ⚫0 ⚪1\n5431: ⚫0 ⚪2\n4017: ⚫3 ⚪0\n5179: ⚫0 ⚪2\n2073: ⚫0 ⚪1",
-              eq("4817"), "Code"),
-          DUTY, "Der Tresor springt auf. Darin liegen der Werkstattplan und der Dienstplan für 22:47.",
-          "Bei 4017 sind drei Ziffern genau am richtigen Platz. Testet, welche der vier Ziffern ausgetauscht werden muss."),
-    20: D("Türchen 20 · Der Wunschzettel",
-          "Zwischen den Unterlagen steckt ein verschlüsselter Wunschzettel ohne Unterschrift.",
-          door20,
-          "Anonymer Wunschzettel: Einmal mitfliegen.",
-          "Jemand aus der Werkstatt träumt davon, einmal beim Geschenkeverteilen mitzufliegen. Ihr steckt den Zettel in die Akte.",
-          "Beim umgedrehten Alphabet wird A zu Z, B zu Y und C zu X."),
-    21: D("Türchen 21 · Der Hauptschalter",
-          "Neben der Werkstattbeleuchtung hängt ein Schaltplan. Verfolgt die Leitung vom Lichtkreis bis zu dem Raum mit dem Hauptschalter.",
-          door21,
-          "Der Hauptschalter steht im Generatorraum. Der Dienstplan vermerkt: Um 22:47 war nur ein Elf in diesem Raum.",
-          "Die Leitung endet im Generatorraum. Dort wurde der Hauptschalter von Hand umgelegt.",
-          "Der Lichtkreis hat Ausgang 4. Klickt in der ersten Zeile den Verteiler mit Eingang 4 an."),
-    22: D("Türchen 22 · Die Zeitleiste",
-          "Auf Hollys Tisch liegen fünf Ereigniskarten. Ordnet sie vom frühesten zum spätesten Ereignis.",
-          door22,
-          "Zeitlinie: Pakete, Plätzchen, Stromausfall (22:47), Futter, Funk. Alle sechs Aussagen beziehen sich auf den Stromausfall.",
-          "Mit der richtigen Reihenfolge passen die Uhrzeit auf dem Dienstplan und die Aussagen der Elfen zusammen.",
-          "Die Pakete gehören ganz nach vorn, der Funkausfall ganz nach hinten."),
+          "Im Büro klebt ein Zettel mit früheren Versuchen am Tresor. Dahinter liegen die Unterlagen zur letzten Schicht.",
+          door19,
+          DUTY + " Protokoll: 22:44 Teststart an der gesamten Anlage. 22:45 falsche Ziele. 22:47 Hauptschalter von Hand umgelegt. Er steht im Generatorraum, dort war nur ein Elf.",
+          "Der Tresor springt auf. Im Protokoll steht: Erst begann der Testlauf an der gesamten Anlage, dann liefen die Pakete falsch. Zwei Minuten später ging der Strom aus.",
+          "Bei 4017 sind drei Ziffern am richtigen Platz. Testet, welche ausgetauscht werden muss."),
+    20: D("Türchen 20 · Wer war am Schalter?",
+          "Legt die Aussagen neben den Werkstattplan. Wer stand um 22:47 im Generatorraum und legte den Hauptschalter um?",
+          door20, "Fall gelöst: Fussel stoppte den fehlgeleiteten Sortierlauf am Hauptschalter.",
+          "Fussel blickt auf den Plan. „Ich wollte nur Wagen sieben testen. Aus Versehen habe ich die ganze Anlage ausgewählt. "
+          "Als die Pakete falsch liefen, habe ich den Hauptschalter umgelegt. Danach habe ich mich nicht getraut, es zu sagen.“ "
+          "Holly schiebt ihm das Protokoll hin. „Dann zeig uns morgen, wie wir den Test richtig machen.“",
+          "Beginnt bei Holly, Volt und Schraub. Ihre Spalten stehen fest.",
+          "Zimta stand in Zeile 5 in der Backstube. Gustav war im Stall."),
+    21: D("Türchen 21 · Der sichere Neustart",
+          "Fussel steht wieder am Schaltpult. Dieses Mal soll erst ein einziges Probepaket durchlaufen, bevor die Anlage weiter sortiert.",
+          door21, "Der Testlauf mit Wagen 7 und Klappe B war erfolgreich.",
+          "Das Probepaket kommt an der richtigen Klappe an. Fussel gibt das Zeichen für die restlichen Wagen.",
+          "Prüft zuerst den Umfang. Es geht um einen einzelnen Wagen."),
+    22: D("Türchen 22 · Die Schlitten beladen",
+          "Die Pakete sind wieder auf den richtigen Wagen. An der Verladung zeigt Holly euch, welche Orte auf welcher Route liegen.",
+          door22, "Alle Paketwagen sind ihren Auslieferrouten zugeordnet.",
+          "Die letzten Wagen werden verladen. Holly legt die Nordroute ganz oben auf die Abfahrtsliste.",
+          "Die Nordroute fährt zwei Orte an. Ihr dürft ihr mehr als einen Wagen zuordnen."),
     23: D("Türchen 23 · Das Rentiergespann",
-          "Die Geschenke sind verladen. Stellt Kufe, Mohn, Flocke und Glut in der richtigen Reihenfolge vor den Schlitten.",
-          door23,
-          "Das Gespann steht. Auf dem Schlitten ist noch ein Platz frei.",
-          "Die Rentiere stehen abfahrbereit. Als Holly die Decken verteilt, merkt ihr, dass auf der Sitzbank noch ein Platz frei ist.",
+          "Die Geschenke sind verladen. Stellt Kufe, Mohn, Flocke und Glut an ihre Plätze vor dem Schlitten.",
+          door23, "Das Rentiergespann ist abfahrbereit.",
+          "Holly reicht Fussel die Liste für den ersten Halt. „Du kennst die Wagen inzwischen am besten. Hilfst du uns beim Verteilen?“",
           "Betrachtet Mohn und Flocke als festes Paar.",
-          "Steht das Paar ganz hinten, müsste Glut an zweiter Stelle stehen. Das ist ausgeschlossen."),
-    24: D("Türchen 24 · Heiligabend",
-          "Der Schlitten ist startklar. Öffnet die Akte und findet heraus, wer beim Stromausfall im Generatorraum war.",
-          door24,
-          "Fall gelöst: Fussel hat den Hauptschalter umgelegt.",
-          "Fussel nickt. „Ich wollte unbedingt einmal mitfliegen. Ich dachte, wenn der Schlitten länger hierbleibt, "
-          "traue ich mich vielleicht zu fragen.“ Er entschuldigt sich bei den anderen. Holly klopft auf den freien Platz. "
-          "„Komm. Heute hilfst du uns beim Verteilen.“ Die Glocken läuten, die Kufen heben ab. Frohe Weihnachten! 🎄",
-          "Beginnt bei Holly, Volt und Schraub. Ihre Spalten stehen fest. Volt stand zwei Zeilen unter Holly.",
-          "Zimta stand in Zeile 5 in der Backstube. Wenn Zimta und Gustav stehen, bleibt für Fussel nur noch ein passendes Feld."),
+          "Steht das Paar ganz hinten, müsste Glut an zweiter Stelle stehen."),
+    24: D("Türchen 24 · Die erste Auslieferung",
+          "Die Glocken läuten und der Schlitten hebt ab. Beim ersten Halt zieht Fussel drei Pakete nach vorn. Holly liest euch die Adresse vor. Welches nehmt ihr mit?",
+          door24, "Das erste Geschenk ist ausgeliefert.",
+          "Ihr reicht Fussel das Paket. Er trägt es mit Holly zur Tür, an der eine kleine Laterne brennt. "
+          "Als sie wieder aufsteigen, liest er schon die nächste Adresse vor. Frohe Weihnachten! 🎄",
+          "Auf der Nordroute gibt es zwei Orte. Achtet bei der Adresse auch auf die Straße."),
 })
 
 # Briefgrafik für Türchen 2
