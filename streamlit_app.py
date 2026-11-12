@@ -1,3 +1,10 @@
+from array import array
+from functools import lru_cache
+from html import escape
+from io import BytesIO
+from math import exp, pi, sin
+from sys import byteorder
+import wave
 import json
 import random
 import string
@@ -10,8 +17,8 @@ import streamlit as st
 
 st.set_page_config(page_title="Der Nordpol-Fall", page_icon="🎄", layout="wide")
 
-SAVE = Path("spielstand.json")          # gemeinsamer Spielstand (auf dem Server)
-TEST = st.query_params.get("test") == "1"   # App-URL + ?test=1 -> alle Türchen offen
+SAVE = Path(__file__).with_name("nordpol_spielstand.json")          # gemeinsamer Spielstand (auf dem Server)
+TEST = st.query_params.get("test", "1") == "1"   # App-URL + ?test=1 -> alle Türchen offen
 YEAR = 2026
 
 st.markdown("""
@@ -38,6 +45,8 @@ def load():
 
 
 def save():
+    if TEST:
+        return
     try:
         SAVE.write_text(json.dumps(st.session_state.game, ensure_ascii=False))
     except Exception:
@@ -45,7 +54,7 @@ def save():
 
 
 if "game" not in st.session_state:
-    st.session_state.game = load()
+    st.session_state.game = {"solved": [], "akte": {}} if TEST else load()
 game = st.session_state.game
 
 
@@ -95,142 +104,6 @@ def text_door(day: int, check, label="Eure Lösung"):
                 st.error("Das passt noch nicht.")
 
 
-# ---------------------------------------------------------------- Türchen
-KISTENCODE = "3289"
-
-
-def door1(day):
-    st.code(
-        "Der Wind reißt mir fast den Brief aus der Hand.\n"
-        "Ich nehme die Kiste aus Holz, weil sie den Frost aushält.\n"
-        "Danach trägt mich der Schlitten bis zu eurer Straße.\n"
-        "Eine unserer Glocken habe ich mit Stoff umwickelt.",
-        language=None,
-    )
-    st.markdown(
-        "*Die Kiste öffnet sich mit vier Ziffern. In jeder Zeile steckt eine davon. "
-        "Achtet auf die Übergänge.*"
-    )
-    text_door(day, lambda a: norm(a) == KISTENCODE, "Vierstelliger Code")
-
-
-PLAIN = "HELFT UNS! JEMAND SABOTIERT DIE WERKSTATT. SPRECHT DREIMAL DAS WORT LATERNE."
-
-
-def door2(day):
-    cipher = vigenere(PLAIN, "NORDPOL")
-    st.markdown(
-        "<div style='background:#e9d8a6;color:#3b2a14;padding:18px;border-radius:6px;text-align:center;"
-        "font-family:Georgia,serif;border:3px double #8a6d3b'>"
-        "<div style='font-size:2rem'>🌿 ⚜ 🌿</div>"
-        f"<div style='font-family:monospace;font-size:1.25rem;letter-spacing:2px;white-space:pre-wrap;margin-top:8px'>{cipher}</div>"
-        "</div>", unsafe_allow_html=True)
-    st.write("")
-    text_door(day, lambda a: norm(a) == "LATERNE", "Das Wort, das ihr sprechen sollt")
-
-
-def door3(day):
-    qs = [
-        ("Es ist Weihnachten. Welche Rentiere tragen jetzt noch Geweih?",
-         ["Alle, es fällt erst im Frühjahr ab", "Nur die Männchen",
-          "Vor allem die Weibchen, die Bullen werfen nach der Brunft ab"], 2),
-        ("Wie heißen wilde Rentiere in Nordamerika?", ["Wapiti", "Karibu", "Elch"], 1),
-        ("Was passiert im Winter mit den Rentieraugen?",
-         ["Sie werden rot", "Sie schließen sich zur Winterruhe",
-          "Die Reflexionsschicht färbt sich von gold zu blau"], 2),
-    ]
-    with st.form("f3"):
-        picks = [st.radio(q, o, index=None, key=f"q3_{i}") for i, (q, o, _) in enumerate(qs)]
-        if st.form_submit_button("Antworten 🦌"):
-            if all(p is not None and o.index(p) == c for p, (_, o, c) in zip(picks, qs)):
-                solve(day)
-            else:
-                st.error("Die Rentiere schnauben: Mindestens eine Antwort stimmt nicht.")
-
-
-def door4(day):
-    st.code(
-        "BORDCOMPUTER: Passwort akzeptiert. Kurs unbekannt.\n"
-        "Navigation nur nach Sternen. Planquadrate (x|y):\n\n"
-        "  Alkaid (22|7)  Mizar (18|9)  Alioth (14|8)\n"
-        "  Megrez (10|7)  Phecda (8|3)\n"
-        "  Dubhe  (4|7)   Merak  (2|3)\n\n"
-        "Zielstern: der Polarstern. Er ist nicht in der Karte.\n"
-        "Eingabe: Planquadrat des Zielsterns (x y)", language=None)
-    text_door(day, lambda a: re.findall(r"\d+", a) == ["14", "27"], "Planquadrat")
-
-
-MAZE = [
-    "#########",
-    "#S..#...#",
-    "#.#.#.#.#",
-    "#.#...#.#",
-    "#.#####.#",
-    "#...#...#",
-    "###.#.###",
-    "#...#..E#",
-    "#########",
-]
-
-
-def _move(dr, dc):
-    r, c = st.session_state.maze_pos
-    if MAZE[r + dr][c + dc] != "#":
-        st.session_state.maze_pos = (r + dr, c + dc)
-        st.session_state.maze_trail.add((r + dr, c + dc))
-
-
-def door5(day):
-    if not st.session_state.get("fog_done"):
-        st.code(
-            "Der Kompass dreht durch und zeigt WESTEN.\n"
-            "Blitz ruft Kommandos in den Nebel:\n\n"
-            "  Rechts 90! Links 45! Rechts 180! Links 135! Rechts 45!\n\n"
-            "(Rechts = im Uhrzeigersinn, Start = Westen)", language=None)
-        with st.form("f5"):
-            a = st.text_input("In welche Himmelsrichtung fliegt ihr danach?")
-            if st.form_submit_button("Kurs halten 🧭"):
-                if norm(a) in {"NORDOST", "NORDOSTEN", "NO"}:
-                    st.session_state.fog_done = True
-                    st.rerun()
-                else:
-                    st.error("Der Nebel wird dichter. Das war nicht der Kurs.")
-        return
-    st.markdown("*Der Nebel reißt auf. Ihr landet vor einem Labyrinth aus Eis, doch zwischen den Blöcken "
-                "hängt noch Nebel, ihr seht nur ein Feld weit.*")
-    pos = st.session_state.setdefault("maze_pos", (1, 1))
-    trail = st.session_state.setdefault("maze_trail", {(1, 1)})
-    r, c = pos
-    rows = []
-    for i, row in enumerate(MAZE):
-        line = ""
-        for j, ch in enumerate(row):
-            if (i, j) == pos:
-                line += "@ "
-            elif abs(i - r) <= 1 and abs(j - c) <= 1:
-                line += "▓▓" if ch == "#" else ("E " if ch == "E" else ". ")
-            elif (i, j) in trail:
-                line += "+ "
-            else:
-                line += "░░"
-        rows.append(line)
-    st.code("\n".join(rows), language=None)
-    st.caption("@ ihr · + euer Weg · ░ Nebel. Ihr seht nur das direkte Umfeld.")
-    _, m, _ = st.columns([1, 1, 1])
-    m.button("⬆️", key="mu", on_click=_move, args=(-1, 0), use_container_width=True)
-    a, b, c3 = st.columns(3)
-    a.button("⬅️", key="ml", on_click=_move, args=(0, -1), use_container_width=True)
-    b.button("⬇️", key="md", on_click=_move, args=(1, 0), use_container_width=True)
-    c3.button("➡️", key="mr", on_click=_move, args=(0, 1), use_container_width=True)
-    if st.button("Zurück zum Start", key="mreset"):
-        st.session_state.maze_pos = (1, 1)
-        st.session_state.maze_trail = {(1, 1)}
-        st.rerun()
-    nr, nc = st.session_state.maze_pos
-    if MAZE[nr][nc] == "E":
-        solve(day)
-
-
 def txt(body, check, label="Eure Lösung"):
     def f(day):
         st.code(body, language=None)
@@ -239,7 +112,8 @@ def txt(body, check, label="Eure Lösung"):
 
 
 def eq(*opts):
-    return lambda a: norm(a) in opts
+    normalized = {norm(option) for option in opts}
+    return lambda a: norm(a) in normalized
 
 
 def nums(*n):
@@ -253,35 +127,6 @@ def pad(k, fn):
     a.button("⬅️", key=k + "l", on_click=fn, args=(0, -1), use_container_width=True)
     b.button("⬇️", key=k + "d", on_click=fn, args=(1, 0), use_container_width=True)
     c.button("➡️", key=k + "r", on_click=fn, args=(0, 1), use_container_width=True)
-
-
-# ---- 6: Eisrutsch
-ICE = ['#######', '#S..#.#', '#.#...#', '#..#..#', '#.#..##', '#..#.E#', '#######']
-
-
-def _slide(dr, dc):
-    r, c = st.session_state.ice_pos
-    while ICE[r + dr][c + dc] != "#":
-        r, c = r + dr, c + dc
-        if ICE[r][c] == "E":
-            break
-    st.session_state.ice_pos = (r, c)
-    st.session_state.ice_moves += 1
-
-
-def door6(day):
-    pos = st.session_state.setdefault("ice_pos", (1, 1))
-    st.session_state.setdefault("ice_moves", 0)
-    sym = {"#": "▓", ".": "·", "S": "S", "E": "E"}
-    st.code("\n".join("".join("@" if (i, j) == pos else sym[ch] for j, ch in enumerate(row))
-                      for i, row in enumerate(ICE)), language=None)
-    st.caption(f"Ihr rutscht, bis ihr gegen ein ▓ stoßt (oder E erreicht). Züge: {st.session_state.ice_moves}")
-    pad("ice", _slide)
-    if st.button("Zurück zum Start", key="ice_reset"):
-        st.session_state.ice_pos, st.session_state.ice_moves = (1, 1), 0
-        st.rerun()
-    if ICE[pos[0]][pos[1]] == "E":
-        solve(day)
 
 
 # ---- 7: Nim
@@ -324,37 +169,453 @@ def door7(day):
 MORSE = dict(zip(string.ascii_uppercase, ".- -... -.-. -.. . ..-. --. .... .. .--- -.- .-.. -- -. --- .--. --.- .-. ... - ..- ...- .-- -..- -.-- --..".split()))
 
 
+# Überarbeitete Fassung für Türchen 1–12
+GRAVUR = ("Draußen ruht ein Irrlicht.", "Am Christbaum hängen Träume.",
+          "Niemand erwartet ungewöhnlichen Nachtbesuch.", "Vielleicht ist es Rudolf.")
+KISTENCODE = "3894"
+PLAIN = ("Der Hauptschalter wurde von Hand umgelegt.\n"
+         "Die Werkstatt braucht euch.\n"
+         "Sprecht dreimal das Wort Laterne.")
+
+
+def door1(day):
+    st.markdown("> " + "  \n> ".join(GRAVUR))
+    st.caption("Vier Zeilen, vier Ziffern.")
+    text_door(day, eq(KISTENCODE), "Vierstelliger Code")
+
+
+def door2(day):
+    cipher = vigenere(PLAIN.upper(), "H")
+    # Geheimtext als HTML-Text, damit er exakt, skalierbar und kopierbar bleibt.
+    leaves = "".join(
+        f'<ellipse cx="0" cy="-29" rx="3" ry="7" transform="rotate({angle})"/>'
+        for angle in range(32, 335, 24)
+    )
+    wreath = (f'<svg width="65" height="65" viewBox="-36 -36 72 72" role="img" '
+              f'aria-label="Blasser Lorbeerkranz"><g fill="#88733d" opacity=".62">{leaves}</g></svg>')
+    st.markdown(
+        '<div style="background:linear-gradient(135deg,#f5e9c9,#e3c88f);color:#382a18;'
+        'padding:1rem 1.5rem 1.5rem;border:3px double #ab884f;border-radius:6px">'
+        f'<div style="text-align:right">{wreath}</div>'
+        f'<div style="font:600 1.05rem monospace;white-space:pre-wrap;overflow-wrap:anywhere">{cipher}</div>'
+        '<p style="margin:1rem 0 0;font-style:italic">Wie weit ihr gehen müsst, verrät euch der Absender.</p>'
+        '</div>', unsafe_allow_html=True)
+    text_door(day, eq("LATERNE"), "Welches Wort sollt ihr dreimal aussprechen?")
+
+
+def door3(day):
+    questions = (
+        ("Bei unserem Gespann haben die erwachsenen Bullen ihre Geweihe vor Dezember abgeworfen. "
+         "Alle vier vor euch tragen noch eines. Was sind wir?", ("Erwachsene Bullen", "Kühe"), "Kühe"),
+        ("Unter welchem Namen kennt man Rentiere in Kanada?", ("Wapiti", "Karibu", "Elch"), "Karibu"),
+        ("Im Sommer schimmert die reflektierende Schicht hinter unserer Netzhaut goldfarben. "
+         "Welche Farbe hat sie im Winter?", ("Grün", "Silber", "Blau"), "Blau"),
+    )
+    with st.form("f3"):
+        picks = [st.radio(q, options, index=None, key=f"rentier{i}") for i, (q, options, _) in enumerate(questions)]
+        if st.form_submit_button("Antworten prüfen"):
+            if picks == [answer for _, _, answer in questions]:
+                solve(day)
+            st.error("Überprüft eure drei Antworten.")
+
+
+def door4(day):
+    st.markdown("**Sternkarte** · Merak (2|3) · Dubhe (4|7) · Phecda (6|4) · Megrez (8|6)")
+    st.markdown("> Zieht eine Linie von Merak durch Dubhe. Geht ab Dubhe in derselben Richtung weiter. "
+                "Die Strecke von Merak bis Dubhe passt noch fünfmal zwischen Dubhe und den Polarstern.")
+    with st.form("f4"):
+        left, right = st.columns(2)
+        x = left.number_input("Waagerecht (x)", value=0, step=1)
+        y = right.number_input("Senkrecht (y)", value=0, step=1)
+        if st.form_submit_button("Kurs bestätigen"):
+            if (x, y) == (14, 27):
+                solve(day)
+            st.error("Der Kurs stimmt noch nicht.")
+
+
+MAZE = (
+    "###########",
+    "#S..#.....#",
+    "#.#.#.###.#",
+    "#.#...#...#",
+    "#...###.#.#",
+    "###.....#.#",
+    "#...###.#.#",
+    "#.#.....#E#",
+    "###########",
+)
+
+DIRECTIONS = ((-1, 0), (0, 1), (1, 0), (0, -1))
+CELL_COLORS = {"": "#536475", "▧": "#688b9e", "·": "#ddf2fc", "•": "#bddbe8",
+               "🧭": "#f9d898", "🏮": "#f9d898", "🔧": "#f9d898", "✦": "#f9d898"}
+
+
+def grid(rows, label):
+    cells = "".join(
+        f'<span style="background:{CELL_COLORS.get(cell, "#ddf2fc")};color:#172c3d;'
+        f'display:grid;place-items:center;aspect-ratio:1">{escape(cell)}</span>'
+        for row in rows for cell in row
+    )
+    st.markdown(f'<div role="img" aria-label="{escape(label)}" style="display:grid;'
+                f'grid-template-columns:repeat({len(rows[0])},1fr);gap:3px;'
+                f'max-width:{len(rows[0])*43}px;margin:12px 0">{cells}</div>',
+                unsafe_allow_html=True)
+
+
+def reset_fields(*keys):
+    for key in keys:
+        st.session_state.pop(key, None)
+
+
+def _move(dr, dc):
+    s = st.session_state
+    r, c = s.maze_pos
+    if MAZE[r + dr][c + dc] != "#":
+        s.maze_pos = (r + dr, c + dc)
+        s.maze_trail.add(s.maze_pos)
+
+
+def door5(day):
+    s = st.session_state
+    r, c = s.setdefault("maze_pos", (1, 1))
+    trail = s.setdefault("maze_trail", {(1, 1)})
+    rows = []
+    for i, row in enumerate(MAZE):
+        cells = []
+        for j, cell in enumerate(row):
+            visible = abs(i - r) + abs(j - c) <= 1
+            symbol = {"#": "▧", "E": "🏮"}.get(cell, "·")
+            cells.append("🧭" if (i, j) == (r, c) else "•" if (i, j) in trail else symbol if visible else "")
+        rows.append(cells)
+    grid(rows, f"Nebellabyrinth, Figur in Zeile {r + 1}, Spalte {c + 1}")
+    st.caption("🧭 Ihr · • Eure Fußspuren · ▧ Eiswand · Dunkle Felder liegen im Nebel.")
+    pad("maze", _move)
+    st.button("Zum Eingang zurück", key="maze_reset", on_click=reset_fields, args=("maze_pos", "maze_trail"))
+    if MAZE[r][c] == "E" and st.button("Weglaterne anzünden", type="primary"):
+        solve(day)
+
+
+# Das Werkzeug liegt an einer echten Halteposition.
+ICE = ("#######", "#S..#.#", "#.#...#", "#..#..#", "#.#..##", "#..#E.#", "#######")
+
+
+def slide_position(pos, dr, dc):
+    r, c = pos
+    while ICE[r + dr][c + dc] != "#":
+        r, c = r + dr, c + dc
+    return r, c
+
+
+def _slide(dr, dc):
+    s = st.session_state
+    destination = slide_position(s.ice_pos, dr, dc)
+    if destination != s.ice_pos:
+        s.ice_pos = destination
+        s.ice_moves += 1
+
+
+def door6(day):
+    s = st.session_state
+    pos = s.setdefault("ice_pos", (1, 1))
+    moves = s.setdefault("ice_moves", 0)
+    symbols = {"#": "▧", ".": "·", "S": "·", "E": "🔧"}
+    grid([["🧭" if (i, j) == pos else symbols[ch] for j, ch in enumerate(row)]
+          for i, row in enumerate(ICE)], "Eishang mit Werkzeug")
+    st.caption(f"Ihr rutscht geradeaus bis zum nächsten Hindernis. Züge: {moves}")
+    if ICE[pos[0]][pos[1]] == "E":
+        if st.button("Werkzeug aufheben", type="primary"):
+            solve(day)
+    else:
+        pad("ice", _slide)
+    st.button("Zum Start zurück", key="ice_reset", on_click=reset_fields, args=("ice_pos", "ice_moves"))
+
+
+PEOPLE = ("Holly", "Gustav", "Mira", "Noel")
+
+
+def bridge_move(far, lantern_far, party):
+    party = set(party)
+    if not 1 <= len(party) <= 2:
+        raise ValueError("Wählt eine oder zwei Personen.")
+    if any((person in far) != lantern_far for person in party):
+        raise ValueError("Alle müssen am selben Ufer wie die Laterne stehen.")
+    if "Holly" in party and len(party) == 1:
+        raise ValueError("Holly braucht wegen ihrer Höhenangst Begleitung.")
+    if "Gustav" in party and len(party) != 1:
+        raise ValueError("Gustav muss mit seinem sperrigen Gepäck allein gehen.")
+    return far ^ party, not lantern_far
+
+
+def door8(day):
+    s = st.session_state
+    far, lantern_far, history = s.setdefault("bridge", (set(), False, []))
+    left, right = st.columns(2)
+    left.markdown("**Startufer**" + (" 🏮" if not lantern_far else ""))
+    right.markdown("**Zielufer**" + (" 🏮" if lantern_far else ""))
+    left.write(", ".join(p for p in PEOPLE if p not in far) or "—")
+    right.write(", ".join(p for p in PEOPLE if p in far) or "—")
+    st.caption("Höchstens zwei pro Gang. Holly braucht Begleitung. Gustav geht allein. Die Laterne kommt immer mit.")
+    if history:
+        st.write(f"Überquerungen: **{len(history)} / 7**")
+        st.caption(" · ".join(history))
+    available = [p for p in PEOPLE if (p in far) == lantern_far]
+    if len(history) < 7:
+        party = st.multiselect("Wer geht mit der Laterne?", available, key=f"bridge_party_{len(history)}")
+        if st.button("Über die Brücke", type="primary"):
+            try:
+                new_far, new_side = bridge_move(far, lantern_far, party)
+            except ValueError as error:
+                st.error(str(error))
+            else:
+                s.bridge = (new_far, new_side, history + [" + ".join(party) + (" ←" if lantern_far else " →")])
+                if len(new_far) == len(PEOPLE):
+                    solve(day)
+                st.rerun()
+    else:
+        st.warning("Sieben Gänge sind verbraucht. Probiert eine andere Reihenfolge.")
+    st.button("Brücke zurücksetzen", on_click=reset_fields, args=("bridge",))
+
+
+MORSE_WORDS = tuple(tuple(MORSE[ch] for ch in word) for word in ("TOR", "IM", "EIS"))
+
+
+@lru_cache
+def audio_signal(kind, words=()):
+    rate = 16000
+    samples = array("h")
+    if kind == "bells":
+        for gain in (.18, .31, .52, .78, 1.0):
+            for n in range(int(rate * .48)):
+                t = n / rate
+                wave_value = (sin(2*pi*1163*t) + .44*sin(2*pi*1729*t) + .24*sin(2*pi*2477*t))
+                samples.append(int(12000 * gain * exp(-t*10) * min(t*500, 1) * wave_value))
+    else:
+        unit = 1440
+        for wi, word in enumerate(words):
+            if wi:
+                samples.extend([0] * (7 * unit))
+            for li, letter in enumerate(word):
+                if li:
+                    samples.extend([0] * (3 * unit))
+                for si, symbol in enumerate(letter):
+                    if si:
+                        samples.extend([0] * unit)
+                    length = unit * (3 if symbol == "-" else 1)
+                    samples.extend(int(11000 * min(1, n/80, (length-n)/80) * sin(2*pi*640*n/rate))
+                                   for n in range(length))
+    result = BytesIO()
+    if byteorder != "little":
+        samples.byteswap()
+    with wave.open(result, "wb") as stream:
+        stream.setparams((1, 2, rate, 0, "NONE", "not compressed"))
+        stream.writeframes(samples.tobytes())
+    return result.getvalue()
+
+
+def morse_card():
+    for start in range(0, 26, 7):
+        st.code("   ".join(f"{letter}  {MORSE[letter]}" for letter in string.ascii_uppercase[start:start+7]), language=None)
+
+
 def door9(day):
-    msg = "GENERATOR AUS KOMMT SCHNELL"
-    st.code("  /  ".join(" ".join(MORSE[ch] for ch in w) for w in msg.split()), language=None)
-    text_door(day, eq("GENERATOR"), "Welches Gerät ist ausgefallen?")
+    st.markdown("**Empfangsstation · Werkstatt**")
+    segment = st.radio("Abschnitt", ("Ganzer Funkspruch", "Wort 1", "Wort 2", "Wort 3"), horizontal=True)
+    words = MORSE_WORDS if segment == "Ganzer Funkspruch" else (MORSE_WORDS[int(segment[-1]) - 1],)
+    st.audio(audio_signal("morse", words), format="audio/wav")
+    with st.expander("Signale lesen"):
+        st.code("   /   ".join("  ".join(word) for word in words), language=None)
+    if 8 in game["solved"] or TEST:
+        with st.expander("Morsekarte aus dem Notfunkkasten"):
+            if 8 not in game["solved"]:
+                st.caption("Vorschau im Testmodus. Im Spiel findet ihr die Karte in Türchen 8.")
+            morse_card()
+    else:
+        st.caption("Die Morsekarte liegt im Notfunkkasten an der Brücke.")
+    text_door(day, eq("TOR IM EIS"), "Welche drei Wörter funkt die Werkstatt?")
 
 
-# ---- 10: Spiegel
-MIRR = ["..\\.\\.", "\\/.\\..", "././.\\", ".\\../.", "\\/....", "..\\..\\"]
+MIRRORS = {(2, 1): "/", (1, 1): "/", (1, 3): "/", (2, 3): "/", (2, 4): "/", (4, 2): "\\"}
+LIGHT_EXIT = (5, 4)
 
 
-def _trace():
-    r, c, d = 2, 0, (0, 1)
-    while 0 <= r < 6 and 0 <= c < 6:
-        m = MIRR[r][c]
-        if m == "/":
-            d = (-d[1], -d[0])
-        elif m == "\\":
-            d = (d[1], d[0])
-        r, c = r + d[0], c + d[1]
-    side = "OBEN" if r < 0 else "UNTEN" if r > 5 else "LINKS" if c < 0 else "RECHTS"
-    return side + str((c if side in ("OBEN", "UNTEN") else r) + 1)
+def trace_light(mirrors):
+    r, c, dr, dc = 2, 0, 0, 1
+    states, path = set(), set()
+    while 0 <= r < 5 and 0 <= c < 5:
+        state = (r, c, dr, dc)
+        if state in states:
+            return path, None
+        states.add(state)
+        path.add((r, c))
+        if mirrors.get((r, c)) == "/":
+            dr, dc = -dc, -dr
+        elif mirrors.get((r, c)) == "\\":
+            dr, dc = dc, dr
+        r, c = r + dr, c + dc
+    return path, (r, c)
 
 
 def door10(day):
-    lines = ["    1 2 3 4 5 6"]
-    for i, row in enumerate(MIRR):
-        lines.append(("▶ " if i == 2 else "  ") + f"{i + 1} " + " ".join(row))
-    st.code("\n".join(lines), language=None)
-    st.caption("Der Laser tritt bei ▶ (Zeile 3) von links ein. Spiegel: / und \\")
-    text_door(day, lambda a: norm(a) == _trace(),
-              "Kante und Nummer, wo er austritt (z. B. LINKS 5)")
+    mirrors = st.session_state.setdefault("mirrors", MIRRORS.copy())
+    path, exit_pos = trace_light(mirrors)
+    st.caption("Der Strahl tritt links in Zeile 3 ein. Lenkt ihn zur Markierung unter Spalte 5.")
+    for r in range(5):
+        cols = st.columns([1, 1, 1, 1, 1, 2])
+        for c in range(5):
+            p = (r, c)
+            lit = "✦ " if p in path else ""
+            if p in mirrors:
+                if cols[c].button(lit + mirrors[p], key=f"mirror{r}{c}",
+                                  help=f"Spiegel in Zeile {r + 1}, Spalte {c + 1} drehen"):
+                    mirrors[p] = "\\" if mirrors[p] == "/" else "/"
+                    st.rerun()
+            else:
+                cols[c].markdown("✦" if lit else "·")
+    st.markdown("**Ziel** · unter Spalte 5")
+    if exit_pos == LIGHT_EXIT:
+        if st.button("Den markierten Durchgang nehmen", type="primary"):
+            solve(day)
+    st.button("Spiegel zurücksetzen", on_click=reset_fields, args=("mirrors",))
+
+
+PLATES = {
+    "Blau · L-Form": ((0, 0), (1, 0), (1, 1)),
+    "Grün · gerade": ((0, 0), (0, 1), (0, 2)),
+    "Gelb · Winkel": ((0, 0), (0, 1), (1, 1)),
+}
+PLATE_SYMBOLS = dict(zip(PLATES, ("🟦", "🟩", "🟨")))
+GAP = {(r, c) for r in range(3) for c in range(4)} - {(0, 0), (1, 1), (2, 3)}
+
+
+def rotate_plate(shape, turns):
+    for _ in range(turns):
+        shape = tuple((c, -r) for r, c in shape)
+    top, left = min(r for r, _ in shape), min(c for _, c in shape)
+    return {(r - top, c - left) for r, c in shape}
+
+
+def door11(day):
+    placed = st.session_state.setdefault("plates", {})
+    filled = {cell: PLATE_SYMBOLS[name] for name, cells in placed.items() for cell in cells}
+    grid([[filled.get((r, c), "·" if (r, c) in GAP else "▧") for c in range(4)]
+          for r in range(3)], "Lücke für die drei Eisplatten")
+    st.caption("Setzt die Platten in die hellen Felder. Der Anker ist die obere linke Ecke des Rechtecks um die Platte.")
+    plate = st.selectbox("Eisplatte", tuple(PLATES))
+    turns = st.select_slider("Drehung", options=(0, 90, 180, 270), format_func=lambda x: f"{x}°")
+    shape = rotate_plate(PLATES[plate], turns // 90)
+    grid([[PLATE_SYMBOLS[plate] if (r, c) in shape else "" for c in range(3)]
+          for r in range(3)], "Vorschau der ausgewählten Eisplatte")
+    anchor = st.selectbox("Ankerfeld (Zeile, Spalte)", [(r, c) for r in range(3) for c in range(4)],
+                          format_func=lambda rc: f"{rc[0]+1}, {rc[1]+1}")
+    left, right = st.columns(2)
+    if left.button("Platte einsetzen", type="primary"):
+        footprint = {(anchor[0] + r, anchor[1] + c) for r, c in shape}
+        occupied = {cell for name, cells in placed.items() if name != plate for cell in cells}
+        if footprint <= GAP and footprint.isdisjoint(occupied):
+            placed[plate] = footprint
+            st.rerun()
+        st.error("Die Platte ragt über die Lücke hinaus oder überlappt eine andere.")
+    if right.button("Platte herausnehmen", disabled=plate not in placed):
+        placed.pop(plate)
+        st.rerun()
+    if set(filled) == GAP and st.button("Schlucht überqueren"):
+        solve(day)
+    st.button("Alle Platten herausnehmen", on_click=reset_fields, args=("plates",))
+
+
+# Norden, Osten, Süden, Westen. Nahtsymbole gehören paarweise zusammen.
+MAP_FRAME = {
+    (0, 0): ("", "●", "✚", "Start"),
+    (0, 1): ("", "◆", "○", "●"),
+    (0, 2): ("", "▲", "■", "◆"),
+    (0, 3): ("", "Stern", "", "▲"),
+    (1, 0): ("✚", "◇", "", ""),
+    (1, 1): ("○", "△", "", "◇"),
+    (1, 2): ("■", "", "", "△"),
+}
+# Der eingezeichnete Pfad ist von den Nahtsymbolen unabhängig.
+MAP_ROUTE = {
+    (0, 0): (3, 2), (1, 0): (0, 1), (1, 1): (3, 0), (0, 1): (2, 1),
+    (0, 2): (3, 1), (0, 3): (3, 1), (1, 2): (),
+}
+MAP_ORDER = tuple(MAP_FRAME)
+PIECE_SLOTS = (5, 2, 4, 0, 6, 3, 1)
+PIECE_TURNS = (1, 3, 2, 1, 3, 2, 1)
+
+
+def piece_layout(day, turns):
+    index = day - 5
+    slot = MAP_ORDER[PIECE_SLOTS[index]]
+    rotation = (PIECE_TURNS[index] + turns) % 4
+    edges = MAP_FRAME[slot]
+    return tuple(edges[(side - rotation) % 4] for side in range(4)), tuple(
+        (side + rotation) % 4 for side in MAP_ROUTE[slot])
+
+
+def map_piece(day, turns):
+    edges, roads = piece_layout(day, turns)
+    label = {"Start": "⚑", "Stern": "★"}
+    positions = ((50, 0), (100, 50), (50, 100), (0, 50))
+    names = ("oben", "rechts", "unten", "links")
+    description = ", ".join(f"{name}: {edge or 'Außenrand'}" for name, edge in zip(names, edges))
+    lines = "".join(f'<path d="M50 50 L{x} {y}" stroke="#266472" stroke-width="8"/>'
+                    for i, (x, y) in enumerate(positions) if i in roads)
+    marks = "".join(f'<text x="{x}" y="{y}" text-anchor="middle" dominant-baseline="central" '
+                    f'fill="#273545" font-size="15">{label.get(edge, edge)}</text>'
+                    for (x, y), edge in zip(((50, 12), (89, 50), (50, 88), (11, 50)), edges) if edge)
+    return (f'<svg viewBox="0 0 100 100" role="img" aria-label="Stück {day-4}, {description}" '
+            f'style="display:block;width:100%;max-width:108px;background:#f3dfb2;border:1px solid #866e45">'
+            f'{lines}{marks}<text x="78" y="87" fill="#6e5433" font-size="12">{day-4}</text></svg>')
+
+
+def map_matches(placed):
+    return set(placed) == set(MAP_FRAME) and all(
+        piece_layout(*placed[slot])[0] == edges for slot, edges in MAP_FRAME.items()
+    )
+
+
+def door12(day):
+    pieces = [n for n in range(5, 12) if n in game["solved"]]
+    if TEST and len(pieces) < 7 and st.checkbox("Fehlende Kartenstücke zum Testen leihen"):
+        pieces = list(range(5, 12))
+    if len(pieces) < 7:
+        st.info(f"Ihr habt {len(pieces)} von 7 Kartenstücken. Die übrigen findet ihr in Türchen 5 bis 11.")
+    if not pieces:
+        return
+    placed = st.session_state.setdefault("map_placed", {})
+    placed = {slot: item for slot, item in placed.items() if item[0] in pieces}
+    for r in range(2):
+        columns = st.columns(4)
+        for c, column in enumerate(columns):
+            slot = (r, c)
+            if slot in MAP_FRAME:
+                column.caption(f"Feld {MAP_ORDER.index(slot) + 1}")
+                column.markdown(map_piece(*placed[slot]) if slot in placed else
+                                '<div style="max-width:108px;aspect-ratio:1;border:2px dashed #a4c5cd"></div>',
+                                unsafe_allow_html=True)
+    if map_matches(placed):
+        st.success("Die Karte passt. Folgt der Linie von der Fahne bis zur Eiswand.")
+        columns = st.columns(3)
+        for col, mark in zip(columns, ("Mond", "Stern", "Tanne")):
+            if col.button(mark, key=f"wall_{mark}"):
+                if mark == "Stern":
+                    solve(day)
+                st.error("An dieser Stelle bleibt die Eiswand geschlossen.")
+    piece = st.selectbox("Kartenstück", pieces, format_func=lambda n: f"Stück {n-4} · Türchen {n}")
+    turns = st.select_slider("Kartenstück drehen", (0, 90, 180, 270), format_func=lambda n: f"{n}°")
+    st.markdown(map_piece(piece, turns // 90), unsafe_allow_html=True)
+    slot = st.selectbox("Feld im Rahmen", MAP_ORDER, format_func=lambda p: f"Feld {MAP_ORDER.index(p)+1}")
+    left, right = st.columns(2)
+    if left.button("Kartenstück einsetzen", type="primary"):
+        st.session_state.map_placed = {p: item for p, item in placed.items() if item[0] != piece}
+        st.session_state.map_placed[slot] = (piece, turns // 90)
+        st.rerun()
+    if right.button("Feld leeren", disabled=slot not in placed):
+        placed.pop(slot)
+        st.session_state.map_placed = placed
+        st.rerun()
+    if len(placed) == 7 and not map_matches(placed):
+        st.info("Prüft die Nahtsymbole und die Ausrichtung der Stücke.")
 
 
 # ---- 13: Generator (Lights Out)
@@ -439,90 +700,88 @@ def D(title, story, render, akte, after, *hints):
 DUTY = ("Dienstplan 22:47: Holly, Schraub, Volt, Zimta, Fussel und Gustav standen auf dem Grundriss der Werkstatt "
         "(6 Zeilen, Spalten A bis F, Räume farbig). In jeder Zeile und in jeder Spalte stand genau ein Elf.")
 
-DOORS = {
-    1: dict(title="Türchen 1: Die Kiste vom Nordpol",
-            story="Es klingelt an der Haustür. Ihr öffnet, aber niemand steht davor. Stattdessen liegt ein schweres, "
-                  "eisiges Päckchen vor der Tür mit dem Absender Nordpol. Im Wohnzimmer öffnet ihr es, und eine "
-                  "Holzbox mit Zahlenschloss kommt zum Vorschein. Ihr untersucht die Box: Seitlich ist eine Gravur eingeritzt.",
-            render=door1, akte=f"Absender der Kiste: NORDPOL. Kistencode: {KISTENCODE}.",
-            after="Das Schloss klackt. Die Kiste springt auf, Kälte strömt heraus. Obenauf liegt ein Brief.",
-            hints=["Gesucht sind ausgeschriebene Zahlen, zum Beispiel EINS.",
-                   "Lest über die Lücke zwischen zwei Wörtern hinweg. Auch ein Komma darf dabei verschwinden."]),
-    2: dict(title="Türchen 2: Der Brief",
-            story="Die Kiste springt auf, und darin liegt ein Brief. Aber ihr könnt ihn nicht lesen, denn er ist verschlüsselt.",
-            render=door2, sound="glocken.mp3", akte="Hilferuf des Weihnachtsmanns: Jemand sabotiert die Werkstatt. Passwort für die Rentiere: LATERNE.",
-            after="Ihr sprecht dreimal LATERNE. Zuerst passiert nichts. Dann hört ihr von weit her Glocken, die immer näher kommen. "
-                  "Ihr schaut aus dem Fenster: Rentiere! Und sie reden mit euch.",
-            hints=["Der Lorbeerkranz erinnert an einen römischen Feldherrn, der für eine Geheimschrift bekannt ist.",
-                   "Die Verschiebung bleibt nicht gleich, sie wechselt nach einem Schlüsselwort (Vigenère).",
-                   "Das Schlüsselwort steht auf dem Paket: der Absender. Es wird immer wiederholt."]),
-    3: dict(title="Türchen 3: Die Rentier-Prüfung",
-            story="Vor dem Fenster landet der Schlitten. Die Rentiere sprechen erst mit euch, wenn ihr bewiesen habt, "
-                  "dass ihr euch wirklich mit ihnen auskennt.",
-            render=door3, akte="Die Zugtiere sind Kühe (Weibchen). Nur sie haben zu Weihnachten noch Geweih.",
-            after="Die Rentiere nicken. \"Ihr wisst Bescheid. Steigt ein, uns bleibt wenig Zeit!\" Ihr klettert in den Schlitten.",
-            hints=["Denkt an den Jahreszyklus: Brunft im Herbst, Kälber im Frühjahr.",
-                   "Karibu klingt nach Kanada."]),
-    4: dict(title="Türchen 4: Kurs Nordpol",
-            story="Ihr sitzt im Schlitten und wollt losfahren. Doch der Bordcomputer verlangt einen Kurs, und eine Karte "
-                  "gibt es nicht, nur die Sterne.",
-            render=door4, akte="Kurs bestätigt: Polarstern bei Planquadrat (14|27).",
-            after="Der Schlitten ruckt an und hebt ab. Unter euch werden die Lichter der Stadt kleiner.",
-            hints=["Im Großen Wagen gibt es zwei Zeigersterne an der Kastenseite, die den Weg weisen.",
-                   "Merak und Dubhe. Man verlängert ihre Verbindung hinter Dubhe um das Fünffache ihres Abstands.",
-                   "Dubhe + 5 × (Dubhe − Merak), für x und y getrennt gerechnet."]),
-    5: dict(title="Türchen 5: Nebel und Eislabyrinth",
-            story="Ihr fliegt los und kommt in einen dichten Nebel. Ohne Sicht seid ihr auf Kompass und Kommandos angewiesen.",
-            render=door5, akte="Eissplitter 1 von 7 (Wert 4).",
-            after="Im Zentrum liegt ein funkelnder Eissplitter. Auf ihm steht eine Zahl und ein Symbol. Das Tor zur "
-                  "Werkstatt hat sieben Schlösser, dies ist erst der erste Splitter.",
-            hints=["Jedes Kommando dreht um die genannte Gradzahl, 360° sind eine volle Runde.",
-                   "Im Labyrinth bleibt eure Spur (+) sichtbar. Der linke Weg nach unten ist eine Sackgasse.",
-                   "Geht oben herum und dann rechts außen nach unten."]),
-}
-
+DOORS = {}
 
 DOORS.update({
-    6: D("Türchen 6: Der Eisrutsch",
-         "Ein Schneesturm zwingt euch zur Landung auf einem zugefrorenen Hang. Der Boden ist spiegelglatt: Wer losrutscht, hält erst an der nächsten Wand. Ihr müsst zum Zeichen E.",
-         door6, "Eissplitter 2 von 7 (Wert 6).", "Bei E liegt ein Splitter. Der Sturm legt sich, ihr hebt wieder ab.",
-         "Plant rückwärts: Von wo aus rutscht man über E?", "Sieben Züge reichen."),
-    7: D("Türchen 7: Der Frostgeist",
-         "Auf einem zugefrorenen See sitzt ein Frostgeist vor 21 Eiszapfen. Ihr nehmt abwechselnd 1 bis 3. Wer den letzten nimmt, gewinnt den Splitter.",
-         door7, "Eissplitter 3 von 7 (Wert 1).", "Der Frostgeist murrt und schiebt euch den Splitter hin.",
-         "Es gibt eine Strategie, mit der ihr als Erster immer gewinnt.", "Hinterlasst nach jedem eurer Züge eine Zahl, die durch 4 teilbar ist."),
-    8: D("Türchen 8: Die Hängebrücke",
-         "Eine morsche Hängebrücke über eine Schlucht. Es gibt nur eine Laterne, und sie wird zum Gehen gebraucht.",
-         txt("Nur zwei Elfen dürfen gleichzeitig über die Brücke, die Laterne muss immer mit.\n"
-             "Zeiten pro Elf: 1, 4, 5 und 8 Minuten. Zwei zusammen gehen im Tempo des Langsameren.\n\n"
-             "Wie viele Minuten brauchen alle vier mindestens?", nums("19"), "Minuten"),
-         "Eissplitter 4 von 7 (Wert 7).", "Alle sind drüben, die Brücke schaukelt, der vierte Splitter glitzert im Schnee.",
-         "Vergleicht: Der Schnellste begleitet alle, oder die zwei Langsamsten gehen zusammen."),
-    9: D("Türchen 9: Der Funkspruch",
-         "Mitten im Flug knackt das Funkgerät. Aus der Werkstatt kommt eine Nachricht in Morsezeichen.",
-         door9, "Funkspruch aus der Werkstatt: Der Generator ist ausgefallen. Eissplitter 5 von 7 (Wert 3).",
-         "Es ist ein Notruf. Im Funkgerät klemmt ein Splitter, den ihr herausnehmt.",
-         "Kurz = Punkt, lang = Strich. ' / ' trennt die Wörter."),
-    10: D("Türchen 10: Der Polarlicht-Laser",
-          "Das Polarlicht lädt den Schlitten auf. Doch der Laserstrahl muss durch ein Spiegelfeld, und ihr müsst vorhersagen, wo er austritt.",
-          door10, "Eissplitter 6 von 7 (Wert 5).", "Der Strahl trifft den Schlitten, und im Lack entsteht ein Splitter aus Licht.",
-          "Läuft der Strahl nach rechts, lenkt / ihn nach oben und \\ nach unten.", "Verfolgt ihn Feld für Feld. Er knickt neun Mal ab."),
-    11: D("Türchen 11: Die Eiswächter",
-          "Hinter einem Gletscher stehen drei Tore, und vor jedem ein Eiswächter. Hinter einem liegt der letzte Splitter.",
-          txt("Nur einer der drei Wächter sagt die Wahrheit:\n\n"
-              "  Wächter 1: Der Splitter liegt hinter Tor 1.\n"
-              "  Wächter 2: Der Splitter liegt nicht hinter Tor 2.\n"
-              "  Wächter 3: Der Splitter liegt nicht hinter Tor 1.\n\n"
-              "Hinter welchem Tor liegt er?", nums("2"), "Tor Nummer"),
-          "Eissplitter 7 von 7 (Wert 2).", "Ihr habt alle sieben Splitter. Vor euch erhebt sich ein gewaltiges Eistor.",
-          "Prüft jedes Tor: Wie viele Wächter hätten dann recht?"),
-    12: D("Türchen 12: Das Tor zum Nordpol",
-          "Das Tor hat sieben Mulden. Eine Stimme flüstert: Setzt die Splitter vom kleinsten Wert zum größten ein.",
-          txt("Die Splitter stehen in der Akte (Wert und Nummer).\n"
-              "Gebt die Splitternummern (1 bis 7) in der Reihenfolge ein, in der ihr sie einsetzt.",
-              lambda a: re.sub(r"\D", "", a) == "3751624", "Sieben Ziffern"),
-          "Das Tor zur Werkstatt ist offen.", "Das Tor schwingt auf. Dahinter: Chaos, Dunkelheit, und ein Wimmern.",
-          "Jeder Splitter hat eine Nummer und einen Wert. Sortiert nach dem Wert."),
+    1: D("Türchen 1 · Die Kiste vom Nordpol",
+         "Es klingelt. Vor der Tür steht ein eisiges Päckchen. Als Absender steht darauf: NORDPOL. "
+         "Darin findet ihr eine Holzbox mit Zahlenschloss. Seitlich ist ein Gedicht ins Holz geritzt.",
+         door1, "Absender des Päckchens: NORDPOL.",
+         "Das Schloss klackt. Die Kiste springt auf. Obenauf liegt ein Brief.",
+         "Zählt die Wörter in jeder Zeile. Was fällt euch auf?",
+         "Lest die Anfangsbuchstaben der Wörter jeder Zeile von links nach rechts.",
+         "Draußen ruht ein Irrlicht ergibt D–R–E–I. Die erste Ziffer ist 3."),
+    2: D("Türchen 2 · Der verschlüsselte Brief",
+         "Ihr öffnet den Brief und zieht einen gefalteten Zettel heraus. Die Buchstaben ergeben keinen Sinn. "
+         "In der Ecke erkennt ihr einen blassen Lorbeerkranz.",
+         door2, "Der Hauptschalter wurde von Hand umgelegt. Das Rufwort lautet LATERNE.",
+         "„Laterne. Laterne. Laterne.“ Erst bleibt es still. Dann hört ihr draußen ein leises Läuten. "
+         "Es kommt näher und verstummt vor dem Fenster. Draußen stehen vier Rentiere im Schnee. "
+         "Eines hebt den Kopf. „Ihr habt gerufen?“",
+         "Der Lorbeerkranz weist auf Caesar und seine Geheimschrift hin.",
+         "Wer hat das Päckchen geschickt? Zählt die Buchstaben des Absenders.",
+         "Geht für jeden Buchstaben sieben Stellen zurück. Vor A geht es bei Z weiter. KLY wird zu DER."),
+    3: D("Türchen 3 · Die Rentierprüfung",
+         "Ihr geht hinaus. Hinter den Rentieren wartet ein Schlitten. „Bevor ihr einsteigt, wollen wir wissen, "
+         "wie gut ihr euch mit Rentieren auskennt.“",
+         door3, "Die Rentiere am Schlitten sind Kühe. In Kanada heißen Rentiere Karibus.",
+         "„Na gut“, sagt das Rentier. „Steigt ein.“ Ihr klettert auf die Sitzbank. Unter der dicken Wolldecke wird euch wieder warm.",
+         "Alle vier Rentiere vor euch tragen im Dezember ein Geweih.",
+         "Elch und Wapiti sind andere Tiere.",
+         "Die gesuchte Farbe erinnert an einen klaren Winterhimmel."),
+    4: D("Türchen 4 · Der Kurs zum Nordpol",
+         "„Gebt uns einen Kurs, dann können wir los.“ Am Bordcomputer blinkt ein Koordinatenfeld. Daneben steckt eine Sternkarte.",
+         door4, "Der Kurs zum Polarstern ist bestätigt.",
+         "Die Kufen gleiten über den Schnee und heben ab. Unter euch werden die beleuchteten Fenster immer kleiner.",
+         "Vergleicht die Koordinaten von Merak und Dubhe.",
+         "Ein Schritt sind zwei Felder nach rechts und vier nach oben. Wiederholt ihn ab Dubhe fünfmal.",
+         "Startet bei (4|7). Addiert waagerecht 10 und senkrecht 20."),
+    5: D("Türchen 5 · Das Labyrinth im Nebel",
+         "Dichter Nebel zwingt den Schlitten zur Landung. Vor euch ragen Eiswände aus dem Schnee. „Am anderen Ende steht "
+         "eine Weglaterne“, sagt eines der Rentiere. „Zündet sie an, dann finden wir euch wieder.“",
+         door5, "Wegkartenstück 1 von 7.",
+         "Im Licht der Laterne entdeckt ihr ein Stück einer Wegkarte. Ihr steckt es ein. Kurz darauf hört ihr Schlittenglocken.",
+         "Geht vom Eingang zuerst nach Osten.", "Geht an der ersten Eiswand nach Süden und sucht einen Gang nach Osten.",
+         "Haltet euch am Ende am rechten Rand nach Süden."),
+    6: D("Türchen 6 · Der Eishang",
+         "Beim Abholen hat sich ein Werkzeug vom Schlitten gelöst. Es liegt unten auf dem spiegelglatten Eishang.",
+         door6, "Wegkartenstück 2 von 7.", "Ihr hebt das Werkzeug auf. Darunter klebt ein Stück der Wegkarte.",
+         "Plant rückwärts. Überlegt, aus welcher Richtung ihr auf dem Werkzeugfeld zum Stehen kommt."),
+    7: D("Türchen 7 · Der Frostgeist",
+         "Ein Frostgeist kennt den sicheren Weg über den See. Er zeigt ihn euch, wenn ihr sein Eiszapfenspiel gewinnt. "
+         "Abwechselnd nehmt ihr 1, 2 oder 3 Eiszapfen. Wer den letzten nimmt, gewinnt.",
+         door7, "Wegkartenstück 3 von 7.", "Der Frostgeist schiebt euch ein Kartenstück zu und winkt euch auf den sicheren Weg.",
+         "Es gibt einen ersten Zug, nach dem ihr jeden Gegenzug passend ergänzen könnt.",
+         "Lasst dem Frostgeist nach jedem eurer Züge ein Vielfaches von vier."),
+    8: D("Türchen 8 · Die Hängebrücke",
+         "Holly, Gustav, Mira und Noel stehen vor einer schmalen Hängebrücke. Sie haben nur eine Laterne. Bringt alle in höchstens sieben Gängen hinüber.",
+         door8, "Wegkartenstück 4 von 7 und eine Morsekarte.",
+         "Drüben hängt ihr die Laterne an einen Haken. Daneben steht ein Kasten mit der Aufschrift NOTFUNK. Darin liegen ein Kartenstück und eine Morsekarte.",
+         "Schickt zuerst Mira und Noel zusammen hinüber.", "Holt die Laterne zurück, damit Gustav allein hinübergehen kann."),
+    9: D("Türchen 9 · Der Notruf der Werkstatt",
+         "Am Notfunkkasten blinkt eine Lampe. Aus dem Lautsprecher kommen kurze und lange Töne. Nach einer Pause wiederholt sich der Spruch.",
+         door9, "Wegkartenstück 5 von 7. Notruf der Werkstatt: TOR IM EIS.",
+         "„Tor im Eis“, lest ihr vor. Unter dem Deckel der Empfangsstation klemmt ein weiteres Kartenstück.",
+         "Ein kurzer Ton ist ein Punkt, ein langer ein Strich.", "Spielt die Wörter einzeln ab und vergleicht die Signale mit der Morsekarte."),
+    10: D("Türchen 10 · Der verborgene Durchgang",
+          "Vor euch liegen mehrere Spalten im Eis. Ein alter Lichtwegweiser kann den richtigen Durchgang markieren.",
+          door10, "Wegkartenstück 6 von 7.", "Unter der beleuchteten Markierung findet ihr einen schmalen Durchgang. Daneben steckt ein Kartenstück.",
+          "Dreht die Spiegel durch Anklicken. Der leuchtende Stern zeigt, welche Felder der Strahl erreicht.",
+          "Versucht, den Strahl in der mittleren Zeile bis zum Spiegel ganz rechts zu lenken."),
+    11: D("Türchen 11 · Die letzte Schlucht",
+          "Ein Stück des Wegs ist weggebrochen. In einer Nische liegen drei Eisplatten. Damit könnt ihr die Lücke schließen.",
+          door11, "Wegkartenstück 7 von 7.", "Ihr überquert die Schlucht. Auf der anderen Seite hängt ein Kartenstück an einem Wegpfosten.",
+          "Die gerade Platte passt waagerecht über drei Felder oder senkrecht über drei Zeilen."),
+    12: D("Türchen 12 · Das Werkstatttor",
+          "Ihr steht vor einer Eiswand. Der Funkspruch hat euch verraten, dass hier das Tor liegt. Setzt eure Wegkarte zusammen und findet den Eingang.",
+          door12, "Der Eingang zur Werkstatt ist geöffnet.",
+          "Das Eis unter der Markierung schiebt sich beiseite. Ihr tretet über die Schwelle. In der Werkstatt ist es dunkel.",
+          "Die Fahne markiert den linken Rand. Dreht die Kartenstücke, bis sich gleiche Nahtsymbole berühren.",
+          "Die Linie führt von der Fahne zu einer Markierung an der Außenkante."),
+})
+
+# Vorhandener Entwurf für den Werkstatt-Akt. Die Testoberfläche endet bei Türchen 12.
+WORKSHOP_DOORS = {
     13: D("Türchen 13: Der Generator (Volt)",
           "Volt, der Elektriker, sitzt verzweifelt vor dem Notstrom-Schaltfeld. \"Um 22:47 fiel der Strom aus! Helft mir, die Lampen anzubekommen, dann sage ich euch, wo ich war.\"",
           door13, "Volt: Ich war weder im Büro noch in der Maschinenhalle. Ich stand in Spalte C.",
@@ -596,27 +855,29 @@ DOORS.update({
           door24, "Fall gelöst.",
           "🎄 Der Schlitten hebt ab. Ihr seid offiziell Ehren-Elfen des Nordpols und habt Weihnachten gerettet. Frohe Weihnachten!",
           "Beginnt mit den Elfen, deren Raum feststeht (Gustav, Zimta). Jede Zeile und jede Spalte hat genau einen Elf.", "Spalten- und Zeilenangaben legen den Rest fest. Wer bleibt für den Generatorraum übrig?"),
-})
-
+}
 
 # ---------------------------------------------------------------- Seite
 def is_open(d: int) -> bool:
-    return TEST or date.today() >= date(YEAR, 12, d)
+    return TEST or (date.today() >= date(YEAR, 12, d) and (d == 1 or d - 1 in game["solved"]))
 
 
 st.title("🎄 Der Nordpol-Fall")
 st.caption("Jemand sabotiert die Weihnachtswerkstatt. Nur ihr könnt sie noch retten.")
 
 if TEST:
-    st.warning("Testmodus: alle Türchen sind geöffnet.")
+    st.info("Testmodus · Alle zwölf Türchen sind direkt anwählbar. Der Fortschritt gilt für diese Sitzung.")
+    if st.sidebar.button("Testspiel neu starten"):
+        st.session_state.clear()
+        st.rerun()
 
 if "active" not in st.session_state:
     nxt = [d for d in DOORS if d not in game["solved"] and is_open(d)]
     st.session_state.active = nxt[0] if nxt else 1
 
-for start in (1, 13):
-    cols = st.columns(12)
-    for i, d in enumerate(range(start, start + 12)):
+for start in (1, 7):
+    cols = st.columns(6)
+    for i, d in enumerate(range(start, start + 6)):
         label = f"✓{d}" if d in game["solved"] else (str(d) if is_open(d) else f"🔒{d}")
         if cols[i].button(label, key=f"nav{d}", disabled=not is_open(d), use_container_width=True):
             st.session_state.active = d
@@ -624,6 +885,15 @@ for start in (1, 13):
 
 with st.sidebar:
     st.subheader("🗂️ Die Akte")
+    pieces = [n for n in range(5, 12) if n in game["solved"]]
+    st.write(f"Wegkarte · {len(pieces)} / 7 Stücke")
+    if pieces:
+        with st.expander("Kartenstücke ansehen"):
+            for n in pieces:
+                st.markdown(map_piece(n, 0), unsafe_allow_html=True)
+    if 8 in game["solved"]:
+        with st.expander("Morsekarte ansehen"):
+            morse_card()
     if not game["akte"]:
         st.write("*Noch leer.*")
     for d in sorted(game["akte"], key=int):
@@ -636,6 +906,7 @@ if day not in DOORS:
     st.info("Dieses Türchen wird noch gebaut.")
 else:
     door = DOORS[day]
+    st.caption("Akt 1 · Der Ruf" if day <= 4 else "Akt 2 · Die Reise zur Werkstatt")
     st.subheader(door["title"])
     st.info(door["story"])
     fresh = st.session_state.pop("celebrate", False)
@@ -647,9 +918,11 @@ else:
         st.success(f"Gelöst! Neuer Eintrag in der Akte: {door['akte']}")
         if door.get("after"):
             st.markdown(f"*{door['after']}*")
-        snd = Path(__file__).parent / door["sound"] if door.get("sound") else None
-        if snd and snd.exists():
-            st.audio(str(snd), autoplay=fresh)
+        if day == 2:
+            st.markdown(PLAIN.replace("\n", "  \n"))
+            snd = Path(__file__).with_name("glocken.mp3")
+            st.audio(str(snd) if snd.is_file() else audio_signal("bells"),
+                     format="audio/mp3" if snd.is_file() else "audio/wav", autoplay=fresh)
     else:
         door["render"](day)
         hints(day, door["hints"])
